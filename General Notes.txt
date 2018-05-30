@@ -1,0 +1,226 @@
+Text Area
+DispNotification.inst.Show("YOUR TEXT", <time to display text>)
+
+//Returning a list of wrestlers
+private string GetTeamOne()
+{
+List<string> wrestlers = new List<string>();
+wrestlers.Clear();
+
+for (int i = 0; i < 4; i++)
+{
+        Player plObj = PlayerMan.inst.GetPlObj(i);
+        if (!plObj)
+        {
+                continue;
+        }
+        if (!plObj.isSecond && !plObj.isSleep)
+        {
+                wrestlers.Add(DataBase.GetWrestlerFullName(plObj.WresParam));
+        }
+}
+
+return string.Join(", ", wrestlers.ToArray());
+}
+
+GlobalParam.m_BattleRule will allow you to check the match rules
+
+Turn off ko state
+PlObj.isKO = false;
+
+if (MSCForm.instance != null)
+{
+MSCForm.instance.checkbox20.Checked = false;
+}
+
+    private bool GetTeamName(List<string> members, out string result)
+        {
+            result = string.Empty;
+
+            foreach (Team t in PromotionMenuForm.instance.Teams)
+            {
+                if (Contains(members, t.Members))
+                {
+                    result = t.Name;
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public static bool Contains(List<string> thisTeam, List<string> tMembers)
+        {
+            foreach (string w in thisTeam)
+            {
+                if (!tMembers.Contains(w))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+
+Referee Check For Time-up
+if (inst.isTimeUp && matchSetting.RoundNum > 0 && !inst.isMatchEnd)
+	{
+		if (inst.RoundCnt >= matchSetting.RoundNum)
+		{
+			this.matchResult = MatchResultEnum.TimeOutDraw;
+			MatchSEPlayer.inst.PlayMatchSE(MatchSEEnum.Gong_3, 1f, -1);
+			for (int i = 0; i < 8; i++)
+			{
+				Player plObj2 = PlayerMan.inst.GetPlObj(i);
+				if (plObj2)
+				{
+					if (!plObj2.isSleep)
+					{
+						this.SentenceLose(i);
+						MatchEvaluation.inst.PlResult[i].finishTime.Set(inst.matchTime);
+					}
+				}
+			}
+			this.State = RefeStateEnum.R_NANM1;
+			this.ReqRefereeAnm(Referee.AnmTbl_EndCallTbl[(int)this.PlDir]);
+			this.PlDir = PlDirEnum.Left;
+		}
+		else
+		{
+			inst.isRoundEnd = true;
+			this.Counter = 0;
+			Announcer.inst.PlayGong_MatchStart();
+			this.SetFree();
+		}
+		return;
+
+For Finding Finishing Moves
+you're going to want to look at the losers finishMove_Def array
+0 will be the pin (or the move if it's a move that ends with a pin) and 1 will be the actual move if it's not a pinning move.s
+
+
+        [Hook(TargetClass = "Menu_Result", TargetMethod = "Start", InjectionLocation = int.MaxValue, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.PassInvokingInstance, Group = "IronMan")]
+        public static void SetIronManDecisionText(Menu_Result mResult)
+        {
+            if (IronManFinish)
+            {
+                int Team1Falls = 0;
+                int Team2Falls = 0;
+
+                Carlzilla.WentToDecision = false;
+
+                for (int i = 0; i < 8; i++)
+                {
+                    if (i < 4)
+                    {
+                        Team1Falls += TeamFalls[i];
+                    }
+                    else
+                    {
+                        Team2Falls += TeamFalls[i];
+                    }
+                }
+
+                int win = 0;
+                if (Team1Falls > Team2Falls)
+                {
+                    win = 1;
+                }
+                else if (Team1Falls < Team2Falls)
+                {
+                    win = 2;
+                }
+                else if (Team1Falls == Team2Falls)
+                {
+                    win = 0;
+                }
+
+                string newLine = System.Environment.NewLine;
+                GameObject gameObject = GameObject.Find("Finish_SkillName/Label");
+                global::UILabel component = gameObject.GetComponent<global::UILabel>();
+                component.text = GlobalWork.inst.MatchSetting.MatchTime.ToString() + " Min. Iron Man Match:" + newLine + GetTeamName(1) + " - " + Team1Falls.ToString()  + newLine + GetTeamName(2) + " - " + Team2Falls + newLine + newLine + "Winner: " + GetTeamName(win);
+                IronManFinish = false;
+                if (MSCForm.Instance != null)
+                {
+                    MSCForm.Instance.checkBox20.Checked = tenCounts;
+                    MSCForm.Instance.checkBox20.Enabled = true;
+                }
+            }
+        }
+
+plObj.isWannaGiveUp
+I'd do a check for that, if it's true and they're in the ropes, the break triggers and they lose a point
+if it's not true, I'd do a roll, maybe against spirit to see if it triggers
+
+ public static List<string> illegalMoves = new List<string>()      
+        {
+            "Knuckle Arrow",
+            "Knuckle Pat",            
+            "Elbow to the Crown",
+            "Elbow Stamp",
+            "Elbow Stamp (Neck)",
+            "Elbow Stamp (Arm)",
+            "Elbow Stamp (Leg)",
+            "Stomping (Face)",
+            "Stomping (Neck)",
+            "Clap Kick",
+            "Thumbing to the Eyes",
+            "Thumbing to the Eyes B",
+            "Face Raking",
+            "Face Raking B",
+            "Choke Attack",
+            "Reverse Hanging Punch",
+            "Straight",
+            "Jab",
+            "American Jab",
+            "American Hook",
+            "Combination 3",
+            "Dash Straight",
+            "Hook",
+            "Russian Hook",
+            "Uppercut",
+            "Uraken",
+            "Superman Punch",
+            "American Punch Rush",
+            "Dazed Texas Jab",
+            "Discus Punch",
+            "Dynamite Punch Rush",
+            "Face Straight",
+            "Force Straight Punch",
+            "Force Straight Punch B",
+            "Grapple Punch Rush",
+            "Headlock Punches",
+            "Mach Punch Rush",
+            "Russian Hook Rush",
+            "Seikentsuki Punch",
+            "Seikentsuki Punch Rush",
+            "Short Uppercut",
+            "Spirit Punch Rush",
+            "Texas Jab",
+            "Wrist Punch",
+            "Bionic Elbow",
+            "Final Rolling Elbow",
+            "Face Punch",
+            "Face Punch Rush",
+            "Jumping Fist Drop",
+            "Bite",
+            "Cobra Claw",
+            "Guillotine Choke",
+            "Back-Mount Punches",
+            "Corner Punch Rush",
+            "Mount Knuckle Arrow",
+            "Leg Clip Punch",
+            "Punch",
+            "Elbow"
+        };
+
+    if (matchSetting.isS1Rule && !this.IsS1Waza(skillSlotEnum))
+    {
+        this.ChangeState(global::PlStateEnum.NormalAnm);
+        this.animator.ReqBasicAnm(global::BasicSkillEnum.S1_Substitution_FrontHold, true, this.TargetPlIdx);
+        this.SetGrappleResult(this.TargetPlIdx, true);
+        plObj.SetGrappleResult(this.PlIdx, false);
+        return;
+    }
+
+you can check that yourself by checking the SkillSlotEnum in ILSpy for future reference
