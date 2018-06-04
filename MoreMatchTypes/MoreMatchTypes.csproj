@@ -50,7 +50,8 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Assembly-CSharp">
+    <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DLL Files\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="Carlzilla">
@@ -69,6 +70,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Elimination.cs" />
     <Compile Include="FirstBloodMatch.cs" />
     <Compile Include="IronManMatch.cs" />
     <Compile Include="MoreMatchTypes_Form.cs">

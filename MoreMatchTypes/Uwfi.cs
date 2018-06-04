@@ -25,61 +25,8 @@ namespace MoreMatchTypes
         public static bool ptEndMatch = false;
         public static int[] bloodState = new int[2];
         public static string resultText;
-        public static List<String> illegalMoves = new List<String>()
-        {
-            "Knuckle Arrow",
-            "Knuckle Pat",
-            "Elbow to the Crown",
-            "Elbow Stamp",
-            "Elbow Stamp (Neck)",
-            "Elbow Stamp (Arm)",
-            "Elbow Stamp (Leg)",
-            "Stomping (Face)",
-            "Stomping (Neck)",
-            "Clap Kick",
-            "Thumbing to the Eyes",
-            "Thumbing to the Eyes B",
-            "Face Raking",
-            "Choke Attack",
-            "Cobra Claw",
-            "Headbutt",
-            "Headbutt Rush",
-            "Jumping Headbutt",
-            "Leg-Lift Headbutt Rush",
-            "No-Touch Headbutt",
-            "Enzui Headbutt",
-            "Manhattan Drop",
-            "Manhattan Drop B",
-            "Mount Headbutt",
-            "Mount Knuckle Arrow",
-            "Corner Headbutt Rush",
-            "Rope Trailing",
-            "Guillotine Whip",
-            "Corner Strike Rush",
-            "Mount Punches",
-            "Back Mount Punches"
-
-        };
-        public static List<String> instantDQ = new List<String>()
-        {
-            "Giant Steel Knuckles",
-            "Brass Knuckle Punch",
-            "Weapon Attack",
-            "Scythe Attack",
-            "Bite",
-            "Testicular Claw",
-            "Chair's Illusion",
-            "Low Blow",
-            "Lip Lock",
-            "Back Low Blow",
-            "Groin Head Drop",
-            "Groin Knee Stamp",
-            "Groin Stomping",
-            "Ategai",
-            "Bronco Buster",
-            "Mist",
-            "Big Fire"
-        };
+        public static List<String> illegalMoves;
+        public static List<String> instantDQ;
         #endregion
 
         [Hook(TargetClass = "MatchMain", TargetMethod = "CreatePlayers", InjectionLocation = int.MaxValue, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.None, Group = "MoreMatchTypes")]
@@ -103,6 +50,82 @@ namespace MoreMatchTypes
             if (!isUwfi)
             {
                 return;
+            }
+
+            //Populate Illegal Attacks
+            String illegalString = MoreMatchTypes_Form.form.tb_illegal.Text.TrimStart().TrimEnd();
+            if (illegalString != "")
+            {
+                illegalMoves = CreateMoveList(illegalString);
+            }
+            else
+            {
+                List<String> illegalMoves = new List<String>()
+            {
+                "Knuckle Arrow",
+                "Knuckle Pat",
+                "Elbow to the Crown",
+                "Elbow Stamp",
+                "Elbow Stamp (Neck)",
+                "Elbow Stamp (Arm)",
+                "Elbow Stamp (Leg)",
+                "Stomping (Face)",
+                "Stomping (Neck)",
+                "Clap Kick",
+                "Thumbing to the Eyes",
+                "Thumbing to the Eyes B",
+                "Face Raking",
+                "Choke Attack",
+                "Cobra Claw",
+                "Headbutt",
+                "Headbutt Rush",
+                "Jumping Headbutt",
+                "Leg-Lift Headbutt Rush",
+                "No-Touch Headbutt",
+                "Enzui Headbutt",
+                "Manhattan Drop",
+                "Manhattan Drop B",
+                "Mount Headbutt",
+                "Mount Knuckle Arrow",
+                "Corner Headbutt Rush",
+                "Rope Trailing",
+                "Guillotine Whip",
+                "Corner Strike Rush",
+                "Mount Punches",
+                "Back Mount Punches"
+
+            };
+            }
+
+            //Populate DQ Attacks
+            String dqMoves = MoreMatchTypes_Form.form.tb_dq.Text.TrimStart().TrimEnd();
+            if (dqMoves != "")
+            {
+                instantDQ = CreateMoveList(dqMoves);
+            }
+            else
+            {
+                instantDQ = new List<String>()
+            {
+                "Giant Steel Knuckles",
+                "Brass Knuckle Punch",
+                "Weapon Attack",
+                "Scythe Attack",
+                "Bite",
+                "Testicular Claw",
+                "Chair's Illusion",
+                "Low Blow",
+                "Lip Lock",
+                "Back Low Blow",
+                "Groin Head Drop",
+                "Groin Knee Stamp",
+                "Groin Stomping",
+                "Ategai",
+                "Bronco Buster",
+                "Mist",
+                "Big Fire"
+            };
+
             }
             ptEndMatch = false;
             fiveCount = false;
@@ -665,6 +688,20 @@ namespace MoreMatchTypes
             }
 
             return points;
+        }
+
+        private static List<String> CreateMoveList(String moveList)
+        {
+            char[] separators = new char[4] { ',', '|', ';', '\n' };
+
+            List<string> modifiedList;
+            modifiedList = moveList.Split(separators).ToList();
+
+            foreach (String move in modifiedList)
+            {
+                move.TrimStart().TrimEnd();
+            }
+            return modifiedList;
         }
 
         #endregion
