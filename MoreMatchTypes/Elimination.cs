@@ -8,7 +8,6 @@ namespace MoreMatchTypes
     [FieldAccess(Class = "MatchMain", Field = "CreatePlayers", Group = "MoreMatchTypes"), FieldAccess(Class = "MatchMain", Field = "InitRound", Group = "MoreMatchTypes"), FieldAccess(Class = "Referee", Field = "CheckMatchEnd", Group = "MoreMatchTypes")]
     [FieldAccess(Class = "PlayerForcedController", Field = "FoceControl_SecondStandby", Group = "MoreMatchTypes")]
     [FieldAccess(Class = "PlayerForcedController", Field = "FoceControl_LoseAndExit_ToStage", Group = "MoreMatchTypes")]
-    //ForceControl_GoToNeutralCorner()
     public class Elimination
     {
         #region Variables
@@ -52,6 +51,8 @@ namespace MoreMatchTypes
             memberTrack = new int[2];
             endRound = false;
             loserTrack = 0;
+            settings.CriticalRate = CriticalRateEnum.Off;
+            settings.isOutOfRingCount = false;
             SetTeamNames();
             SetTeamMembers();
         }
@@ -454,7 +455,7 @@ namespace MoreMatchTypes
         {
             PlayerMan p = PlayerMan.inst;
             int playerCount = p.GetPlayerNum();
-
+            
             //Set-up if only two wrestlers exist
             if (playerCount == 2)
             {
@@ -529,6 +530,16 @@ namespace MoreMatchTypes
             {
                 teamNames[0] = "Blue Team";
                 teamNames[1] = "Red Team";
+            }
+
+            //Pull Team Names from the control
+            if (!MoreMatchTypes_Form.form.el_blueTeamName.Text.TrimStart().TrimEnd().Equals(""))
+            {
+                teamNames[0] = MoreMatchTypes_Form.form.el_blueTeamName.Text;
+            }
+            if (!MoreMatchTypes_Form.form.el_redTeamName.Text.TrimStart().TrimEnd().Equals(""))
+            {
+                teamNames[0] = MoreMatchTypes_Form.form.el_redTeamName.Text;
             }
 
         }

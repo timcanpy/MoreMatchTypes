@@ -11,6 +11,7 @@ namespace MoreMatchTypes
     [FieldAccess(Class = "Player", Field = "UpdatePlayer", Group = "MoreMatchTypes"), FieldAccess(Class = "Player", Field = "SetGrappleResult", Group = "MoreMatchTypes")]
     [FieldAccess(Class = "Menu_Result", Field = "Set_FinishSkill", Group = "MoreMatchTypes"), FieldAccess(Class = "MatchEvaluation", Field = "EvaluateSkill", Group = "MoreMatchTypes")]
     [FieldAccess(Class = "MatchMain", Field = "InitRound", Group = "MoreMatchTypes"), FieldAccess(Class = "Player", Field = "UpdatePlayer", Group = "MoreMatchTypes")]
+    [FieldAccess(Class = "Referee", Field = "SentenceLose", Group = "MoreMatchTypes")]
     class SumoMatch
     {
         #region Variables

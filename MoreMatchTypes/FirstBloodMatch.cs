@@ -113,6 +113,7 @@ namespace MoreMatchTypes
                 setting.isFoulCount = false;
                 setting.isElimination = false;
                 setting.isTornadoBattle = true;
+                setting.CriticalRate = CriticalRateEnum.Off;
                 MoreMatchTypes_Form.form.Enabled = false;
             }
 
