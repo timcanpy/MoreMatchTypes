@@ -5,12 +5,13 @@ using DG;
 
 namespace MoreMatchTypes
 {
-    #region Hooks
+    #region Access Modifiers
     [FieldAccess(Class = "MatchMain", Field = "CreatePlayers", Group = "MoreMatchTypes")]
     [FieldAccess(Class = "MatchMain", Field = "EndMatch", Group = "MoreMatchTypes")]
     [FieldAccess(Class = "MatchMain", Field = "InitRound", Group = "MoreMatchTypes")]
     [FieldAccess(Class = "Referee", Field = "CheckMatchEnd", Group = "MoreMatchTypes")]
     [FieldAccess(Class = "Announcer", Field = "Watch_Scuffle", Group = "MoreMatchTypes")]
+    [FieldAccess(Class = "Menu_Result", Field = "Set_FinishSkill", Group = "MoreMatchTypes")]
     #endregion
     public class ExtendedElimination
     {
@@ -22,7 +23,7 @@ namespace MoreMatchTypes
         public static Queue<String> redTeamMembers;
         public static int[] memberTrack;
         public static bool endRound = false;
-        //public static bool nextMatch = false;
+        public static bool endMatch = false;
         public static int loserTrack;
         public static bool isExElimination;
         public static MatchTime currMatchTime;
@@ -40,14 +41,14 @@ namespace MoreMatchTypes
             }
 
             //Check required to ensure that we can create new players on round end, without resetting our configuration
-            //if (!endRound && !nextMatch)
-            if(!endRound)
+            if (!endRound)
             {
                 try
                 {
                     teamNames = new string[2];
                     memberTrack = new int[2];
-                    endRound = false;
+                    wins = new int[2];
+                    endMatch = false;
                     loserTrack = 0;
                     currMatchTime = null;
                     settings.CriticalRate = CriticalRateEnum.Off;
@@ -63,8 +64,7 @@ namespace MoreMatchTypes
                 }
             }
 
-            //if (nextMatch)
-            if(endRound)
+            if (endRound)
             {
                 MatchMain main = MatchMain.inst;
                 main.RoundCnt = 1;
@@ -106,7 +106,6 @@ namespace MoreMatchTypes
             }
             else
             {
-                //nextMatch = false;
                 endRound = false;
             }
 
@@ -115,47 +114,6 @@ namespace MoreMatchTypes
                 m.matchTime.Set(currMatchTime);
             }
         }
-
-        //[Hook(TargetClass = "Referee", TargetMethod = "CheckMatchEnd_Draw", InjectionLocation = int.MaxValue, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.PassInvokingInstance, Group = "MoreMatchTypes")]
-        //public static void CheckCountOut(Referee matchRef)
-        //{
-        //    if (!isExElimination)
-        //    {
-        //        return;
-        //    }
-
-        //    MatchMain main = MatchMain.inst;
-        //    if (main.isTimeUp)
-        //    {
-        //        return;
-        //    }
-
-        //    if (blueTeamMembers.Count == 1 && redTeamMembers.Count == 1)
-        //    {
-        //        return;
-        //    }
-
-        //    if (blueTeamMembers.Count == 1)
-        //    {
-        //        EndMatch(memberTrack[0]);
-        //        return;
-        //    }
-        //    if (redTeamMembers.Count == 1)
-        //    {
-        //        EndMatch(memberTrack[0] + 4);
-        //        return;
-        //    }
-
-        //    //Remove players from both sides
-        //    Player plObj;
-        //    plObj = PlayerMan.inst.GetPlObj(memberTrack[0]);
-        //    DisplayElimination(DataBase.GetWrestlerFullName(plObj.WresParam), blueTeamMembers.Count - 1);
-
-        //    plObj = PlayerMan.inst.GetPlObj(memberTrack[1]);
-        //    DisplayElimination(DataBase.GetWrestlerFullName(plObj.WresParam), redTeamMembers.Count - 1);
-        //    loserTrack = 2;
-        //    EndRound();
-        //}
 
         [Hook(TargetClass = "Referee", TargetMethod = "CheckMatchEnd", InjectionLocation = 0, InjectFlags = HookInjectFlags.ModifyReturn, Group = "MoreMatchTypes")]
         public static bool CheckMatchEnd()
@@ -265,14 +223,13 @@ namespace MoreMatchTypes
 
             try
             {
-                L.D("Variables Reset Starting");
                 MatchMain main = MatchMain.inst;
                 //Ensure that we reset all tracking variables
                 if (blueTeamMembers.Count <= 1 && memberTrack[0] > 0 || redTeamMembers.Count <= 1 && memberTrack[1] > 0 || main.isInterruptedMatch)
                 {
                     currMatchTime = null;
                     endRound = false;
-                    //nextMatch = false;
+                    endMatch = false;
                     MoreMatchTypes_Form.form.btn_matchStart.Enabled = true;
                     L.D("Variables Reset Here");
                 }
@@ -282,6 +239,31 @@ namespace MoreMatchTypes
                 L.D("Error occured during variable reset; " + ex.Message);
                 MoreMatchTypes_Form.form.btn_matchStart.Enabled = true;
             }
+        }
+
+        [Hook(TargetClass = "Menu_Result", TargetMethod = "Set_FinishSkill", InjectionLocation = 8, InjectDirection = HookInjectDirection.After, InjectFlags = HookInjectFlags.PassParametersVal | HookInjectFlags.PassLocals, LocalVarIds = new int[] { 1 }, Group = "MoreMatchTypes")]
+        public static void SetResultScreenDisplay(ref UILabel finishText, string str)
+        {
+            if (!isExElimination)
+            {
+                return;
+            }
+            
+            string winResult = "Winner: ";
+            //Determine which winner should be highlighted
+            if (loserTrack == 0)
+            {
+                winResult += teamNames[1];
+                winResult += "\nWins: " + wins[1];
+            }
+            else if(loserTrack == 1)
+            {
+                winResult += teamNames[0];
+                winResult += "\nWins: " + wins[0];
+            }
+            
+            string resultString = "Elimination Match\n\n" + winResult;
+            finishText.text = resultString;
         }
 
         #region Helper Methods
@@ -326,20 +308,23 @@ namespace MoreMatchTypes
         }
         public static void EndMatch()
         {
-            Referee mref = RefereeMan.inst.GetRefereeObj();
-            mref.PlDir = PlDirEnum.Left;
-            mref.State = RefeStateEnum.DeclareVictory;
-            mref.ReqRefereeAnm(BasicSkillEnum.Refe_Stand_MatchEnd_Front_Left);
-            MatchSetting settings = GlobalWork.GetInst().MatchSetting;
+            //Ensure this isn't executed multiple times
+            if (!endMatch)
+            {
+                Referee mref = RefereeMan.inst.GetRefereeObj();
+                mref.PlDir = PlDirEnum.Left;
+                mref.State = RefeStateEnum.DeclareVictory;
+                mref.ReqRefereeAnm(BasicSkillEnum.Refe_Stand_MatchEnd_Front_Left);
+                MatchSetting settings = GlobalWork.GetInst().MatchSetting;
 
-            //Ensure that we reset the 3 Game Match settings
-            settings.is3GameMatch = false;
-            global::GlobalParam.m_MacthCount = 3;
-            global::GlobalParam.flg_MacthForceEnd = true;
-            currMatchTime = null;
-            endRound = false;
-            //nextMatch = false;
-            L.D("Match Ending Here");
+                //Ensure that we reset the 3 Game Match settings
+                settings.is3GameMatch = false;
+                global::GlobalParam.flg_MacthForceEnd = true;
+                endRound = false;
+                L.D("Match Ending Here");
+                UpdateWins();
+            }
+            endMatch = true;
         }
         public static void EndRound()
         {
@@ -348,90 +333,88 @@ namespace MoreMatchTypes
             MatchMain main = MatchMain.inst;
             main.isMatchEnd = false;
 
-            //if(blueTeamMembers.Count <= 4 && redTeamMembers.Count <= 4)
-            if (!endRound)
+            //Removing members without returning to the result screen
+            if (blueTeamMembers.Count <= 4 && redTeamMembers.Count <= 4)
             {
+
                 //Signal referee to end the round
                 Referee matchRef = RefereeMan.inst.GetRefereeObj();
                 matchRef.PlDir = PlDirEnum.Left;
                 matchRef.ReqRefereeAnm(BasicSkillEnum.Refe_Stand_MatchEnd_Front_Left);
-                //Announcer.inst.PlayGong_Eliminated();
+                Announcer.inst.PlayGong_Eliminated();
 
-                currMatchTime = new MatchTime
-                {
-                    min = main.matchTime.min,
-                    sec = main.matchTime.sec
-                };
-                main.isTimeCounting = false;
-
-                //Force game transition to the post match screen in order to reload wrestlers 
-                main.isMatchEnd = true;
-                MatchSetting settings = GlobalWork.GetInst().MatchSetting;
-                settings.is3GameMatch = true;
-                main.isInterruptedMatch = false;
-                //nextMatch = true;
-
-                //Ensure the 3 Game Rule Doesn't Force Match to End
-                global::GlobalParam.m_MacthCount = 0;
-                global::GlobalParam.flg_MacthForceEnd = false;
-                global::GlobalParam.flg_MacthCount = true;
-
+                main.isTimeCounting = true;
+                //This section is executed when the losing team has 4 members or less remaining
+                //Removing members from the losing team
                 if (loserTrack == 0)
                 {
+                    Player plObj = PlayerMan.inst.GetPlObj(memberTrack[0]);
+
+                    SetLoserState(memberTrack[0]);
                     memberTrack[0]++;
+                    blueTeamMembers.Dequeue();
+
+                    ActivateMember(memberTrack[0]);
+                    L.D("Blue Members Remaining: " + blueTeamMembers.Count);
                 }
                 else if (loserTrack == 1)
                 {
+                    Player plObj = PlayerMan.inst.GetPlObj(memberTrack[1] + 4);
+
+                    SetLoserState(memberTrack[1] + 4);
                     memberTrack[1]++;
+                    redTeamMembers.Dequeue();
+
+                    ActivateMember(memberTrack[1] + 4);
+                    L.D("Red Members Remaining: " + redTeamMembers.Count);
                 }
+                SetSeconds();
+                UpdateTeamMembers();
+                endRound = true;
             }
-            endRound = true;
+            //Removing members by returning to the result screen
+            else
+            {
+                if (!endRound)
+                {
+                    //Signal referee to end the round
+                    Referee matchRef = RefereeMan.inst.GetRefereeObj();
+                    matchRef.PlDir = PlDirEnum.Left;
+                    matchRef.ReqRefereeAnm(BasicSkillEnum.Refe_Stand_MatchEnd_Front_Left);
+                    //Announcer.inst.PlayGong_Eliminated();
 
-            #region Initial if condition to separate new wrestler load
-            //Determine if we need a new round instance to update wrestler listing
-            //if ((loserTrack == 0 && blueTeamMembers.Count > 4) || (loserTrack == 1 && redTeamMembers.Count > 4))
-            //{
-            //}
-            #endregion
-            #region Else Condition Implementing 4v4 Elimination Code
-            //else
-            //{
-            //    try
-            //    {
-            //        main.isTimeCounting = true;
-            //        //This section is executed when the losing team has 4 members or less remaining
-            //        //Removing members from the losing team
-            //        if (loserTrack == 0)
-            //        {
-            //            Player plObj = PlayerMan.inst.GetPlObj(memberTrack[0]);
+                    currMatchTime = new MatchTime
+                    {
+                        min = main.matchTime.min,
+                        sec = main.matchTime.sec
+                    };
+                    main.isTimeCounting = false;
 
-            //            SetLoserState(memberTrack[0]);
-            //            memberTrack[0]++;
-            //            blueTeamMembers.Dequeue();
+                    //Force game transition to the post match screen in order to reload wrestlers 
+                    main.isMatchEnd = true;
+                    MatchSetting settings = GlobalWork.GetInst().MatchSetting;
+                    settings.is3GameMatch = true;
+                    main.isInterruptedMatch = false;
+                    //nextMatch = true;
 
-            //            ActivateMember(memberTrack[0]);
-            //            L.D("Blue Members Remaining: " + blueTeamMembers.Count);
-            //        }
-            //        else if (loserTrack == 1)
-            //        {
-            //            Player plObj = PlayerMan.inst.GetPlObj(memberTrack[1] + 4);
+                    //Ensure the 3 Game Rule Doesn't Force Match to End
+                    global::GlobalParam.m_MacthCount = 0;
+                    global::GlobalParam.flg_MacthForceEnd = false;
+                    global::GlobalParam.flg_MacthCount = true;
 
-            //            SetLoserState(memberTrack[1] + 4);
-            //            memberTrack[1]++;
-            //            redTeamMembers.Dequeue();
-
-            //            ActivateMember(memberTrack[1] + 4);
-            //            L.D("Red Members Remaining: " + redTeamMembers.Count);
-            //        }
-            //        SetSeconds();
-            //        UpdateTeamMembers();
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        L.D("Error occurred during round end: " + ex.Message);
-            //    }
-            //}
-            #endregion
+                    if (loserTrack == 0)
+                    {
+                        memberTrack[0]++;
+                    }
+                    else if (loserTrack == 1)
+                    {
+                        memberTrack[1]++;
+                    }
+                }
+                endRound = true;
+            }
+            UpdateWins();
+                
         }
         public static void DisplayElimination(String wrestlerName, int membersRemaining)
         {
@@ -659,6 +642,20 @@ namespace MoreMatchTypes
 
                     spot++;
                 }
+            }
+        }
+        public static void UpdateWins()
+        {
+            //Record wins
+            if (loserTrack == 0)
+            {
+                wins[1]++;
+                L.D("Red Team Wins: " + wins[1]);
+            }
+            if (loserTrack == 1)
+            {
+                wins[0]++;
+                L.D("Blue Team Wins: " + wins[0]);
             }
         }
         #endregion

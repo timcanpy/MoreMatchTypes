@@ -41,7 +41,7 @@
             this.lbl_illegal = new System.Windows.Forms.Label();
             this.lbl_dq = new System.Windows.Forms.Label();
             this.cb_elimination = new System.Windows.Forms.RadioButton();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.rulesTabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.panel3 = new System.Windows.Forms.Panel();
@@ -142,7 +142,7 @@
             this.cb_membersWait = new System.Windows.Forms.CheckBox();
             this.cb_exElim = new System.Windows.Forms.RadioButton();
             this.cb_survival = new System.Windows.Forms.RadioButton();
-            this.tabControl1.SuspendLayout();
+            this.rulesTabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -297,16 +297,16 @@
             this.cb_elimination.UseVisualStyleBackColor = true;
             this.cb_elimination.CheckedChanged += new System.EventHandler(this.cb_elimination_CheckedChanged);
             // 
-            // tabControl1
+            // rulesTabControl
             // 
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Controls.Add(this.tabPage3);
-            this.tabControl1.Location = new System.Drawing.Point(1, 145);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(849, 472);
-            this.tabControl1.TabIndex = 13;
+            this.rulesTabControl.Controls.Add(this.tabPage1);
+            this.rulesTabControl.Controls.Add(this.tabPage2);
+            this.rulesTabControl.Controls.Add(this.tabPage3);
+            this.rulesTabControl.Location = new System.Drawing.Point(1, 145);
+            this.rulesTabControl.Name = "rulesTabControl";
+            this.rulesTabControl.SelectedIndex = 0;
+            this.rulesTabControl.Size = new System.Drawing.Size(849, 472);
+            this.rulesTabControl.TabIndex = 13;
             // 
             // tabPage1
             // 
@@ -1328,6 +1328,7 @@
             this.cb_exElim.TabStop = true;
             this.cb_exElim.Text = "Extended Elimination";
             this.cb_exElim.UseVisualStyleBackColor = true;
+            this.cb_exElim.CheckedChanged += new System.EventHandler(this.cb_exElim_CheckedChanged);
             // 
             // cb_survival
             // 
@@ -1339,6 +1340,7 @@
             this.cb_survival.TabStop = true;
             this.cb_survival.Text = "Survival Road";
             this.cb_survival.UseVisualStyleBackColor = true;
+            this.cb_survival.CheckedChanged += new System.EventHandler(this.cb_survival_CheckedChanged);
             // 
             // MoreMatchTypes_Form
             // 
@@ -1347,7 +1349,7 @@
             this.ClientSize = new System.Drawing.Size(852, 620);
             this.Controls.Add(this.cb_survival);
             this.Controls.Add(this.cb_exElim);
-            this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this.rulesTabControl);
             this.Controls.Add(this.cb_elimination);
             this.Controls.Add(this.cb_Pancrase);
             this.Controls.Add(this.cb_normalMatch);
@@ -1360,7 +1362,7 @@
             this.Name = "MoreMatchTypes_Form";
             this.Text = "More Match Types";
             this.Load += new System.EventHandler(this.MoreMatchTypes_Form_Load);
-            this.tabControl1.ResumeLayout(false);
+            this.rulesTabControl.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
@@ -1448,7 +1450,7 @@
         public System.Windows.Forms.ComboBox el_difficulty;
         public System.Windows.Forms.CheckBox el_redControl;
         public System.Windows.Forms.CheckBox el_blueControl;
-        public System.Windows.Forms.TabControl tabControl1;
+        public System.Windows.Forms.TabControl rulesTabControl;
         private System.Windows.Forms.RadioButton cb_survival;
         private System.Windows.Forms.Panel panel2;
         public System.Windows.Forms.Button button5;

@@ -52,6 +52,7 @@ namespace MoreMatchTypes
             tb_basic.Visible = true;
 
             tb_basic.Text = "Shoutei\nFace Slap B\nChest Slap\nKnife-Edge Chop\nKoppo Style Shoutei\nThroat Chop\nJigoku-Tsuki";
+            rulesTabControl.SelectedIndex = 0;
         }
 
         private void cb_uwfi_CheckedChanged(object sender, EventArgs e)
@@ -135,6 +136,7 @@ namespace MoreMatchTypes
             }
 
             tb_dq.Text = tb_dq.Text.Remove(tb_dq.Text.Length - 1);
+            rulesTabControl.SelectedIndex = 0;
 
         }
 
@@ -155,6 +157,8 @@ namespace MoreMatchTypes
             //DQ Moves
             tb_dq.Text = "Giant Steel Knuckles\nBrass Knuckle Punch\nWeapon Attack\nScythe Attack\nBite\nTesticular Claw\nChair's Illusion\nLow Blow\nLip Lock\nBack Low Blow\nGroin Head Drop\n";
             tb_dq.Text += "Groin Knee Stamp\nGroin Stomping\nAtegai\nBronco Buster\nMist\nBig Fire";
+
+            rulesTabControl.SelectedIndex = 0;
 
         }
 
@@ -713,6 +717,16 @@ namespace MoreMatchTypes
         private void tabPage3_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void cb_exElim_CheckedChanged(object sender, EventArgs e)
+        {
+            rulesTabControl.SelectedIndex = 1;
+        }
+
+        private void cb_survival_CheckedChanged(object sender, EventArgs e)
+        {
+            rulesTabControl.SelectedIndex = 2;
         }
     }
 
