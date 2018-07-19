@@ -142,6 +142,7 @@ namespace MoreMatchTypes
             settings.isFoulCount = false;
             settings.isOutOfRingCount = false;
             settings.isCutPlay = false;
+            settings.MatchTime = 0;
             tdRecorded = new bool[8] { false, false, false, false, false, false, false, false };
             koRecorded = new bool[8] { false, false, false, false, false, false, false, false };
             foulCount = new int[2];
@@ -420,6 +421,10 @@ namespace MoreMatchTypes
         [Hook(TargetClass = "Menu_Result", TargetMethod = "Set_FinishSkill", InjectionLocation = 8, InjectDirection = HookInjectDirection.After, InjectFlags = HookInjectFlags.PassParametersVal | HookInjectFlags.PassLocals, LocalVarIds = new int[] { 1 }, Group = "MoreMatchTypes")]
         public static void SetResultScreenDisplay(ref UILabel finishText, string str)
         {
+            if(!isUwfi)
+            {
+                return;
+            }
             if (ptEndMatch && isUwfi)
             {
                 if(resultText.Equals(""))
@@ -675,9 +680,6 @@ namespace MoreMatchTypes
                 default:
                     break;
             }
-
-            DispNotification.inst.Show("Loser Index: " + loser);
-
         }
 
         private static int CheckPoints(int points)

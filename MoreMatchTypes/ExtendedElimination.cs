@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 using DG;
+using UnityEngine;
 
 namespace MoreMatchTypes
 {
@@ -12,6 +13,9 @@ namespace MoreMatchTypes
     [FieldAccess(Class = "Referee", Field = "CheckMatchEnd", Group = "MoreMatchTypes")]
     [FieldAccess(Class = "Announcer", Field = "Watch_Scuffle", Group = "MoreMatchTypes")]
     [FieldAccess(Class = "Menu_Result", Field = "Set_FinishSkill", Group = "MoreMatchTypes")]
+    [FieldAccess(Class = "Menu_SoundManager", Field = "Change_BGM_Battle", Group = "MoreMatchTypes")]
+    [FieldAccess(Class = "Menu_SoundManager", Field = "g_ProgressBGM_Continue", Group = "MoreMatchTypes")]
+    [FieldAccess(Class = "Menu_SoundManager", Field = "g_KeepBgmNumber", Group = "MoreMatchTypes")]
     #endregion
     public class ExtendedElimination
     {
@@ -32,8 +36,19 @@ namespace MoreMatchTypes
         [Hook(TargetClass = "MatchMain", TargetMethod = "CreatePlayers", InjectionLocation = 0, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.None, Group = "MoreMatchTypes")]
         public static void SetMatchRules()
         {
+            isExElimination = false;
+
             //Ensure a valid elimination match can take place
             MatchSetting settings = GlobalWork.inst.MatchSetting;
+            if (settings.BattleRoyalKind != BattleRoyalKindEnum.Off || settings.isS1Rule)
+            {
+                return;
+            }
+            if (settings.arena == VenueEnum.BarbedWire || settings.arena == VenueEnum.Cage || settings.arena == VenueEnum.Dodecagon || settings.arena == VenueEnum.LandMine_BarbedWire || settings.arena == VenueEnum.LandMine_FluorescentLamp)
+            {
+                return;
+            }
+
             isExElimination = MoreMatchTypes_Form.form.cb_exElim.Checked;
             if (!isExElimination)
             {
@@ -248,22 +263,50 @@ namespace MoreMatchTypes
             {
                 return;
             }
+
+            //Get the current match time
+            string matchTime = currMatchTime.min.ToString() + " Minutes, " + currMatchTime.sec.ToString() + " Seconds\n";
+
             
+
             string winResult = "Winner: ";
+            
             //Determine which winner should be highlighted
             if (loserTrack == 0)
             {
                 winResult += teamNames[1];
                 winResult += "\nWins: " + wins[1];
             }
-            else if(loserTrack == 1)
+            else if (loserTrack == 1)
             {
                 winResult += teamNames[0];
                 winResult += "\nWins: " + wins[0];
             }
-            
-            string resultString = "Elimination Match\n\n" + winResult;
+
+            string resultString = "Elimination Match\n\n" + matchTime + winResult;
             finishText.text = resultString;
+        }
+
+        [Hook(TargetClass = "Menu_SoundManager", TargetMethod = "Change_BGM_Battle", InjectionLocation = int.MaxValue, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.None, Group = "MoreMatchTypes")]
+        public static void SetBGM()
+        {
+            if (isExElimination)
+            {
+                //Manually set the BGM, in order to avoid errors with the default BGM array.
+                if (MoreMatchTypes_Form.form.el_bgm.SelectedIndex > 2)
+                {
+                    string bgmName = MoreMatchTypes_Form.form.el_bgm.SelectedItem as String;
+                    L.D("BGM Name: " + bgmName);
+                    L.D("Match BGM Num: " + global::MatchBGM.Num);
+                    L.D("File List Count: " + global::MyMusic.FileList_Match.Count);
+                    L.D("Match Config Value: " + (global::MatchBGM)global::GlobalParam.Get_BattleConfig_Value(30));
+
+                    global::Menu_SoundManager.Sound_ClipList[17] = (AudioClip)Resources.Load("Sound/Bgm/" + bgmName);
+                    return;
+                }
+
+            }
+
         }
 
         #region Helper Methods
@@ -414,7 +457,7 @@ namespace MoreMatchTypes
                 endRound = true;
             }
             UpdateWins();
-                
+
         }
         public static void DisplayElimination(String wrestlerName, int membersRemaining)
         {

@@ -5,14 +5,18 @@ using DG;
 using DG.DG;
 using System.Diagnostics;
 using System.IO;
+using MoreMatchTypes.Helper_Classes;
 
 namespace MoreMatchTypes
 {
     public partial class MoreMatchTypes_Form : Form
     {
+        #region Variables
         public static MoreMatchTypes_Form form = null;
         public static List<uint> gameSpeed = new List<uint>();
         public static List<String> venues = new List<String>();
+        public static List<WresIDGroup> wrestlerList = new List<WresIDGroup>();
+        #endregion
 
         public MoreMatchTypes_Form()
         {
@@ -21,10 +25,9 @@ namespace MoreMatchTypes
 
         }
 
-        public static List<WresIDGroup> wrestlerList = new List<WresIDGroup>();
-
         public void MoreMatchTypes_Form_Load(object sender, EventArgs e)
         {
+            #region Shared Methods
             LoadOrgs();
             LoadSubs();
             LoadRings();
@@ -33,6 +36,60 @@ namespace MoreMatchTypes
             LoadThemes();
             LoadDifficulty();
             LoadGameSpeed();
+            #endregion
+
+            #region Survival Road Methods
+            LoadContinues();
+            LoadMatches();
+            LoadMatchTypes();
+            #endregion
+
+            #region Tooltips
+            tt_normal.SetToolTip(cb_normalMatch, "Disables the More Match Types Mod.");
+            #endregion
+        }
+
+        #region General Window Methods
+
+        private void matchHelp_Click(object sender, EventArgs e)
+        {
+            if (cb_normalMatch.Checked)
+            {
+                MessageBox.Show("Disables the More Match Types mod.", "Normal Match", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            if (cb_IronManMatch.Checked)
+            {
+                MessageBox.Show("Score victories over a specified period of time.\nThe team with a greater number of victories is the winner.", "Iron Man Match", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            if (cb_FirstBlood.Checked)
+            {
+                MessageBox.Show("Win the match by forcing your opponent to bleed.\nThe team with a member that bleeds first is the loser.", "First Blood Match", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            if (cb_elimination.Checked)
+            {
+                MessageBox.Show("Two teams participate in a gauntlet of 1v1 battles.\nThe first team to run out of members is the loser.", "Elimination Match", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            if (cb_exElim.Checked)
+            {
+                MessageBox.Show("Two teams participate in a gauntlet of 1v1 battles.\nThe first team to run out of members is the loser.\nThis version allows an unlimited number of members per team.", "Elimination Match", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            if (cb_sumo.Checked)
+            {
+                MessageBox.Show("Two teams battle in a traditional sumo match.\nA team loses when any member falls to the mat.\nBasic Attacks determine which moves can be attempted, otherwise the clinch animation will be used.", "Sumo Match", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            if (cb_uwfi.Checked)
+            {
+                MessageBox.Show("Take part in a classic UWFI style match.\nTeams have a certain number of points that are reduced over the course of a match.\nThe first team to run out of points, or submit to the opponent is the loser.\nIllegal Attacks determine which moves will cost points based on legality.\nDQ Attacks determine which moves will cause a team to lose immediately.", "UWFI Match", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            if (cb_Pancrase.Checked)
+            {
+                MessageBox.Show("Take part in a classic Pancrase style match.\nThis match type only works with two fighters (no partners, no seconds).\nEach fighter has a certain number of points that are reduced over the course of a match.\nThe first fighter to run out of points, or submit to the opponent is the loser.\nIllegal Attacks determine which moves will cost points based on legality.\nDQ Attacks determine which moves will cause a team to lose immediately.", "Pancrase Match", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            if (cb_survival.Checked)
+            {
+
+            }
+
         }
 
         private void cb_FirstBlood_CheckedChanged(object sender, EventArgs e)
@@ -162,20 +219,6 @@ namespace MoreMatchTypes
 
         }
 
-        public void Clear()
-        {
-            //Hiding all customization items
-            lbl_Basic.Visible = false;
-            lbl_dq.Visible = false;
-            lbl_illegal.Visible = false;
-            tb_basic.Visible = false;
-            tb_basic.Text = "";
-            tb_illegal.Visible = false;
-            tb_illegal.Text = "";
-            tb_dq.Visible = false;
-            tb_dq.Text = "";
-        }
-
         private void tb_illegal_TextChanged(object sender, EventArgs e)
         {
 
@@ -191,13 +234,32 @@ namespace MoreMatchTypes
             Clear();
         }
 
-        private void el_searchBtn_Click(object sender, EventArgs e)
+        private void cb_exElim_CheckedChanged(object sender, EventArgs e)
         {
-            LoadSubsFromOrg();
-            el_resultList.SelectedIndex = 0;
+            rulesTabControl.SelectedIndex = 1;
         }
 
-        #region Rule Functions
+        private void cb_survival_CheckedChanged(object sender, EventArgs e)
+        {
+            rulesTabControl.SelectedIndex = 2;
+        }
+
+        public void Clear()
+        {
+            //Hiding all customization items
+            lbl_Basic.Visible = false;
+            lbl_dq.Visible = false;
+            lbl_illegal.Visible = false;
+            tb_basic.Visible = false;
+            tb_basic.Text = "";
+            tb_illegal.Visible = false;
+            tb_illegal.Text = "";
+            tb_dq.Visible = false;
+            tb_dq.Text = "";
+        }
+        #endregion
+
+        #region Rule Setup Methods
         public void LoadOrgs()
         {
             //Elimination
@@ -205,11 +267,14 @@ namespace MoreMatchTypes
             this.el_promotionList.Items.Add("ALL");
 
             //Survival Road
-            
+            this.sr_promotionList.Items.Clear();
+            this.sr_promotionList.Items.Add("ALL");
+
             foreach (GroupInfo current in SaveData.GetInst().groupList)
             {
                 string longName = SaveData.GetInst().organizationList[current.organizationID].longName;
                 this.el_promotionList.Items.Add(longName + " : " + current.longName);
+                this.sr_promotionList.Items.Add(longName + " : " + current.longName);
 
             }
         }
@@ -224,31 +289,53 @@ namespace MoreMatchTypes
             }
 
             el_difficulty.SelectedIndex = 0;
+            sr_difficultyList.SelectedIndex = 0;
         }
 
-        private void LoadSubsFromOrg()
+        private void LoadSubsFromOrg(String matchType)
         {
-            this.el_resultList.Items.Clear();
+            String query = "";
+            ComboBox resultField = null;
+            TextBox searchField = null;
+            ComboBox promotionField = null;
+
+            switch (matchType)
+            {
+                case "Elimination":
+                    resultField = el_resultList;
+                    searchField = el_searchInput;
+                    promotionField = el_promotionList;
+                    break;
+
+                case "Survival":
+                    resultField = sr_searchResult;
+                    searchField = sr_searchInput;
+                    promotionField = sr_promotionList;
+                    break;
+
+            }
+
+            resultField.Items.Clear();
 
             //Find search terms
-            String query = el_searchInput.Text;
+            query = searchField.Text;
             if (!query.TrimStart().TrimEnd().Equals(""))
             {
                 foreach (WresIDGroup wrestler in wrestlerList)
                 {
                     if (query.ToLower().Equals(wrestler.Name.ToLower()) || wrestler.Name.ToLower().Contains(query.ToLower()))
                     {
-                        el_resultList.Items.Add(wrestler.Name + ":" + wrestler.ID);
+                        resultField.Items.Add(wrestler.Name + ":" + wrestler.ID);
                     }
                 }
             }
 
-            if (el_resultList.Items.Count > 0)
+            if (resultField.Items.Count > 0)
             {
                 return;
             }
 
-            if (this.el_promotionList.SelectedIndex == 0)
+            if (promotionField.SelectedIndex == 0)
             {
                 this.LoadSubs();
             }
@@ -256,9 +343,9 @@ namespace MoreMatchTypes
             {
                 foreach (WresIDGroup current in wrestlerList)
                 {
-                    if (current.Group == this.el_promotionList.SelectedIndex - 1)
+                    if (current.Group == promotionField.SelectedIndex - 1)
                     {
-                        this.el_resultList.Items.Add(current.Name + ":" + current.ID);
+                        resultField.Items.Add(current.Name + ":" + current.ID);
                     }
                 }
             }
@@ -268,6 +355,7 @@ namespace MoreMatchTypes
         {
             wrestlerList.Clear();
             this.el_resultList.Items.Clear();
+            this.sr_searchResult.Items.Clear();
 
             foreach (EditWrestlerData current in SaveData.inst.editWrestlerData)
             {
@@ -279,10 +367,14 @@ namespace MoreMatchTypes
                 };
                 wrestlerList.Add(wresIDGroup);
                 this.el_resultList.Items.Add(wresIDGroup.Name + ":" + wresIDGroup.ID);
+                this.sr_searchResult.Items.Add(wresIDGroup.Name + ":" + wresIDGroup.ID);
             }
 
             this.el_promotionList.SelectedIndex = 0;
             this.el_resultList.SelectedIndex = 0;
+
+            this.sr_searchResult.SelectedIndex = 0;
+            this.sr_promotionList.SelectedIndex = 0;
         }
 
         private void LoadRings()
@@ -308,7 +400,7 @@ namespace MoreMatchTypes
             venues.Add("Yurakuen Hall");
             venues.Add("Dojo");
 
-            foreach(String venue in venues)
+            foreach (String venue in venues)
             {
                 el_venueList.Items.Add(venue);
                 sr_venueList.Items.Add(venue);
@@ -362,7 +454,7 @@ namespace MoreMatchTypes
             }
             catch
             {
-               
+
             }
 
         }
@@ -393,8 +485,123 @@ namespace MoreMatchTypes
             catch
             { }
         }
+
+        private void LoadContinues()
+        {
+            for (int i = 10; i >= 0; i--)
+            {
+                sr_continues.Items.Add(i);
+            }
+
+            sr_continues.SelectedIndex = sr_continues.Items.Count - 1;
+        }
+
+        private void LoadMatches()
+        {
+            for (int i = 100; i >= 1; i--)
+            {
+                sr_matches.Items.Add(i);
+            }
+
+            sr_matches.SelectedIndex = sr_matches.Items.Count - 1;
+        }
+
+        private void LoadMatchTypes()
+        {
+            sr_matchType.Items.Add("Normal");
+            sr_matchType.Items.Add("Cage");
+            sr_matchType.Items.Add("Barbed Wire");
+            sr_matchType.Items.Add("Landmine");
+            sr_matchType.Items.Add("SWA");
+            sr_matchType.Items.Add("Gruesome");
+            sr_matchType.Items.Add("S - 1");
+
+            sr_matchType.SelectedIndex = 0;
+        }
         #endregion
 
+        #region Extended Elimination Controls
+        private void btn_matchStart_Click(object sender, EventArgs e)
+        {
+            if (!ValidateMatch("Elimination"))
+            {
+                return;
+            }
+
+            #region Variables
+            int blueTeamCount = el_blueList.Items.Count;
+            int redTeamCount = el_redList.Items.Count;
+            bool isSecond;
+            MatchSetting settings = GlobalWork.GetInst().MatchSetting;
+            #endregion
+
+            settings = SetMatchConfig("Elimination", settings);
+
+            try
+            {
+                #region Create Wrestlers
+                //Set the initial blue team members
+                int searchCount;
+                if (blueTeamCount > 3)
+                {
+                    searchCount = 4;
+                }
+                else
+                {
+                    searchCount = blueTeamCount;
+                }
+
+                for (int i = 0; i < searchCount; i++)
+                {
+                    String[] wrestlerName = el_blueList.Items[i].ToString().Split(':');
+                    WrestlerID wrestlerNo = (WrestlerID)Int32.Parse(wrestlerName[wrestlerName.Length - 1]);
+                    if (i == 0)
+                    {
+                        isSecond = false;
+                    }
+                    else
+                    {
+                        isSecond = true;
+                    }
+                    settings = AddPlayers(true, wrestlerNo, i, 0, isSecond, 0, settings);
+                }
+
+                //Set the initial red team members
+                if (redTeamCount > 3)
+                {
+                    searchCount = 4;
+                }
+                else
+                {
+                    searchCount = redTeamCount;
+                }
+
+                for (int i = 0; i < searchCount; i++)
+                {
+                    String[] wrestlerName = el_redList.Items[i].ToString().Split(':');
+                    WrestlerID wrestlerNo = (WrestlerID)Int32.Parse(wrestlerName[wrestlerName.Length - 1]);
+                    if (i == 0)
+                    {
+                        isSecond = false;
+                    }
+                    else
+                    {
+                        isSecond = true;
+                    }
+                    settings = AddPlayers(true, wrestlerNo, i + 4, 0, isSecond, 0, settings);
+                }
+                #endregion
+
+                StartMatch("Elimination");
+                btn_matchStart.Enabled = false;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                btn_matchStart.Enabled = true;
+            }
+
+        }
         private void el_refresh_Click(object sender, EventArgs e)
         {
             LoadOrgs();
@@ -402,7 +609,6 @@ namespace MoreMatchTypes
             LoadRings();
             LoadReferees();
         }
-
         private void el_addBtn_Click(object sender, EventArgs e)
         {
             if (rb_singleBlue.Checked)
@@ -429,331 +635,413 @@ namespace MoreMatchTypes
             }
 
         }
-
         private void el_removeOneBlue_Click(object sender, EventArgs e)
         {
             el_blueList.Items.Remove(el_blueList.SelectedItem);
         }
-
         private void el_removeAllBlue_Click(object sender, EventArgs e)
         {
             el_blueList.Items.Clear();
         }
-
         private void el_removeOneRed_Click(object sender, EventArgs e)
         {
             el_redList.Items.Remove(el_redList.SelectedItem);
         }
-
         private void el_removeAllRed_Click(object sender, EventArgs e)
         {
             el_redList.Items.Clear();
         }
-
-        private void btn_matchStart_Click(object sender, EventArgs e)
+        private void el_searchBtn_Click(object sender, EventArgs e)
         {
-            if (!cb_exElim.Checked)
+            LoadSubsFromOrg("Elimination");
+            el_resultList.SelectedIndex = 0;
+        }
+        #endregion
+
+        #region Survival Road Controls
+        private void sr_start_Click(object sender, EventArgs e)
+        {
+            if (!ValidateMatch("Survival"))
             {
-                MessageBox.Show("The Extended Elimination option must be selected.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+        }
 
-            if (el_blueList.Items.Count == 0 || el_redList.Items.Count == 0)
+        private void sr_Search_Click(object sender, EventArgs e)
+        {
+            LoadSubsFromOrg("Survival");
+            sr_searchResult.SelectedIndex = 0;
+        }
+
+        private void sr_Add_Click(object sender, EventArgs e)
+        {
+            if (sr_addWrestler.Checked)
             {
-                MessageBox.Show("Both teams must contain at least one member.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
+                sr_wrestler.Text = sr_searchResult.SelectedItem.ToString();
+            }
+            if (sr_addSecond.Checked)
+            {
+                sr_second.Text = sr_searchResult.SelectedItem.ToString();
+            }
+            if (sr_addSingle.Checked)
+            {
+                sr_teamList.Items.Add(sr_searchResult.SelectedItem.ToString());
+            }
+            if (sr_addAll.Checked)
+            {
+                foreach (String wrestler in sr_searchResult.Items)
+                {
+                    sr_teamList.Items.Add(wrestler);
+                }
+            }
+        }
+
+        private void sr_Refresh_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void sr_RemoveOne_Click(object sender, EventArgs e)
+        {
+            sr_teamList.Items.Remove(sr_teamList.SelectedItem);
+        }
+
+        private void sr_removeAll_Click(object sender, EventArgs e)
+        {
+            sr_teamList.Items.Clear();
+        }
+
+        private void sr_continues_SelectedItemChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void sr_matches_SelectedItemChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void sr_matchType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //Setting general variables
+            sr_controlBoth.Checked = false;
+            sr_tag.Visible = true;
+            sr_addSecond.Visible = true;
+
+            //Ensuring that tornado tag only modes are accounted for
+            if (sr_matchType.SelectedIndex == 0)
+            {
+                if (sr_tag.Checked)
+                {
+                    sr_controlBoth.Visible = true;
+                }
+            }
+            else
+            {
+                sr_controlBoth.Visible = false;
             }
 
-            int blueTeamCount = el_blueList.Items.Count;
-            int redTeamCount = el_redList.Items.Count;
-
-            try
+            //Ensuring that modes disallowing tag matches are accounted for.
+            if (sr_matchType.SelectedIndex == 4 | sr_matchType.SelectedIndex == 6)
             {
-                #region Match Setting Config
-                GlobalParam.Delete_BattleConfig();
-                GlobalParam.Intalize_BattleMode();
-                GlobalParam.Intalize_BattleConfig();
-                GlobalParam.Load_ConfigData();
-                GlobalParam.Set_BattleConfig_Value(26, 0);
-                GlobalParam.Set_MatchSetting_DefaultParam();
-                GlobalParam.TitleMatch_BeltData = null;
-                GlobalParam.m_BattleMode = GlobalParam.BattleMode.OneNightMatch;
-                GlobalParam.m_BattleRule = GlobalParam.BattleRule.Normal;
-                GlobalParam.flg_TitleMatch_Ready = false;
-                GlobalParam.Set_MatchSetting_Wrestler(false);
-                GlobalParam.Set_MatchSetting_Rule();
-                GlobalParam.Init_WrestlerData();
-                GlobalParam.Intalize_BattleMode();
-                GlobalParam.Intalize_BattleConfig();
-
-                MatchSetting settings = GlobalWork.GetInst().MatchSetting;
-                
-                try
-                {
-                    settings.ringID = MoreMatchTypes_Form.form.el_ringList.SelectedIndex;
-                    if (settings.ringID != 0)
-                    {
-                        settings.ringID = 10000 + settings.ringID - 1;
-                    }
-                }
-
-                catch
-                {
-                    settings.ringID = 0;
-                }
-
-                try
-                {
-                    settings.RefereeID = MoreMatchTypes_Form.form.el_refereeList.SelectedIndex;
-                    if (settings.RefereeID != 0)
-                    {
-                        settings.RefereeID = 10000 + settings.RefereeID - 1;
-                    }
-                }
-                catch
-                {
-                    settings.RefereeID = 0;
-                }
-
-                try
-                {
-                    String venue = (String)MoreMatchTypes_Form.form.el_venueList.SelectedItem;
-                    switch (venue)
-                    {
-                        case "Big Garden Arena":
-                            settings.arena = VenueEnum.BigGardenArena;
-                            break;
-                        case "SCS Stadium":
-                            settings.arena = VenueEnum.SCSStadium;
-                            break;
-                        case "Arena De Universo":
-                            settings.arena = VenueEnum.ArenaDeUniverso;
-                            break;
-                        case "Spike Dome":
-                            settings.arena = VenueEnum.SpikeDome;
-                            break;
-                        case "Yurakuen Hall":
-                            settings.arena = VenueEnum.YurakuenHall;
-                            break;
-                        case "Dojo":
-                            settings.arena = VenueEnum.Dojo;
-                            break;
-                        default:
-                            settings.arena = VenueEnum.BigGardenArena;
-                            break;
-                    }
-
-                }
-                catch
-                {
-                    settings.arena = VenueEnum.Dojo;
-                }
-
-                settings.BattleRoyalKind = BattleRoyalKindEnum.Off;
-                settings.VictoryCondition = VictoryConditionEnum.Count3;
-                settings.isOverTheTopRopeOn = false;
-                settings.MatchTime = 0;
-                settings.is3GameMatch = false;
-                settings.ComLevel = MoreMatchTypes_Form.form.el_difficulty.SelectedIndex;
-
-                try
-                {
-                    settings.GameSpeed = (uint)MoreMatchTypes_Form.form.el_gameSpeed.SelectedItem;
-                }
-                catch
-                {
-                    settings.GameSpeed = 100;
-                }
-
-                settings.isRopeCheck = true;
-                settings.isElimination = false;
-                settings.isLumberjack = false;
-                settings.isTornadoBattle = false;
-                settings.isCutPlay = false;
-                settings.isDisableTimeCount = false;
-                settings.isFoulCount = true;
-                settings.CriticalRate = CriticalRateEnum.Off;
-                
-                //Need to set a valid MatchBGM type  here, then override it on match start if necessary.
-                if (el_bgm.SelectedIndex > 3)
-                {
-                    settings.matchBGM = MatchBGM.FireProWrestling;
-                }
-                else
-                {
-                    settings.matchBGM = (MatchBGM)el_bgm.SelectedIndex;
-                }
-
-                settings.isSkipEntranceScene = true;
-                settings.entranceSceenMode = EntranceSceneMode.EachCorner;
-                settings.isPlayDemo = false;
-                GlobalParam.flg_CallDebugMenu = false;
-                GlobalParam.befor_scene = "Scene_BattleSetting";
-                GlobalParam.keep_scene = "Scene_BattleSetting";
-                GlobalParam.next_scene = "";
-                #endregion
-
-                #region Create Wrestlers
-                //Set the initial blue team members
-                int searchCount;
-                if (blueTeamCount > 3)
-                {
-                    searchCount = 4;
-                }
-                else
-                {
-                    searchCount = blueTeamCount;
-                }
-
-                for (int i = 0; i < searchCount; i++)
-                {
-                    settings.matchWrestlerInfo[i].entry = true;
-                    String[] wrestlerName = el_blueList.Items[i].ToString().Split(':');
-                    settings.matchWrestlerInfo[i].wrestlerID = (WrestlerID)Int32.Parse(wrestlerName[wrestlerName.Length - 1]);
-                    settings.matchWrestlerInfo[i].costume_no = 0;
-                    settings.matchWrestlerInfo[i].alignment = WrestlerAlignmentEnum.Neutral;
-                    settings.matchWrestlerInfo[i].assignedPad = PadPort.AI;
-
-                    bool isSecond;
-                    if (i == 0)
-                    {
-                        settings.matchWrestlerInfo[i].isSecond = false;
-                        isSecond = false;
-                    }
-                    else
-                    {
-                        settings.matchWrestlerInfo[i].isSecond = true;
-                        isSecond = true;
-                    }
-                    settings.matchWrestlerInfo[i].HP = 65535f;
-                    settings.matchWrestlerInfo[i].SP = 65535f;
-                    settings.matchWrestlerInfo[i].HP_Neck = 65535f;
-                    settings.matchWrestlerInfo[i].HP_Arm = 65535f;
-                    settings.matchWrestlerInfo[i].HP_Waist = 65535f;
-                    settings.matchWrestlerInfo[i].HP_Leg = 65535f;
-
-                    int playerControl = 0;
-                    {
-                        if (i == 0)
-                        {
-                            if (MoreMatchTypes_Form.form.el_blueControl.Checked)
-                            {
-                                playerControl = 1;
-                            }
-                        }
-                    }
-
-                    GlobalParam.Set_WrestlerData(i, playerControl, settings.matchWrestlerInfo[i].wrestlerID, isSecond, 0, 65535f, 65535f, 65535f, 65535f, 65535f, 65535f);
-                }
-
-                //Set the initial red team members
-                if (redTeamCount > 3)
-                {
-                    searchCount = 4;
-                }
-                else
-                {
-                    searchCount = redTeamCount;
-                }
-
-                for (int i = 0; i < searchCount; i++)
-                {
-                    settings.matchWrestlerInfo[i + 4].entry = true;
-                    String[] wrestlerName = el_redList.Items[i].ToString().Split(':');
-                    settings.matchWrestlerInfo[i + 4].wrestlerID = (WrestlerID)Int32.Parse(wrestlerName[wrestlerName.Length - 1]);
-                    settings.matchWrestlerInfo[i + 4].costume_no = 0;
-                    settings.matchWrestlerInfo[i + 4].alignment = WrestlerAlignmentEnum.Neutral;
-                    settings.matchWrestlerInfo[i + 4].assignedPad = PadPort.AI;
-
-                    bool isSecond;
-                    if (i == 0)
-                    {
-                        settings.matchWrestlerInfo[i + 4].isSecond = false;
-                        isSecond = false;
-                    }
-                    else
-                    {
-                        settings.matchWrestlerInfo[i + 4].isSecond = true;
-                        isSecond = true;
-                    }
-                    settings.matchWrestlerInfo[i + 4].HP = 65535f;
-                    settings.matchWrestlerInfo[i + 4].SP = 65535f;
-                    settings.matchWrestlerInfo[i + 4].HP_Neck = 65535f;
-                    settings.matchWrestlerInfo[i + 4].HP_Arm = 65535f;
-                    settings.matchWrestlerInfo[i + 4].HP_Waist = 65535f;
-                    settings.matchWrestlerInfo[i + 4].HP_Leg = 65535f;
-
-                    int playerControl = 0;
-                    {
-                        if (i == 0)
-                        {
-                            if (MoreMatchTypes_Form.form.el_blueControl.Checked && MoreMatchTypes_Form.form.el_redControl.Checked)
-                            {
-                                playerControl = 2;
-                            }
-                            else if (!MoreMatchTypes_Form.form.el_blueControl.Checked && MoreMatchTypes_Form.form.el_redControl.Checked)
-                            {
-                                playerControl = 1;
-                            }
-                        }
-                    }
-
-                    GlobalParam.Set_WrestlerData(i + 4, playerControl, settings.matchWrestlerInfo[i + 4].wrestlerID, isSecond, 0, 65535f, 65535f, 65535f, 65535f, 65535f, 65535f);
-
-                }
-                #endregion
-
-                UnityEngine.SceneManagement.SceneManager.LoadScene("Match");
-                btn_matchStart.Enabled = false;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                btn_matchStart.Enabled = true;
+                sr_addSecond.Checked = false;
+                sr_addSecond.Visible = false;
+                sr_addWrestler.Checked = true;
+                sr_tag.Visible = false;
+                sr_second.Clear();
+                sr_single.Checked = true;
             }
 
         }
+
+        private void sr_single_CheckedChanged(object sender, EventArgs e)
+        {
+            if (sr_single.Checked)
+            {
+                sr_controlBoth.Checked = false;
+                sr_controlBoth.Visible = false;
+            }
+        }
+
+        private void sr_tag_CheckedChanged(object sender, EventArgs e)
+        {
+            if (sr_tag.Checked && sr_matchType.SelectedIndex == 0)
+            {
+                sr_controlBoth.Visible = true;
+            }
+        }
+
+        private void sr_resetMatches_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            sr_matches.SelectedIndex = sr_matches.Items.Count - 1;
+        }
+
+        private void sr_resetContinues_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            sr_continues.SelectedIndex = sr_continues.Items.Count - 1;
+        }
+
+        private void sr_wrestlerClear_Click(object sender, EventArgs e)
+        {
+            sr_wrestler.Clear();
+        }
+
+        private void sr_secondClear_Click(object sender, EventArgs e)
+        {
+            sr_second.Clear();
+        }
+        #endregion
+
+        #region Shared Execution Methods
+        private bool ValidateMatch(String matchType)
+        {
+            bool isValid = true;
+
+            switch (matchType)
+            {
+                case "Elimination":
+                    if (!cb_exElim.Checked)
+                    {
+                        MessageBox.Show("The Extended Elimination option must be selected.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        isValid = false;
+                    }
+
+                    if (el_blueList.Items.Count == 0 || el_redList.Items.Count == 0)
+                    {
+                        MessageBox.Show("Both teams must contain at least one member.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        isValid = false;
+                    }
+                    break;
+                case "Survival":
+                    if (!cb_survival.Checked)
+                    {
+                        MessageBox.Show("The Survival Road option must be selected.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        isValid = false;
+                    }
+                    break;
+            }
+
+            return isValid;
+        }
+
+        private void StartMatch(String matchType)
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene("Match");
+        }
+
+        private MatchSetting SetMatchConfig(String matchType, MatchSetting settings)
+        {
+            ComboBox ringList = null;
+            ComboBox refereeList = null;
+            ComboBox arenaList = null;
+            ComboBox difficultyList = null;
+            ComboBox speedList = null;
+            ComboBox bgmList = null;
+
+            switch (matchType)
+            {
+                case "Elimination":
+                    ringList = this.el_ringList;
+                    refereeList = this.el_refereeList;
+                    arenaList = this.el_venueList;
+                    difficultyList = this.el_difficulty;
+                    speedList = this.el_gameSpeed;
+                    bgmList = this.el_bgm;
+                    break;
+                case "Survival":
+                    ringList = this.sr_ringList;
+                    refereeList = this.sr_refereeList;
+                    arenaList = this.sr_venueList;
+                    difficultyList = this.sr_difficultyList;
+                    speedList = this.sr_speedList;
+                    bgmList = this.sr_bgmList;
+                    break;
+            }
+
+            #region Match Setting Config
+            GlobalParam.Delete_BattleConfig();
+            GlobalParam.Intalize_BattleMode();
+            GlobalParam.Intalize_BattleConfig();
+            GlobalParam.Load_ConfigData();
+            GlobalParam.Set_BattleConfig_Value(26, 0);
+            GlobalParam.Set_MatchSetting_DefaultParam();
+            GlobalParam.TitleMatch_BeltData = null;
+            GlobalParam.m_BattleMode = GlobalParam.BattleMode.OneNightMatch;
+            GlobalParam.m_BattleRule = GlobalParam.BattleRule.Normal;
+            GlobalParam.flg_TitleMatch_Ready = false;
+            GlobalParam.Set_MatchSetting_Wrestler(false);
+            GlobalParam.Set_MatchSetting_Rule();
+            GlobalParam.Init_WrestlerData();
+            GlobalParam.Intalize_BattleMode();
+            GlobalParam.Intalize_BattleConfig();
+
+            try
+            {
+                settings.ringID = ringList.SelectedIndex;
+                if (settings.ringID != 0)
+                {
+                    settings.ringID = 10000 + settings.ringID - 1;
+                }
+            }
+
+            catch
+            {
+                settings.ringID = 0;
+            }
+
+            try
+            {
+                settings.RefereeID = refereeList.SelectedIndex;
+                if (settings.RefereeID != 0)
+                {
+                    settings.RefereeID = 10000 + settings.RefereeID - 1;
+                }
+            }
+            catch
+            {
+                settings.RefereeID = 0;
+            }
+
+            try
+            {
+                String venue = (String)arenaList.SelectedItem;
+                switch (venue)
+                {
+                    case "Big Garden Arena":
+                        settings.arena = VenueEnum.BigGardenArena;
+                        break;
+                    case "SCS Stadium":
+                        settings.arena = VenueEnum.SCSStadium;
+                        break;
+                    case "Arena De Universo":
+                        settings.arena = VenueEnum.ArenaDeUniverso;
+                        break;
+                    case "Spike Dome":
+                        settings.arena = VenueEnum.SpikeDome;
+                        break;
+                    case "Yurakuen Hall":
+                        settings.arena = VenueEnum.YurakuenHall;
+                        break;
+                    case "Dojo":
+                        settings.arena = VenueEnum.Dojo;
+                        break;
+                    default:
+                        settings.arena = VenueEnum.BigGardenArena;
+                        break;
+                }
+
+            }
+            catch
+            {
+                settings.arena = VenueEnum.Dojo;
+            }
+
+            settings.BattleRoyalKind = BattleRoyalKindEnum.Off;
+            settings.VictoryCondition = VictoryConditionEnum.Count3;
+            settings.isOverTheTopRopeOn = false;
+            settings.MatchTime = 0;
+            settings.is3GameMatch = false;
+            settings.ComLevel = difficultyList.SelectedIndex;
+
+            try
+            {
+                settings.GameSpeed = (uint)speedList.SelectedItem;
+            }
+            catch
+            {
+                settings.GameSpeed = 100;
+            }
+
+            settings.isRopeCheck = true;
+            settings.isElimination = false;
+            settings.isLumberjack = false;
+            settings.isTornadoBattle = false;
+            settings.isCutPlay = false;
+            settings.isDisableTimeCount = false;
+            settings.isFoulCount = true;
+            settings.CriticalRate = CriticalRateEnum.Off;
+
+            //Need to set a valid MatchBGM type  here, then override it on match start if necessary.
+            //if (el_bgm.SelectedIndex > 2)
+            //{
+            //    settings.matchBGM = MatchBGM.SpinningPanther;
+            //}
+            //else
+            //{
+            //    settings.matchBGM = (MatchBGM)el_bgm.SelectedIndex;
+            //}
+
+            settings.matchBGM = MatchBGM.SpinningPanther;
+
+            settings.isSkipEntranceScene = true;
+            settings.entranceSceenMode = EntranceSceneMode.EachCorner;
+            settings.isPlayDemo = false;
+            GlobalParam.flg_CallDebugMenu = false;
+            GlobalParam.befor_scene = "Scene_BattleSetting";
+            GlobalParam.keep_scene = "Scene_BattleSetting";
+            GlobalParam.next_scene = "";
+            #endregion
+
+            return settings;
+        }
+
+        private MatchSetting AddPlayers(bool entry, WrestlerID wrestlerNo, int slot, int control, bool isSecond, int costume, MatchSetting settings)
+        {
+            settings.matchWrestlerInfo[slot].entry = entry;
+
+            if (entry)
+            {
+                settings.matchWrestlerInfo[slot].wrestlerID = wrestlerNo;
+                settings.matchWrestlerInfo[slot].costume_no = costume;
+                settings.matchWrestlerInfo[slot].alignment = WrestlerAlignmentEnum.Neutral;
+
+                //Determine what the assigned pad should be
+                switch (control)
+                {
+                    case 0:
+                        settings.matchWrestlerInfo[slot].assignedPad = PadPort.AI;
+                        break;
+                    case 1:
+                        settings.matchWrestlerInfo[slot].assignedPad = PadPort.Pad1;
+                        break;
+
+                    case 2:
+                        settings.matchWrestlerInfo[slot].assignedPad = PadPort.Pad2;
+                        break;
+
+                    default:
+                        settings.matchWrestlerInfo[slot].assignedPad = PadPort.AI;
+                        break;
+                }
+
+                settings.matchWrestlerInfo[slot].HP = 65535f;
+                settings.matchWrestlerInfo[slot].SP = 65535f;
+                settings.matchWrestlerInfo[slot].HP_Neck = 65535f;
+                settings.matchWrestlerInfo[slot].HP_Arm = 65535f;
+                settings.matchWrestlerInfo[slot].HP_Waist = 65535f;
+                settings.matchWrestlerInfo[slot].HP_Leg = 65535f;
+
+                GlobalParam.Set_WrestlerData(slot, control, wrestlerNo, isSecond, costume, 65535f, 65535f, 65535f, 65535f, 65535f, 65535f);
+            }
+            else
+            {
+                settings.matchWrestlerInfo[slot].wrestlerID = global::WrestlerID.Invalid;
+                GlobalParam.Set_WrestlerData(slot, -1, global::WrestlerID.Invalid, false, 0, 65535f, 65535f, 65535f, 65535f, 65535f, 65535f);
+            }
+            return settings;
+        }
+        #endregion
 
         private void tabPage3_Click(object sender, EventArgs e)
         {
 
         }
 
-        private void cb_exElim_CheckedChanged(object sender, EventArgs e)
+
+        private void tt_normal_Popup(object sender, PopupEventArgs e)
         {
-            rulesTabControl.SelectedIndex = 1;
+
         }
 
-        private void cb_survival_CheckedChanged(object sender, EventArgs e)
-        {
-            rulesTabControl.SelectedIndex = 2;
-        }
-    }
-
-    public class WresIDGroup
-    {
-        public string Name;
-
-        public int ID;
-
-        public int Group;
-
-        public override string ToString()
-        {
-            return this.Name;
-        }
-    }
-
-    public class IDObject
-    {
-        public string Name;
-
-        public int ID;
-
-        public IDObject(String name, int id)
-        {
-            Name = name;
-            ID = id;
-        }
     }
 }

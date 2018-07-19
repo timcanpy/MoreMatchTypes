@@ -73,6 +73,8 @@
     <Compile Include="Elimination.cs" />
     <Compile Include="ExtendedElimination.cs" />
     <Compile Include="FirstBloodMatch.cs" />
+    <Compile Include="Helper Classes\IDObject.cs" />
+    <Compile Include="Helper Classes\WresIDGroup.cs" />
     <Compile Include="IronManMatch.cs" />
     <Compile Include="MoreMatchTypes_Form.cs">
       <SubType>Form</SubType>
@@ -90,5 +92,6 @@
       <DependentUpon>MoreMatchTypes_Form.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

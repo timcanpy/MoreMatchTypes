@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.cb_FirstBlood = new System.Windows.Forms.RadioButton();
             this.cb_IronManMatch = new System.Windows.Forms.RadioButton();
             this.cb_uwfi = new System.Windows.Forms.RadioButton();
@@ -88,31 +89,34 @@
             this.el_blueList = new System.Windows.Forms.ListBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.domainUpDown2 = new System.Windows.Forms.DomainUpDown();
-            this.domainUpDown1 = new System.Windows.Forms.DomainUpDown();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.radioButton3 = new System.Windows.Forms.RadioButton();
-            this.textBox7 = new System.Windows.Forms.TextBox();
+            this.sr_resetContinues = new System.Windows.Forms.LinkLabel();
+            this.sr_resetMatches = new System.Windows.Forms.LinkLabel();
+            this.sr_matchType = new System.Windows.Forms.ComboBox();
+            this.label27 = new System.Windows.Forms.Label();
+            this.sr_matches = new System.Windows.Forms.DomainUpDown();
+            this.sr_continues = new System.Windows.Forms.DomainUpDown();
+            this.sr_controlBoth = new System.Windows.Forms.CheckBox();
+            this.sr_progress = new System.Windows.Forms.TextBox();
             this.label26 = new System.Windows.Forms.Label();
             this.label25 = new System.Windows.Forms.Label();
             this.label24 = new System.Windows.Forms.Label();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
-            this.button8 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
+            this.sr_tag = new System.Windows.Forms.RadioButton();
+            this.sr_single = new System.Windows.Forms.RadioButton();
+            this.sr_secondClear = new System.Windows.Forms.Button();
+            this.sr_wrestlerClear = new System.Windows.Forms.Button();
             this.label20 = new System.Windows.Forms.Label();
-            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.sr_wrestler = new System.Windows.Forms.TextBox();
             this.label19 = new System.Windows.Forms.Label();
-            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.sr_second = new System.Windows.Forms.TextBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.sr_teamName = new System.Windows.Forms.TextBox();
             this.label18 = new System.Windows.Forms.Label();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.sr_removeAll = new System.Windows.Forms.Button();
+            this.sr_RemoveOne = new System.Windows.Forms.Button();
+            this.sr_teamList = new System.Windows.Forms.ListBox();
             this.panel4 = new System.Windows.Forms.Panel();
             this.sr_refereeList = new System.Windows.Forms.ComboBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.sr_start = new System.Windows.Forms.Button();
             this.label12 = new System.Windows.Forms.Label();
             this.sr_difficultyList = new System.Windows.Forms.ComboBox();
             this.label13 = new System.Windows.Forms.Label();
@@ -125,23 +129,25 @@
             this.label16 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.radioButton4 = new System.Windows.Forms.RadioButton();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
-            this.radioButton5 = new System.Windows.Forms.RadioButton();
-            this.radioButton6 = new System.Windows.Forms.RadioButton();
-            this.radioButton7 = new System.Windows.Forms.RadioButton();
+            this.sr_addAll = new System.Windows.Forms.RadioButton();
+            this.sr_Add = new System.Windows.Forms.Button();
+            this.sr_Refresh = new System.Windows.Forms.Button();
+            this.sr_addSingle = new System.Windows.Forms.RadioButton();
+            this.sr_addSecond = new System.Windows.Forms.RadioButton();
+            this.sr_addWrestler = new System.Windows.Forms.RadioButton();
             this.label21 = new System.Windows.Forms.Label();
-            this.comboBox9 = new System.Windows.Forms.ComboBox();
-            this.comboBox10 = new System.Windows.Forms.ComboBox();
+            this.sr_searchResult = new System.Windows.Forms.ComboBox();
+            this.sr_promotionList = new System.Windows.Forms.ComboBox();
             this.label22 = new System.Windows.Forms.Label();
             this.label23 = new System.Windows.Forms.Label();
-            this.button7 = new System.Windows.Forms.Button();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.sr_Search = new System.Windows.Forms.Button();
+            this.sr_searchInput = new System.Windows.Forms.TextBox();
             this.cb_losersLeave = new System.Windows.Forms.CheckBox();
             this.cb_membersWait = new System.Windows.Forms.CheckBox();
             this.cb_exElim = new System.Windows.Forms.RadioButton();
             this.cb_survival = new System.Windows.Forms.RadioButton();
+            this.matchHelp = new System.Windows.Forms.Button();
+            this.tt_normal = new System.Windows.Forms.ToolTip(this.components);
             this.rulesTabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -784,22 +790,25 @@
             // 
             // groupBox4
             // 
-            this.groupBox4.Controls.Add(this.domainUpDown2);
-            this.groupBox4.Controls.Add(this.domainUpDown1);
-            this.groupBox4.Controls.Add(this.checkBox1);
-            this.groupBox4.Controls.Add(this.radioButton3);
-            this.groupBox4.Controls.Add(this.textBox7);
+            this.groupBox4.Controls.Add(this.sr_resetContinues);
+            this.groupBox4.Controls.Add(this.sr_resetMatches);
+            this.groupBox4.Controls.Add(this.sr_matchType);
+            this.groupBox4.Controls.Add(this.label27);
+            this.groupBox4.Controls.Add(this.sr_matches);
+            this.groupBox4.Controls.Add(this.sr_continues);
+            this.groupBox4.Controls.Add(this.sr_controlBoth);
+            this.groupBox4.Controls.Add(this.sr_progress);
             this.groupBox4.Controls.Add(this.label26);
             this.groupBox4.Controls.Add(this.label25);
             this.groupBox4.Controls.Add(this.label24);
-            this.groupBox4.Controls.Add(this.radioButton2);
-            this.groupBox4.Controls.Add(this.radioButton1);
-            this.groupBox4.Controls.Add(this.button8);
-            this.groupBox4.Controls.Add(this.button4);
+            this.groupBox4.Controls.Add(this.sr_tag);
+            this.groupBox4.Controls.Add(this.sr_single);
+            this.groupBox4.Controls.Add(this.sr_secondClear);
+            this.groupBox4.Controls.Add(this.sr_wrestlerClear);
             this.groupBox4.Controls.Add(this.label20);
-            this.groupBox4.Controls.Add(this.textBox3);
+            this.groupBox4.Controls.Add(this.sr_wrestler);
             this.groupBox4.Controls.Add(this.label19);
-            this.groupBox4.Controls.Add(this.textBox4);
+            this.groupBox4.Controls.Add(this.sr_second);
             this.groupBox4.Location = new System.Drawing.Point(10, 178);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(406, 272);
@@ -807,54 +816,90 @@
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Player Options";
             // 
-            // domainUpDown2
+            // sr_resetContinues
             // 
-            this.domainUpDown2.Location = new System.Drawing.Point(70, 120);
-            this.domainUpDown2.Name = "domainUpDown2";
-            this.domainUpDown2.Size = new System.Drawing.Size(49, 20);
-            this.domainUpDown2.TabIndex = 60;
+            this.sr_resetContinues.AutoSize = true;
+            this.sr_resetContinues.Location = new System.Drawing.Point(10, 140);
+            this.sr_resetContinues.Name = "sr_resetContinues";
+            this.sr_resetContinues.Size = new System.Drawing.Size(35, 13);
+            this.sr_resetContinues.TabIndex = 63;
+            this.sr_resetContinues.TabStop = true;
+            this.sr_resetContinues.Text = "Reset";
+            this.sr_resetContinues.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.sr_resetContinues_LinkClicked);
             // 
-            // domainUpDown1
+            // sr_resetMatches
             // 
-            this.domainUpDown1.Location = new System.Drawing.Point(11, 120);
-            this.domainUpDown1.Name = "domainUpDown1";
-            this.domainUpDown1.Size = new System.Drawing.Size(49, 20);
-            this.domainUpDown1.TabIndex = 59;
+            this.sr_resetMatches.AutoSize = true;
+            this.sr_resetMatches.Location = new System.Drawing.Point(67, 140);
+            this.sr_resetMatches.Name = "sr_resetMatches";
+            this.sr_resetMatches.Size = new System.Drawing.Size(35, 13);
+            this.sr_resetMatches.TabIndex = 17;
+            this.sr_resetMatches.TabStop = true;
+            this.sr_resetMatches.Text = "Reset";
+            this.sr_resetMatches.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.sr_resetMatches_LinkClicked);
             // 
-            // checkBox1
+            // sr_matchType
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(226, 128);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(159, 17);
-            this.checkBox1.TabIndex = 58;
-            this.checkBox1.Text = "Control Both Wrestlers (Tag)";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.sr_matchType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.sr_matchType.FormattingEnabled = true;
+            this.sr_matchType.Location = new System.Drawing.Point(278, 122);
+            this.sr_matchType.Name = "sr_matchType";
+            this.sr_matchType.Size = new System.Drawing.Size(86, 21);
+            this.sr_matchType.TabIndex = 62;
+            this.sr_matchType.SelectedIndexChanged += new System.EventHandler(this.sr_matchType_SelectedIndexChanged);
             // 
-            // radioButton3
+            // label27
             // 
-            this.radioButton3.AutoSize = true;
-            this.radioButton3.Location = new System.Drawing.Point(241, 104);
-            this.radioButton3.Name = "radioButton3";
-            this.radioButton3.Size = new System.Drawing.Size(94, 17);
-            this.radioButton3.TabIndex = 57;
-            this.radioButton3.TabStop = true;
-            this.radioButton3.Text = "SWA Matches";
-            this.radioButton3.UseVisualStyleBackColor = true;
+            this.label27.AutoSize = true;
+            this.label27.Location = new System.Drawing.Point(275, 106);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(64, 13);
+            this.label27.TabIndex = 61;
+            this.label27.Text = "Match Type";
             // 
-            // textBox7
+            // sr_matches
             // 
-            this.textBox7.Location = new System.Drawing.Point(3, 168);
-            this.textBox7.Multiline = true;
-            this.textBox7.Name = "textBox7";
-            this.textBox7.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox7.Size = new System.Drawing.Size(386, 89);
-            this.textBox7.TabIndex = 56;
+            this.sr_matches.Location = new System.Drawing.Point(70, 120);
+            this.sr_matches.Name = "sr_matches";
+            this.sr_matches.ReadOnly = true;
+            this.sr_matches.Size = new System.Drawing.Size(49, 20);
+            this.sr_matches.TabIndex = 60;
+            this.sr_matches.SelectedItemChanged += new System.EventHandler(this.sr_matches_SelectedItemChanged);
+            // 
+            // sr_continues
+            // 
+            this.sr_continues.Location = new System.Drawing.Point(11, 120);
+            this.sr_continues.Name = "sr_continues";
+            this.sr_continues.ReadOnly = true;
+            this.sr_continues.Size = new System.Drawing.Size(49, 20);
+            this.sr_continues.TabIndex = 59;
+            this.sr_continues.SelectedItemChanged += new System.EventHandler(this.sr_continues_SelectedItemChanged);
+            // 
+            // sr_controlBoth
+            // 
+            this.sr_controlBoth.AutoSize = true;
+            this.sr_controlBoth.Location = new System.Drawing.Point(132, 145);
+            this.sr_controlBoth.Name = "sr_controlBoth";
+            this.sr_controlBoth.Size = new System.Drawing.Size(131, 17);
+            this.sr_controlBoth.TabIndex = 58;
+            this.sr_controlBoth.Text = "Control Both Wrestlers";
+            this.sr_controlBoth.UseVisualStyleBackColor = true;
+            this.sr_controlBoth.Visible = false;
+            // 
+            // sr_progress
+            // 
+            this.sr_progress.Location = new System.Drawing.Point(10, 173);
+            this.sr_progress.Multiline = true;
+            this.sr_progress.Name = "sr_progress";
+            this.sr_progress.ReadOnly = true;
+            this.sr_progress.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.sr_progress.Size = new System.Drawing.Size(386, 89);
+            this.sr_progress.TabIndex = 56;
             // 
             // label26
             // 
             this.label26.AutoSize = true;
-            this.label26.Location = new System.Drawing.Point(6, 152);
+            this.label26.Location = new System.Drawing.Point(12, 159);
             this.label26.Name = "label26";
             this.label26.Size = new System.Drawing.Size(81, 13);
             this.label26.TabIndex = 55;
@@ -878,45 +923,49 @@
             this.label24.TabIndex = 51;
             this.label24.Text = "Continues";
             // 
-            // radioButton2
+            // sr_tag
             // 
-            this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(132, 127);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(88, 17);
-            this.radioButton2.TabIndex = 50;
-            this.radioButton2.TabStop = true;
-            this.radioButton2.Text = "Tag Matches";
-            this.radioButton2.UseVisualStyleBackColor = true;
+            this.sr_tag.AutoSize = true;
+            this.sr_tag.Location = new System.Drawing.Point(132, 122);
+            this.sr_tag.Name = "sr_tag";
+            this.sr_tag.Size = new System.Drawing.Size(88, 17);
+            this.sr_tag.TabIndex = 50;
+            this.sr_tag.Text = "Tag Matches";
+            this.sr_tag.UseVisualStyleBackColor = true;
+            this.sr_tag.CheckedChanged += new System.EventHandler(this.sr_tag_CheckedChanged);
             // 
-            // radioButton1
+            // sr_single
             // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Location = new System.Drawing.Point(132, 104);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(103, 17);
-            this.radioButton1.TabIndex = 49;
-            this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "Singles Matches";
-            this.radioButton1.UseVisualStyleBackColor = true;
+            this.sr_single.AutoSize = true;
+            this.sr_single.Checked = true;
+            this.sr_single.Location = new System.Drawing.Point(132, 104);
+            this.sr_single.Name = "sr_single";
+            this.sr_single.Size = new System.Drawing.Size(103, 17);
+            this.sr_single.TabIndex = 49;
+            this.sr_single.TabStop = true;
+            this.sr_single.Text = "Singles Matches";
+            this.sr_single.UseVisualStyleBackColor = true;
+            this.sr_single.CheckedChanged += new System.EventHandler(this.sr_single_CheckedChanged);
             // 
-            // button8
+            // sr_secondClear
             // 
-            this.button8.Location = new System.Drawing.Point(345, 74);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(55, 23);
-            this.button8.TabIndex = 48;
-            this.button8.Text = "Clear";
-            this.button8.UseVisualStyleBackColor = true;
+            this.sr_secondClear.Location = new System.Drawing.Point(345, 74);
+            this.sr_secondClear.Name = "sr_secondClear";
+            this.sr_secondClear.Size = new System.Drawing.Size(55, 23);
+            this.sr_secondClear.TabIndex = 48;
+            this.sr_secondClear.Text = "Clear";
+            this.sr_secondClear.UseVisualStyleBackColor = true;
+            this.sr_secondClear.Click += new System.EventHandler(this.sr_secondClear_Click);
             // 
-            // button4
+            // sr_wrestlerClear
             // 
-            this.button4.Location = new System.Drawing.Point(345, 32);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(55, 23);
-            this.button4.TabIndex = 47;
-            this.button4.Text = "Clear";
-            this.button4.UseVisualStyleBackColor = true;
+            this.sr_wrestlerClear.Location = new System.Drawing.Point(345, 32);
+            this.sr_wrestlerClear.Name = "sr_wrestlerClear";
+            this.sr_wrestlerClear.Size = new System.Drawing.Size(55, 23);
+            this.sr_wrestlerClear.TabIndex = 47;
+            this.sr_wrestlerClear.Text = "Clear";
+            this.sr_wrestlerClear.UseVisualStyleBackColor = true;
+            this.sr_wrestlerClear.Click += new System.EventHandler(this.sr_wrestlerClear_Click);
             // 
             // label20
             // 
@@ -927,12 +976,13 @@
             this.label20.TabIndex = 46;
             this.label20.Text = "Second";
             // 
-            // textBox3
+            // sr_wrestler
             // 
-            this.textBox3.Location = new System.Drawing.Point(3, 34);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(336, 20);
-            this.textBox3.TabIndex = 43;
+            this.sr_wrestler.Enabled = false;
+            this.sr_wrestler.Location = new System.Drawing.Point(3, 34);
+            this.sr_wrestler.Name = "sr_wrestler";
+            this.sr_wrestler.Size = new System.Drawing.Size(336, 20);
+            this.sr_wrestler.TabIndex = 43;
             // 
             // label19
             // 
@@ -943,20 +993,21 @@
             this.label19.TabIndex = 45;
             this.label19.Text = "Wrestler";
             // 
-            // textBox4
+            // sr_second
             // 
-            this.textBox4.Location = new System.Drawing.Point(3, 76);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(336, 20);
-            this.textBox4.TabIndex = 44;
+            this.sr_second.Enabled = false;
+            this.sr_second.Location = new System.Drawing.Point(3, 76);
+            this.sr_second.Name = "sr_second";
+            this.sr_second.Size = new System.Drawing.Size(336, 20);
+            this.sr_second.TabIndex = 44;
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.textBox1);
+            this.groupBox3.Controls.Add(this.sr_teamName);
             this.groupBox3.Controls.Add(this.label18);
-            this.groupBox3.Controls.Add(this.button2);
-            this.groupBox3.Controls.Add(this.button3);
-            this.groupBox3.Controls.Add(this.listBox1);
+            this.groupBox3.Controls.Add(this.sr_removeAll);
+            this.groupBox3.Controls.Add(this.sr_RemoveOne);
+            this.groupBox3.Controls.Add(this.sr_teamList);
             this.groupBox3.Location = new System.Drawing.Point(422, 178);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(419, 268);
@@ -964,12 +1015,12 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Opposing Team";
             // 
-            // textBox1
+            // sr_teamName
             // 
-            this.textBox1.Location = new System.Drawing.Point(6, 36);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(407, 20);
-            this.textBox1.TabIndex = 4;
+            this.sr_teamName.Location = new System.Drawing.Point(6, 36);
+            this.sr_teamName.Name = "sr_teamName";
+            this.sr_teamName.Size = new System.Drawing.Size(407, 20);
+            this.sr_teamName.TabIndex = 4;
             // 
             // label18
             // 
@@ -980,37 +1031,39 @@
             this.label18.TabIndex = 3;
             this.label18.Text = "Team Name";
             // 
-            // button2
+            // sr_removeAll
             // 
-            this.button2.Location = new System.Drawing.Point(241, 235);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(163, 23);
-            this.button2.TabIndex = 2;
-            this.button2.Text = "Remove All";
-            this.button2.UseVisualStyleBackColor = true;
+            this.sr_removeAll.Location = new System.Drawing.Point(241, 235);
+            this.sr_removeAll.Name = "sr_removeAll";
+            this.sr_removeAll.Size = new System.Drawing.Size(163, 23);
+            this.sr_removeAll.TabIndex = 2;
+            this.sr_removeAll.Text = "Remove All";
+            this.sr_removeAll.UseVisualStyleBackColor = true;
+            this.sr_removeAll.Click += new System.EventHandler(this.sr_removeAll_Click);
             // 
-            // button3
+            // sr_RemoveOne
             // 
-            this.button3.Location = new System.Drawing.Point(6, 235);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(161, 23);
-            this.button3.TabIndex = 1;
-            this.button3.Text = "Remove Selected";
-            this.button3.UseVisualStyleBackColor = true;
+            this.sr_RemoveOne.Location = new System.Drawing.Point(6, 235);
+            this.sr_RemoveOne.Name = "sr_RemoveOne";
+            this.sr_RemoveOne.Size = new System.Drawing.Size(161, 23);
+            this.sr_RemoveOne.TabIndex = 1;
+            this.sr_RemoveOne.Text = "Remove Selected";
+            this.sr_RemoveOne.UseVisualStyleBackColor = true;
+            this.sr_RemoveOne.Click += new System.EventHandler(this.sr_RemoveOne_Click);
             // 
-            // listBox1
+            // sr_teamList
             // 
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(6, 69);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.ScrollAlwaysVisible = true;
-            this.listBox1.Size = new System.Drawing.Size(415, 160);
-            this.listBox1.TabIndex = 0;
+            this.sr_teamList.FormattingEnabled = true;
+            this.sr_teamList.Location = new System.Drawing.Point(6, 69);
+            this.sr_teamList.Name = "sr_teamList";
+            this.sr_teamList.ScrollAlwaysVisible = true;
+            this.sr_teamList.Size = new System.Drawing.Size(415, 160);
+            this.sr_teamList.TabIndex = 0;
             // 
             // panel4
             // 
             this.panel4.Controls.Add(this.sr_refereeList);
-            this.panel4.Controls.Add(this.button1);
+            this.panel4.Controls.Add(this.sr_start);
             this.panel4.Controls.Add(this.label12);
             this.panel4.Controls.Add(this.sr_difficultyList);
             this.panel4.Controls.Add(this.label13);
@@ -1037,14 +1090,16 @@
             this.sr_refereeList.Size = new System.Drawing.Size(142, 21);
             this.sr_refereeList.TabIndex = 8;
             // 
-            // button1
+            // sr_start
             // 
-            this.button1.Location = new System.Drawing.Point(740, 15);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 7;
-            this.button1.Text = "Start match!";
-            this.button1.UseVisualStyleBackColor = true;
+            this.sr_start.Enabled = false;
+            this.sr_start.Location = new System.Drawing.Point(740, 15);
+            this.sr_start.Name = "sr_start";
+            this.sr_start.Size = new System.Drawing.Size(75, 23);
+            this.sr_start.TabIndex = 7;
+            this.sr_start.Text = "Start match!";
+            this.sr_start.UseVisualStyleBackColor = true;
+            this.sr_start.Click += new System.EventHandler(this.sr_start_Click);
             // 
             // label12
             // 
@@ -1147,87 +1202,89 @@
             // 
             // panel2
             // 
-            this.panel2.Controls.Add(this.radioButton4);
-            this.panel2.Controls.Add(this.button5);
-            this.panel2.Controls.Add(this.button6);
-            this.panel2.Controls.Add(this.radioButton5);
-            this.panel2.Controls.Add(this.radioButton6);
-            this.panel2.Controls.Add(this.radioButton7);
+            this.panel2.Controls.Add(this.sr_addAll);
+            this.panel2.Controls.Add(this.sr_Add);
+            this.panel2.Controls.Add(this.sr_Refresh);
+            this.panel2.Controls.Add(this.sr_addSingle);
+            this.panel2.Controls.Add(this.sr_addSecond);
+            this.panel2.Controls.Add(this.sr_addWrestler);
             this.panel2.Controls.Add(this.label21);
-            this.panel2.Controls.Add(this.comboBox9);
-            this.panel2.Controls.Add(this.comboBox10);
+            this.panel2.Controls.Add(this.sr_searchResult);
+            this.panel2.Controls.Add(this.sr_promotionList);
             this.panel2.Controls.Add(this.label22);
             this.panel2.Controls.Add(this.label23);
-            this.panel2.Controls.Add(this.button7);
-            this.panel2.Controls.Add(this.textBox2);
+            this.panel2.Controls.Add(this.sr_Search);
+            this.panel2.Controls.Add(this.sr_searchInput);
             this.panel2.Location = new System.Drawing.Point(7, 53);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(828, 119);
             this.panel2.TabIndex = 40;
             // 
-            // radioButton4
+            // sr_addAll
             // 
-            this.radioButton4.AutoSize = true;
-            this.radioButton4.Location = new System.Drawing.Point(521, 87);
-            this.radioButton4.Name = "radioButton4";
-            this.radioButton4.Size = new System.Drawing.Size(113, 17);
-            this.radioButton4.TabIndex = 14;
-            this.radioButton4.TabStop = true;
-            this.radioButton4.Text = "Add All Opponents";
-            this.radioButton4.UseVisualStyleBackColor = true;
+            this.sr_addAll.AutoSize = true;
+            this.sr_addAll.Location = new System.Drawing.Point(521, 87);
+            this.sr_addAll.Name = "sr_addAll";
+            this.sr_addAll.Size = new System.Drawing.Size(113, 17);
+            this.sr_addAll.TabIndex = 14;
+            this.sr_addAll.TabStop = true;
+            this.sr_addAll.Text = "Add All Opponents";
+            this.sr_addAll.UseVisualStyleBackColor = true;
             // 
-            // button5
+            // sr_Add
             // 
-            this.button5.Location = new System.Drawing.Point(741, 87);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(75, 23);
-            this.button5.TabIndex = 13;
-            this.button5.Text = "Add";
-            this.button5.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.button5.UseVisualStyleBackColor = true;
+            this.sr_Add.Location = new System.Drawing.Point(741, 87);
+            this.sr_Add.Name = "sr_Add";
+            this.sr_Add.Size = new System.Drawing.Size(75, 23);
+            this.sr_Add.TabIndex = 13;
+            this.sr_Add.Text = "Add";
+            this.sr_Add.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.sr_Add.UseVisualStyleBackColor = true;
+            this.sr_Add.Click += new System.EventHandler(this.sr_Add_Click);
             // 
-            // button6
+            // sr_Refresh
             // 
-            this.button6.Location = new System.Drawing.Point(741, 57);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(75, 23);
-            this.button6.TabIndex = 11;
-            this.button6.Text = "Refresh";
-            this.button6.UseVisualStyleBackColor = true;
+            this.sr_Refresh.Location = new System.Drawing.Point(741, 57);
+            this.sr_Refresh.Name = "sr_Refresh";
+            this.sr_Refresh.Size = new System.Drawing.Size(75, 23);
+            this.sr_Refresh.TabIndex = 11;
+            this.sr_Refresh.Text = "Refresh";
+            this.sr_Refresh.UseVisualStyleBackColor = true;
+            this.sr_Refresh.Click += new System.EventHandler(this.sr_Refresh_Click);
             // 
-            // radioButton5
+            // sr_addSingle
             // 
-            this.radioButton5.AutoSize = true;
-            this.radioButton5.Location = new System.Drawing.Point(521, 64);
-            this.radioButton5.Name = "radioButton5";
-            this.radioButton5.Size = new System.Drawing.Size(126, 17);
-            this.radioButton5.TabIndex = 9;
-            this.radioButton5.TabStop = true;
-            this.radioButton5.Text = "Add Single Opponent";
-            this.radioButton5.UseVisualStyleBackColor = true;
+            this.sr_addSingle.AutoSize = true;
+            this.sr_addSingle.Location = new System.Drawing.Point(521, 64);
+            this.sr_addSingle.Name = "sr_addSingle";
+            this.sr_addSingle.Size = new System.Drawing.Size(126, 17);
+            this.sr_addSingle.TabIndex = 9;
+            this.sr_addSingle.TabStop = true;
+            this.sr_addSingle.Text = "Add Single Opponent";
+            this.sr_addSingle.UseVisualStyleBackColor = true;
             // 
-            // radioButton6
+            // sr_addSecond
             // 
-            this.radioButton6.AutoSize = true;
-            this.radioButton6.Location = new System.Drawing.Point(361, 87);
-            this.radioButton6.Name = "radioButton6";
-            this.radioButton6.Size = new System.Drawing.Size(152, 17);
-            this.radioButton6.TabIndex = 8;
-            this.radioButton6.TabStop = true;
-            this.radioButton6.Text = "Add Second (Player Team)";
-            this.radioButton6.UseVisualStyleBackColor = true;
+            this.sr_addSecond.AutoSize = true;
+            this.sr_addSecond.Location = new System.Drawing.Point(361, 87);
+            this.sr_addSecond.Name = "sr_addSecond";
+            this.sr_addSecond.Size = new System.Drawing.Size(152, 17);
+            this.sr_addSecond.TabIndex = 8;
+            this.sr_addSecond.TabStop = true;
+            this.sr_addSecond.Text = "Add Second (Player Team)";
+            this.sr_addSecond.UseVisualStyleBackColor = true;
             // 
-            // radioButton7
+            // sr_addWrestler
             // 
-            this.radioButton7.AutoSize = true;
-            this.radioButton7.Checked = true;
-            this.radioButton7.Location = new System.Drawing.Point(361, 64);
-            this.radioButton7.Name = "radioButton7";
-            this.radioButton7.Size = new System.Drawing.Size(154, 17);
-            this.radioButton7.TabIndex = 7;
-            this.radioButton7.TabStop = true;
-            this.radioButton7.Text = "Add Wrestler (Player Team)";
-            this.radioButton7.UseVisualStyleBackColor = true;
+            this.sr_addWrestler.AutoSize = true;
+            this.sr_addWrestler.Checked = true;
+            this.sr_addWrestler.Location = new System.Drawing.Point(361, 64);
+            this.sr_addWrestler.Name = "sr_addWrestler";
+            this.sr_addWrestler.Size = new System.Drawing.Size(154, 17);
+            this.sr_addWrestler.TabIndex = 7;
+            this.sr_addWrestler.TabStop = true;
+            this.sr_addWrestler.Text = "Add Wrestler (Player Team)";
+            this.sr_addWrestler.UseVisualStyleBackColor = true;
             // 
             // label21
             // 
@@ -1238,23 +1295,23 @@
             this.label21.TabIndex = 6;
             this.label21.Text = "Search Results";
             // 
-            // comboBox9
+            // sr_searchResult
             // 
-            this.comboBox9.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox9.FormattingEnabled = true;
-            this.comboBox9.Location = new System.Drawing.Point(6, 72);
-            this.comboBox9.Name = "comboBox9";
-            this.comboBox9.Size = new System.Drawing.Size(336, 21);
-            this.comboBox9.TabIndex = 5;
+            this.sr_searchResult.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.sr_searchResult.FormattingEnabled = true;
+            this.sr_searchResult.Location = new System.Drawing.Point(6, 72);
+            this.sr_searchResult.Name = "sr_searchResult";
+            this.sr_searchResult.Size = new System.Drawing.Size(336, 21);
+            this.sr_searchResult.TabIndex = 5;
             // 
-            // comboBox10
+            // sr_promotionList
             // 
-            this.comboBox10.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox10.FormattingEnabled = true;
-            this.comboBox10.Location = new System.Drawing.Point(361, 27);
-            this.comboBox10.Name = "comboBox10";
-            this.comboBox10.Size = new System.Drawing.Size(374, 21);
-            this.comboBox10.TabIndex = 4;
+            this.sr_promotionList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.sr_promotionList.FormattingEnabled = true;
+            this.sr_promotionList.Location = new System.Drawing.Point(361, 27);
+            this.sr_promotionList.Name = "sr_promotionList";
+            this.sr_promotionList.Size = new System.Drawing.Size(374, 21);
+            this.sr_promotionList.TabIndex = 4;
             // 
             // label22
             // 
@@ -1274,21 +1331,22 @@
             this.label23.TabIndex = 2;
             this.label23.Text = "Wrestler Search";
             // 
-            // button7
+            // sr_Search
             // 
-            this.button7.Location = new System.Drawing.Point(741, 27);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(75, 23);
-            this.button7.TabIndex = 1;
-            this.button7.Text = "Search";
-            this.button7.UseVisualStyleBackColor = true;
+            this.sr_Search.Location = new System.Drawing.Point(741, 27);
+            this.sr_Search.Name = "sr_Search";
+            this.sr_Search.Size = new System.Drawing.Size(75, 23);
+            this.sr_Search.TabIndex = 1;
+            this.sr_Search.Text = "Search";
+            this.sr_Search.UseVisualStyleBackColor = true;
+            this.sr_Search.Click += new System.EventHandler(this.sr_Search_Click);
             // 
-            // textBox2
+            // sr_searchInput
             // 
-            this.textBox2.Location = new System.Drawing.Point(6, 27);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(336, 20);
-            this.textBox2.TabIndex = 0;
+            this.sr_searchInput.Location = new System.Drawing.Point(6, 27);
+            this.sr_searchInput.Name = "sr_searchInput";
+            this.sr_searchInput.Size = new System.Drawing.Size(336, 20);
+            this.sr_searchInput.TabIndex = 0;
             // 
             // cb_losersLeave
             // 
@@ -1333,6 +1391,7 @@
             // cb_survival
             // 
             this.cb_survival.AutoSize = true;
+            this.cb_survival.Enabled = false;
             this.cb_survival.Location = new System.Drawing.Point(153, 108);
             this.cb_survival.Name = "cb_survival";
             this.cb_survival.Size = new System.Drawing.Size(92, 17);
@@ -1342,11 +1401,31 @@
             this.cb_survival.UseVisualStyleBackColor = true;
             this.cb_survival.CheckedChanged += new System.EventHandler(this.cb_survival_CheckedChanged);
             // 
+            // matchHelp
+            // 
+            this.matchHelp.Font = new System.Drawing.Font("Impact", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.matchHelp.Location = new System.Drawing.Point(144, 4);
+            this.matchHelp.Name = "matchHelp";
+            this.matchHelp.Size = new System.Drawing.Size(41, 25);
+            this.matchHelp.TabIndex = 16;
+            this.matchHelp.Text = "Help";
+            this.matchHelp.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.matchHelp.UseVisualStyleBackColor = true;
+            this.matchHelp.Click += new System.EventHandler(this.matchHelp_Click);
+            // 
+            // tt_normal
+            // 
+            this.tt_normal.IsBalloon = true;
+            this.tt_normal.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+            this.tt_normal.ToolTipTitle = "Normal Match Info";
+            this.tt_normal.Popup += new System.Windows.Forms.PopupEventHandler(this.tt_normal_Popup);
+            // 
             // MoreMatchTypes_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(852, 620);
+            this.Controls.Add(this.matchHelp);
             this.Controls.Add(this.cb_survival);
             this.Controls.Add(this.cb_exElim);
             this.Controls.Add(this.rulesTabControl);
@@ -1448,27 +1527,25 @@
         public System.Windows.Forms.ComboBox el_bgm;
         private System.Windows.Forms.Label label11;
         public System.Windows.Forms.ComboBox el_difficulty;
-        public System.Windows.Forms.CheckBox el_redControl;
-        public System.Windows.Forms.CheckBox el_blueControl;
         public System.Windows.Forms.TabControl rulesTabControl;
         private System.Windows.Forms.RadioButton cb_survival;
         private System.Windows.Forms.Panel panel2;
-        public System.Windows.Forms.Button button5;
-        public System.Windows.Forms.Button button6;
-        public System.Windows.Forms.RadioButton radioButton5;
-        public System.Windows.Forms.RadioButton radioButton6;
-        public System.Windows.Forms.RadioButton radioButton7;
+        public System.Windows.Forms.Button sr_Add;
+        public System.Windows.Forms.Button sr_Refresh;
+        public System.Windows.Forms.RadioButton sr_addSingle;
+        public System.Windows.Forms.RadioButton sr_addSecond;
+        public System.Windows.Forms.RadioButton sr_addWrestler;
         private System.Windows.Forms.Label label21;
-        public System.Windows.Forms.ComboBox comboBox9;
-        public System.Windows.Forms.ComboBox comboBox10;
+        public System.Windows.Forms.ComboBox sr_searchResult;
+        public System.Windows.Forms.ComboBox sr_promotionList;
         private System.Windows.Forms.Label label22;
         private System.Windows.Forms.Label label23;
-        public System.Windows.Forms.Button button7;
-        public System.Windows.Forms.TextBox textBox2;
+        public System.Windows.Forms.Button sr_Search;
+        public System.Windows.Forms.TextBox sr_searchInput;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Panel panel4;
         public System.Windows.Forms.ComboBox sr_refereeList;
-        public System.Windows.Forms.Button button1;
+        public System.Windows.Forms.Button sr_start;
         private System.Windows.Forms.Label label12;
         public System.Windows.Forms.ComboBox sr_difficultyList;
         private System.Windows.Forms.Label label13;
@@ -1481,28 +1558,35 @@
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.GroupBox groupBox3;
-        public System.Windows.Forms.TextBox textBox1;
+        public System.Windows.Forms.TextBox sr_teamName;
         private System.Windows.Forms.Label label18;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
-        public System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.Button sr_removeAll;
+        private System.Windows.Forms.Button sr_RemoveOne;
+        public System.Windows.Forms.ListBox sr_teamList;
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.Label label20;
-        private System.Windows.Forms.TextBox textBox3;
         private System.Windows.Forms.Label label19;
-        private System.Windows.Forms.TextBox textBox4;
-        private System.Windows.Forms.Button button8;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.RadioButton radioButton2;
-        private System.Windows.Forms.RadioButton radioButton1;
         private System.Windows.Forms.Label label25;
         private System.Windows.Forms.Label label24;
         private System.Windows.Forms.Label label26;
-        private System.Windows.Forms.TextBox textBox7;
-        private System.Windows.Forms.RadioButton radioButton3;
-        private System.Windows.Forms.CheckBox checkBox1;
-        public System.Windows.Forms.RadioButton radioButton4;
-        private System.Windows.Forms.DomainUpDown domainUpDown2;
-        private System.Windows.Forms.DomainUpDown domainUpDown1;
+        public System.Windows.Forms.RadioButton sr_addAll;
+        public System.Windows.Forms.ToolTip tt_normal;
+        public System.Windows.Forms.Button matchHelp;
+        public System.Windows.Forms.CheckBox el_redControl;
+        public System.Windows.Forms.CheckBox el_blueControl;
+        private System.Windows.Forms.Label label27;
+        public System.Windows.Forms.TextBox sr_wrestler;
+        public System.Windows.Forms.TextBox sr_second;
+        public System.Windows.Forms.Button sr_secondClear;
+        public System.Windows.Forms.Button sr_wrestlerClear;
+        public System.Windows.Forms.RadioButton sr_tag;
+        public System.Windows.Forms.RadioButton sr_single;
+        public System.Windows.Forms.TextBox sr_progress;
+        public System.Windows.Forms.CheckBox sr_controlBoth;
+        public System.Windows.Forms.DomainUpDown sr_matches;
+        public System.Windows.Forms.DomainUpDown sr_continues;
+        public System.Windows.Forms.ComboBox sr_matchType;
+        private System.Windows.Forms.LinkLabel sr_resetContinues;
+        private System.Windows.Forms.LinkLabel sr_resetMatches;
     }
 }

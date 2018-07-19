@@ -19,18 +19,40 @@ namespace MoreMatchTypes
         public static string[] teamNames = new string[2];
         public static bool endMatch = false;
         public static MatchTime currMatchTime = null;
+        public static bool isIronMan = false;
         #endregion
 
         #region Injection methods
+
+        [Hook(TargetClass = "MatchMain", TargetMethod = "CreatePlayers", InjectionLocation = int.MaxValue, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.None, Group = "MoreMatchTypes")]
+        public static void SetMatchRules()
+        {
+            if (MoreMatchTypes_Form.form.cb_IronManMatch.Checked && GlobalWork.inst.MatchSetting.BattleRoyalKind == BattleRoyalKindEnum.Off)
+            {
+                isIronMan = true;
+            }
+            else
+            {
+                isIronMan = false;
+            }
+
+            if(!isIronMan)
+            {
+                return;
+            }
+
+            SetTeamNames();
+            MoreMatchTypes_Form.form.Enabled = false;
+        }
+
         [Hook(TargetClass = "Referee", TargetMethod = "CheckMatchEnd", InjectionLocation = 0, InjectFlags = HookInjectFlags.ModifyReturn, Group = "MoreMatchTypes")]
         public static bool SetMatchRestrictions()
         {
-            //Disable for Battle Royal Match Types
-            if (GlobalWork.inst.MatchSetting.BattleRoyalKind != BattleRoyalKindEnum.Off)
+           if(!isIronMan)
             {
                 return false;
             }
-            if (MoreMatchTypes_Form.form.cb_IronManMatch.Checked)
+            else
             {
                 MatchMain main = MatchMain.inst;
 
@@ -82,28 +104,13 @@ namespace MoreMatchTypes
                 {
                     return false;
                 }
-
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        [Hook(TargetClass = "MatchMain", TargetMethod = "CreatePlayers", InjectionLocation = int.MaxValue, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.None, Group = "MoreMatchTypes")]
-        public static void SetMatchRules()
-        {
-            if (MoreMatchTypes_Form.form.cb_IronManMatch.Checked && GlobalWork.inst.MatchSetting.BattleRoyalKind == BattleRoyalKindEnum.Off)
-            {
-                SetTeamNames();
-                MoreMatchTypes_Form.form.Enabled = false;
             }
         }
 
         [Hook(TargetClass = "Menu_Result", TargetMethod = "Set_FinishSkill", InjectionLocation = 8, InjectDirection = HookInjectDirection.After, InjectFlags = HookInjectFlags.PassParametersVal | HookInjectFlags.PassLocals, LocalVarIds = new int[] { 1 }, Group = "MoreMatchTypes")]
         public static void SetResultScreenDisplay(ref UILabel finishText, string str)
         {
-            if (MoreMatchTypes_Form.form.cb_IronManMatch.Checked && GlobalWork.inst.MatchSetting.BattleRoyalKind == BattleRoyalKindEnum.Off && endMatch)
+            if (isIronMan && endMatch)
             {
                 string winResult = teamNames[0] + " : " + wins[0] + " win(s)\n" + teamNames[1] + " - " + wins[1] + " win(s)\n\n" + "Winner - " + (wins[0] > wins[1] ? teamNames[0] : teamNames[1]);
                 string resultString = str.Replace("K.O.", "Iron Man Match\n\n" + winResult);
@@ -118,7 +125,7 @@ namespace MoreMatchTypes
         [Hook(TargetClass = "Referee", TargetMethod = "CheckMatchEnd_Draw", InjectionLocation = int.MaxValue, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.PassInvokingInstance, Group = "MoreMatchTypes")]
         public static void SetVictoryConditions(Referee matchRef)
         {
-            if (!MoreMatchTypes_Form.form.cb_IronManMatch.Checked || GlobalWork.inst.MatchSetting.BattleRoyalKind != BattleRoyalKindEnum.Off)
+            if (!isIronMan)
             { return; }
             else
             {
@@ -158,7 +165,7 @@ namespace MoreMatchTypes
         [Hook(TargetClass = "MatchMain", TargetMethod = "EndMatch", InjectionLocation = 0, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.None, Group = "MoreMatchTypes")]
         public static void ResetWins()
         {
-            if (MoreMatchTypes_Form.form.cb_IronManMatch.Checked && GlobalWork.inst.MatchSetting.BattleRoyalKind == BattleRoyalKindEnum.Off)
+            if (isIronMan)
             {
                 MoreMatchTypes_Form.form.Enabled = true;
                 DG.Carlzilla.WentToDecision = false;
@@ -171,7 +178,7 @@ namespace MoreMatchTypes
         {
             try
             {
-                if (MoreMatchTypes_Form.form.cb_IronManMatch.Checked && GlobalWork.inst.MatchSetting.BattleRoyalKind == BattleRoyalKindEnum.Off && currMatchTime != null)
+                if (isIronMan && currMatchTime != null)
                 {
                     DispNotification.inst.Show(teamNames[0] + " : " + wins[0] + "      " + teamNames[1] + " : " + wins[1], 300);
                     m.matchTime.Set(currMatchTime);

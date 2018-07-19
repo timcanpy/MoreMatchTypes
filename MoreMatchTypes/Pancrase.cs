@@ -197,6 +197,7 @@ namespace MoreMatchTypes
             settings.isLumberjack = true;
             settings.isFoulCount = false;
             settings.isOutOfRingCount = false;
+            settings.MatchTime = 0;
             resultText = "";
             currMatchTime = null;
             currentBP = new float[2];

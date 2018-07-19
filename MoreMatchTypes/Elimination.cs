@@ -27,6 +27,8 @@ namespace MoreMatchTypes
         [Hook(TargetClass = "MatchMain", TargetMethod = "CreatePlayers", InjectionLocation = int.MaxValue, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.None, Group = "MoreMatchTypes")]
         public static void SetMatchRules()
         {
+            isElimination = false;
+
             //Ensure a valid elimination match can take place
             MatchSetting settings = GlobalWork.inst.MatchSetting;
             if (settings.BattleRoyalKind != BattleRoyalKindEnum.Off || settings.isS1Rule)

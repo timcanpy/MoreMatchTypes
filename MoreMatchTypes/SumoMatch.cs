@@ -45,6 +45,7 @@ namespace MoreMatchTypes
                 settings.isReversalOff = true;
                 settings.isOverTheTopRopeOn = true;
                 settings.isPowerCompetitionOff = true;
+                settings.MatchTime = 0;
 
                 //Populate Basic Attacks
                 String basicMoves = MoreMatchTypes_Form.form.tb_basic.Text.TrimStart().TrimEnd();
