@@ -148,6 +148,7 @@
             this.cb_survival = new System.Windows.Forms.RadioButton();
             this.matchHelp = new System.Windows.Forms.Button();
             this.tt_normal = new System.Windows.Forms.ToolTip(this.components);
+            this.sr_simulate = new System.Windows.Forms.CheckBox();
             this.rulesTabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -790,6 +791,7 @@
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.sr_simulate);
             this.groupBox4.Controls.Add(this.sr_resetContinues);
             this.groupBox4.Controls.Add(this.sr_resetMatches);
             this.groupBox4.Controls.Add(this.sr_matchType);
@@ -1092,7 +1094,6 @@
             // 
             // sr_start
             // 
-            this.sr_start.Enabled = false;
             this.sr_start.Location = new System.Drawing.Point(740, 15);
             this.sr_start.Name = "sr_start";
             this.sr_start.Size = new System.Drawing.Size(75, 23);
@@ -1391,7 +1392,6 @@
             // cb_survival
             // 
             this.cb_survival.AutoSize = true;
-            this.cb_survival.Enabled = false;
             this.cb_survival.Location = new System.Drawing.Point(153, 108);
             this.cb_survival.Name = "cb_survival";
             this.cb_survival.Size = new System.Drawing.Size(92, 17);
@@ -1419,6 +1419,18 @@
             this.tt_normal.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             this.tt_normal.ToolTipTitle = "Normal Match Info";
             this.tt_normal.Popup += new System.Windows.Forms.PopupEventHandler(this.tt_normal_Popup);
+            // 
+            // sr_simulate
+            // 
+            this.sr_simulate.AutoSize = true;
+            this.sr_simulate.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.sr_simulate.ForeColor = System.Drawing.Color.Red;
+            this.sr_simulate.Location = new System.Drawing.Point(278, 145);
+            this.sr_simulate.Name = "sr_simulate";
+            this.sr_simulate.Size = new System.Drawing.Size(74, 17);
+            this.sr_simulate.TabIndex = 64;
+            this.sr_simulate.Text = "Simulate";
+            this.sr_simulate.UseVisualStyleBackColor = true;
             // 
             // MoreMatchTypes_Form
             // 
@@ -1528,7 +1540,6 @@
         private System.Windows.Forms.Label label11;
         public System.Windows.Forms.ComboBox el_difficulty;
         public System.Windows.Forms.TabControl rulesTabControl;
-        private System.Windows.Forms.RadioButton cb_survival;
         private System.Windows.Forms.Panel panel2;
         public System.Windows.Forms.Button sr_Add;
         public System.Windows.Forms.Button sr_Refresh;
@@ -1588,5 +1599,7 @@
         public System.Windows.Forms.ComboBox sr_matchType;
         private System.Windows.Forms.LinkLabel sr_resetContinues;
         private System.Windows.Forms.LinkLabel sr_resetMatches;
+        public System.Windows.Forms.RadioButton cb_survival;
+        public System.Windows.Forms.CheckBox sr_simulate;
     }
 }

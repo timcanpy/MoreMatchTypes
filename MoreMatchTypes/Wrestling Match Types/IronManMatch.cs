@@ -41,6 +41,10 @@ namespace MoreMatchTypes
                 return;
             }
 
+            wins = new int[2];
+            endMatch = false;
+            currMatchTime = null;
+
             SetTeamNames();
             MoreMatchTypes_Form.form.Enabled = false;
         }
@@ -137,6 +141,7 @@ namespace MoreMatchTypes
                     matchRef.PlDir = PlDirEnum.Left;
                     matchRef.ReqRefereeAnm(BasicSkillEnum.Refe_Stand_MatchEnd_Front_Left);
                     matchRef.State = RefeStateEnum.DeclareVictory;
+                    Announcer.inst.PlayGong_MatchEnd();
 
                     //Determine the winner
                     PlayerMan p = PlayerMan.inst;

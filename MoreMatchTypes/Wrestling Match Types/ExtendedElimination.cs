@@ -13,9 +13,9 @@ namespace MoreMatchTypes
     [FieldAccess(Class = "Referee", Field = "CheckMatchEnd", Group = "MoreMatchTypes")]
     [FieldAccess(Class = "Announcer", Field = "Watch_Scuffle", Group = "MoreMatchTypes")]
     [FieldAccess(Class = "Menu_Result", Field = "Set_FinishSkill", Group = "MoreMatchTypes")]
-    [FieldAccess(Class = "Menu_SoundManager", Field = "Change_BGM_Battle", Group = "MoreMatchTypes")]
     [FieldAccess(Class = "Menu_SoundManager", Field = "g_ProgressBGM_Continue", Group = "MoreMatchTypes")]
     [FieldAccess(Class = "Menu_SoundManager", Field = "g_KeepBgmNumber", Group = "MoreMatchTypes")]
+    [FieldAccess(Class = "Menu_SoundManager", Field = "MyMusic_Play", Group = "MoreMatchTypes")]
     #endregion
     public class ExtendedElimination
     {
@@ -142,6 +142,11 @@ namespace MoreMatchTypes
             {
                 return false;
             }
+
+            if(endMatch)
+            {
+                return false;
+            }
             int loser = -1;
             Player plObj;
             //Determine which player lost
@@ -256,6 +261,30 @@ namespace MoreMatchTypes
             }
         }
 
+        [Hook(TargetClass = "Menu_SoundManager", TargetMethod = "MyMusic_Play", InjectionLocation = 0, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.None, Group = "MoreMatchTypes")]
+        public static void UpdateMusic()
+        {
+            if (!isExElimination)
+            {
+                return;
+            }
+
+            //Force change the Match BGM; this implementation allows the theme to be changed before each new match
+            string matchBGM = "";
+            string bgmPath = System.IO.Directory.GetCurrentDirectory() + @"\BGM";
+            try
+            {
+                matchBGM = bgmPath + @"\" + MoreMatchTypes_Form.form.el_bgm.SelectedItem.ToString();
+                global::Menu_SoundManager.MyMusic_SelectFile_Match = matchBGM;
+                L.D("Match BGM Path: " + matchBGM);
+            }
+            catch (Exception ex)
+            {
+                L.D("Change Music Exception: " + ex.Message + "\nMatch Bgm: " + matchBGM);
+            }
+
+        }
+
         [Hook(TargetClass = "Menu_Result", TargetMethod = "Set_FinishSkill", InjectionLocation = 8, InjectDirection = HookInjectDirection.After, InjectFlags = HookInjectFlags.PassParametersVal | HookInjectFlags.PassLocals, LocalVarIds = new int[] { 1 }, Group = "MoreMatchTypes")]
         public static void SetResultScreenDisplay(ref UILabel finishText, string str)
         {
@@ -264,13 +293,21 @@ namespace MoreMatchTypes
                 return;
             }
 
+            string matchTime = "";
             //Get the current match time
-            string matchTime = currMatchTime.min.ToString() + " Minutes, " + currMatchTime.sec.ToString() + " Seconds\n";
+            try
+            {
+                matchTime = currMatchTime.min.ToString() + " Minutes, " + currMatchTime.sec.ToString() + " Seconds\n";
 
-            
+            }
+            catch (NullReferenceException ex)
+            {
+                matchTime = "";
+            }
+
 
             string winResult = "Winner: ";
-            
+
             //Determine which winner should be highlighted
             if (loserTrack == 0)
             {
@@ -285,28 +322,6 @@ namespace MoreMatchTypes
 
             string resultString = "Elimination Match\n\n" + matchTime + winResult;
             finishText.text = resultString;
-        }
-
-        [Hook(TargetClass = "Menu_SoundManager", TargetMethod = "Change_BGM_Battle", InjectionLocation = int.MaxValue, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.None, Group = "MoreMatchTypes")]
-        public static void SetBGM()
-        {
-            if (isExElimination)
-            {
-                //Manually set the BGM, in order to avoid errors with the default BGM array.
-                if (MoreMatchTypes_Form.form.el_bgm.SelectedIndex > 2)
-                {
-                    string bgmName = MoreMatchTypes_Form.form.el_bgm.SelectedItem as String;
-                    L.D("BGM Name: " + bgmName);
-                    L.D("Match BGM Num: " + global::MatchBGM.Num);
-                    L.D("File List Count: " + global::MyMusic.FileList_Match.Count);
-                    L.D("Match Config Value: " + (global::MatchBGM)global::GlobalParam.Get_BattleConfig_Value(30));
-
-                    global::Menu_SoundManager.Sound_ClipList[17] = (AudioClip)Resources.Load("Sound/Bgm/" + bgmName);
-                    return;
-                }
-
-            }
-
         }
 
         #region Helper Methods
@@ -349,7 +364,7 @@ namespace MoreMatchTypes
                 redTeamMembers.Enqueue(member);
             }
         }
-        public static void EndMatch()
+        private static void EndMatch()
         {
             //Ensure this isn't executed multiple times
             if (!endMatch)
@@ -369,12 +384,17 @@ namespace MoreMatchTypes
             }
             endMatch = true;
         }
-        public static void EndRound()
+        private static void EndRound()
         {
             L.D("Ending Round? " + !endRound);
             //Override match end status
             MatchMain main = MatchMain.inst;
             main.isMatchEnd = false;
+            currMatchTime = new MatchTime
+            {
+                min = main.matchTime.min,
+                sec = main.matchTime.sec
+            };
 
             //Removing members without returning to the result screen
             if (blueTeamMembers.Count <= 4 && redTeamMembers.Count <= 4)
@@ -385,8 +405,8 @@ namespace MoreMatchTypes
                 matchRef.PlDir = PlDirEnum.Left;
                 matchRef.ReqRefereeAnm(BasicSkillEnum.Refe_Stand_MatchEnd_Front_Left);
                 Announcer.inst.PlayGong_Eliminated();
-
                 main.isTimeCounting = true;
+
                 //This section is executed when the losing team has 4 members or less remaining
                 //Removing members from the losing team
                 if (loserTrack == 0)
@@ -400,7 +420,7 @@ namespace MoreMatchTypes
                     ActivateMember(memberTrack[0]);
                     L.D("Blue Members Remaining: " + blueTeamMembers.Count);
                 }
-                else if (loserTrack == 1)
+                if (loserTrack == 1)
                 {
                     Player plObj = PlayerMan.inst.GetPlObj(memberTrack[1] + 4);
 
@@ -411,8 +431,8 @@ namespace MoreMatchTypes
                     ActivateMember(memberTrack[1] + 4);
                     L.D("Red Members Remaining: " + redTeamMembers.Count);
                 }
-                SetSeconds();
-                UpdateTeamMembers();
+                //SetSeconds();
+                //UpdateTeamMembers();
                 endRound = true;
             }
             //Removing members by returning to the result screen
@@ -424,7 +444,6 @@ namespace MoreMatchTypes
                     Referee matchRef = RefereeMan.inst.GetRefereeObj();
                     matchRef.PlDir = PlDirEnum.Left;
                     matchRef.ReqRefereeAnm(BasicSkillEnum.Refe_Stand_MatchEnd_Front_Left);
-                    //Announcer.inst.PlayGong_Eliminated();
 
                     currMatchTime = new MatchTime
                     {
@@ -438,7 +457,6 @@ namespace MoreMatchTypes
                     MatchSetting settings = GlobalWork.GetInst().MatchSetting;
                     settings.is3GameMatch = true;
                     main.isInterruptedMatch = false;
-                    //nextMatch = true;
 
                     //Ensure the 3 Game Rule Doesn't Force Match to End
                     global::GlobalParam.m_MacthCount = 0;
@@ -459,11 +477,11 @@ namespace MoreMatchTypes
             UpdateWins();
 
         }
-        public static void DisplayElimination(String wrestlerName, int membersRemaining)
+        private static void DisplayElimination(String wrestlerName, int membersRemaining)
         {
             DispNotification.inst.Show(wrestlerName + " has been eliminated!\t" + teamNames[loserTrack] + " members remaining: " + membersRemaining, 300);
         }
-        public static void ActivateMember(int playerIndex)
+        private static void ActivateMember(int playerIndex)
         {
             Player plObj = PlayerMan.inst.GetPlObj(playerIndex);
 
@@ -483,7 +501,7 @@ namespace MoreMatchTypes
                 plObj.Start_ForceControl(ForceCtrlEnum.GoBackToRing);
             }
         }
-        public static void SetLoserState(int playerIndex)
+        private static void SetLoserState(int playerIndex)
         {
             Player plObj = PlayerMan.inst.GetPlObj(playerIndex);
 
@@ -499,7 +517,7 @@ namespace MoreMatchTypes
 
             }
         }
-        public static void SetSeconds()
+        private static void SetSeconds()
         {
             Player plObj;
             for (int i = 0; i < 8; i++)
@@ -546,7 +564,7 @@ namespace MoreMatchTypes
                 plObj.hasRight = false;
             }
         }
-        public static void UpdateTeamMembers()
+        private static void UpdateTeamMembers()
         {
             MatchSetting settings = GlobalWork.inst.MatchSetting;
             //Update Blue Team Members
@@ -687,7 +705,7 @@ namespace MoreMatchTypes
                 }
             }
         }
-        public static void UpdateWins()
+        private static void UpdateWins()
         {
             //Record wins
             if (loserTrack == 0)

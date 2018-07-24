@@ -41,6 +41,9 @@ namespace MoreMatchTypes
             setting.CriticalRate = CriticalRateEnum.Off;
             MoreMatchTypes_Form.form.Enabled = false;
 
+            bloodMeter = new int[8];
+            endMatch = false;
+
 
         }
 

@@ -12,6 +12,21 @@
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -70,28 +85,49 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Elimination.cs" />
-    <Compile Include="ExtendedElimination.cs" />
-    <Compile Include="FirstBloodMatch.cs" />
+    <Compile Include="Helper Classes\MatchConfiguration.cs" />
+    <Compile Include="Helper Classes\MatchEndFunctions.cs" />
+    <Compile Include="Wrestling Match Types\Elimination.cs" />
+    <Compile Include="Wrestling Match Types\ExtendedElimination.cs" />
+    <Compile Include="Wrestling Match Types\FirstBloodMatch.cs" />
     <Compile Include="Helper Classes\IDObject.cs" />
     <Compile Include="Helper Classes\WresIDGroup.cs" />
-    <Compile Include="IronManMatch.cs" />
+    <Compile Include="Wrestling Match Types\IronManMatch.cs" />
     <Compile Include="MoreMatchTypes_Form.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MoreMatchTypes_Form.Designer.cs">
       <DependentUpon>MoreMatchTypes_Form.cs</DependentUpon>
     </Compile>
-    <Compile Include="Pancrase.cs" />
+    <Compile Include="Shoot Match Types\Pancrase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SumoMatch.cs" />
-    <Compile Include="Uwfi.cs" />
+    <Compile Include="Shoot Match Types\SumoMatch.cs" />
+    <Compile Include="Shoot Match Types\Uwfi.cs" />
+    <Compile Include="Wrestling Match Types\SurvivalRoad.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="MoreMatchTypes_Form.resx">
       <DependentUpon>MoreMatchTypes_Form.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="MatchDetails.mdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="MatchDetails_log.ldf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <DependentUpon>MatchDetails.mdf</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DataAccess\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
