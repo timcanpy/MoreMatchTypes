@@ -60,6 +60,12 @@ namespace MoreMatchTypes.Helper_Classes
             String[] wrestlerName = wrestlerData.Split(':');
             return (WrestlerID)Int32.Parse(wrestlerName[wrestlerName.Length - 1]);
         }
+
+        public static String GetWrestlerName(String wrestlerData)
+        {
+            String[] wrestlerName = wrestlerData.Split(':');
+            return wrestlerName[0];
+        }
         
     }
 }

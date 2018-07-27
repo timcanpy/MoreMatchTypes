@@ -211,12 +211,6 @@ namespace MoreMatchTypes
             {
                 return;
             }
-
-            ////Determine if round should end
-            //if(ropeBreak || foulChecked)
-            //{
-            //    EndRound();
-            //}
         }
 
         [Hook(TargetClass = "Referee", TargetMethod = "Start_SubmissionCheck", InjectionLocation = 36, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.PassInvokingInstance, Group = "MoreMatchTypes")]
@@ -368,8 +362,8 @@ namespace MoreMatchTypes
             if (isPancrase && currMatchTime != null)
             {
                 m.matchTime.Set(currMatchTime);
-                PlayerMan.inst.GetPlObj(0).BP = currentBP[0];
-                PlayerMan.inst.GetPlObj(4).BP = currentBP[1];
+                //PlayerMan.inst.GetPlObj(0).BP = currentBP[0];
+                //PlayerMan.inst.GetPlObj(4).BP = currentBP[1];
             }
         }
 
@@ -451,11 +445,13 @@ namespace MoreMatchTypes
         private static void EndRound()
         {
             //Prepare the next round
-            currentBP[0] = PlayerMan.inst.GetPlObj(0).BP;
-            currentBP[1] = PlayerMan.inst.GetPlObj(4).BP;
+            //currentBP[0] = PlayerMan.inst.GetPlObj(0).BP;
+            //currentBP[1] = PlayerMan.inst.GetPlObj(4).BP;
 
-            PlayerMan.inst.GetPlObj(0).BP = 0;
-            PlayerMan.inst.GetPlObj(4).BP = 0;
+            //PlayerMan.inst.GetPlObj(0).BP = 0;
+            //PlayerMan.inst.GetPlObj(4).BP = 0;
+            PlayerMan.inst.GetPlObj(0).forceControl = ForceCtrlEnum.WaitMatchStart;
+            PlayerMan.inst.GetPlObj(4).forceControl = ForceCtrlEnum.WaitMatchStart;
             MatchMain main = MatchMain.inst;
 
             Referee matchRef = RefereeMan.inst.GetRefereeObj();

@@ -6,6 +6,7 @@ using DG.DG;
 using System.Diagnostics;
 using System.IO;
 using MoreMatchTypes.Helper_Classes;
+using System.Linq;
 
 namespace MoreMatchTypes
 {
@@ -674,12 +675,13 @@ namespace MoreMatchTypes
             bool controlBoth = false;
             bool validEntry = false;
             int control = 0;
+            int oppCount = sr_teamList.Items.Count;
             #endregion
 
             try
             {
                 settings = SetMatchConfig("Survival", settings);
-
+                sr_progress.Clear();
                 //Set-up player team
                 for (int i = 0; i < 4; i++)
                 {
@@ -695,7 +697,7 @@ namespace MoreMatchTypes
                     {
                         if (!second.Trim().Equals(string.Empty))
                         {
-                            
+
                             validEntry = true;
                             wrestlerNo = MatchConfiguration.GetWrestlerNo(second);
                             if (sr_tag.Checked)
@@ -711,7 +713,7 @@ namespace MoreMatchTypes
                                     control = 0;
                                 }
                             }
-                            else if(!sr_tag.Checked)
+                            else if (!sr_tag.Checked)
                             {
                                 isSecond = true;
                             }
@@ -734,12 +736,12 @@ namespace MoreMatchTypes
                     }
 
                     //Determine if this is a simulation
-                    if(sr_simulate.Checked)
+                    if (sr_simulate.Checked)
                     {
                         control = 0;
                     }
                     settings = MatchConfiguration.AddPlayers(validEntry, wrestlerNo, i, control, isSecond, 0, settings);
-                    if(validEntry)
+                    if (validEntry)
                     {
                         L.D("Wrestler Index: " + i + "\nIs Second: " + isSecond);
                     }
@@ -764,11 +766,25 @@ namespace MoreMatchTypes
                         }
                         else if (i == 4)
                         {
-                            wrestlerNo = MatchConfiguration.GetWrestlerNo(sr_teamList.Items[0].ToString());
+                            if (!sr_reverse.Checked)
+                            {
+                                wrestlerNo = MatchConfiguration.GetWrestlerNo(sr_teamList.Items[0].ToString());
+                            }
+                            else
+                            {
+                                wrestlerNo = MatchConfiguration.GetWrestlerNo(sr_teamList.Items[oppCount - 1].ToString());
+                            }
                         }
                         else if (i == 5)
                         {
-                            wrestlerNo = MatchConfiguration.GetWrestlerNo(sr_teamList.Items[1].ToString());
+                            if (!sr_reverse.Checked)
+                            {
+                                wrestlerNo = MatchConfiguration.GetWrestlerNo(sr_teamList.Items[1].ToString());
+                            }
+                            else
+                            {
+                                wrestlerNo = MatchConfiguration.GetWrestlerNo(sr_teamList.Items[oppCount - 2].ToString());
+                            }
                         }
 
                         if (sr_tag.Checked && i == 5)
@@ -960,7 +976,7 @@ namespace MoreMatchTypes
                         ShowError("At least one opponent must be selected in order to play single matches.");
                         isValid = false;
                     }
-                    if(sr_teamList.Items.Count < 2 && sr_tag.Checked)
+                    if (sr_teamList.Items.Count < 2 && sr_tag.Checked)
                     {
                         ShowError("At least two opponents must be selected in order to play tag team matches.");
                         isValid = false;
@@ -1205,7 +1221,6 @@ namespace MoreMatchTypes
         {
             MessageBox.Show(message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
-
 
         #endregion
         private void tt_normal_Popup(object sender, PopupEventArgs e)

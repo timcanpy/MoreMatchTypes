@@ -89,6 +89,7 @@
             this.el_blueList = new System.Windows.Forms.ListBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.sr_simulate = new System.Windows.Forms.CheckBox();
             this.sr_resetContinues = new System.Windows.Forms.LinkLabel();
             this.sr_resetMatches = new System.Windows.Forms.LinkLabel();
             this.sr_matchType = new System.Windows.Forms.ComboBox();
@@ -109,6 +110,7 @@
             this.label19 = new System.Windows.Forms.Label();
             this.sr_second = new System.Windows.Forms.TextBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.sr_reverse = new System.Windows.Forms.CheckBox();
             this.sr_teamName = new System.Windows.Forms.TextBox();
             this.label18 = new System.Windows.Forms.Label();
             this.sr_removeAll = new System.Windows.Forms.Button();
@@ -148,7 +150,6 @@
             this.cb_survival = new System.Windows.Forms.RadioButton();
             this.matchHelp = new System.Windows.Forms.Button();
             this.tt_normal = new System.Windows.Forms.ToolTip(this.components);
-            this.sr_simulate = new System.Windows.Forms.CheckBox();
             this.rulesTabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -818,6 +819,18 @@
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Player Options";
             // 
+            // sr_simulate
+            // 
+            this.sr_simulate.AutoSize = true;
+            this.sr_simulate.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.sr_simulate.ForeColor = System.Drawing.Color.Red;
+            this.sr_simulate.Location = new System.Drawing.Point(278, 145);
+            this.sr_simulate.Name = "sr_simulate";
+            this.sr_simulate.Size = new System.Drawing.Size(74, 17);
+            this.sr_simulate.TabIndex = 64;
+            this.sr_simulate.Text = "Simulate";
+            this.sr_simulate.UseVisualStyleBackColor = true;
+            // 
             // sr_resetContinues
             // 
             this.sr_resetContinues.AutoSize = true;
@@ -897,6 +910,7 @@
             this.sr_progress.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.sr_progress.Size = new System.Drawing.Size(386, 89);
             this.sr_progress.TabIndex = 56;
+            this.sr_progress.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label26
             // 
@@ -1005,6 +1019,7 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.sr_reverse);
             this.groupBox3.Controls.Add(this.sr_teamName);
             this.groupBox3.Controls.Add(this.label18);
             this.groupBox3.Controls.Add(this.sr_removeAll);
@@ -1016,6 +1031,16 @@
             this.groupBox3.TabIndex = 42;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Opposing Team";
+            // 
+            // sr_reverse
+            // 
+            this.sr_reverse.AutoSize = true;
+            this.sr_reverse.Location = new System.Drawing.Point(106, 16);
+            this.sr_reverse.Name = "sr_reverse";
+            this.sr_reverse.Size = new System.Drawing.Size(113, 17);
+            this.sr_reverse.TabIndex = 5;
+            this.sr_reverse.Text = "Reverse Selection";
+            this.sr_reverse.UseVisualStyleBackColor = true;
             // 
             // sr_teamName
             // 
@@ -1420,18 +1445,6 @@
             this.tt_normal.ToolTipTitle = "Normal Match Info";
             this.tt_normal.Popup += new System.Windows.Forms.PopupEventHandler(this.tt_normal_Popup);
             // 
-            // sr_simulate
-            // 
-            this.sr_simulate.AutoSize = true;
-            this.sr_simulate.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.sr_simulate.ForeColor = System.Drawing.Color.Red;
-            this.sr_simulate.Location = new System.Drawing.Point(278, 145);
-            this.sr_simulate.Name = "sr_simulate";
-            this.sr_simulate.Size = new System.Drawing.Size(74, 17);
-            this.sr_simulate.TabIndex = 64;
-            this.sr_simulate.Text = "Simulate";
-            this.sr_simulate.UseVisualStyleBackColor = true;
-            // 
             // MoreMatchTypes_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1601,5 +1614,6 @@
         private System.Windows.Forms.LinkLabel sr_resetMatches;
         public System.Windows.Forms.RadioButton cb_survival;
         public System.Windows.Forms.CheckBox sr_simulate;
+        public System.Windows.Forms.CheckBox sr_reverse;
     }
 }
