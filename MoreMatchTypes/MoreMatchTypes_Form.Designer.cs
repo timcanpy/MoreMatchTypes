@@ -587,6 +587,7 @@
             this.el_resultList.Location = new System.Drawing.Point(6, 72);
             this.el_resultList.Name = "el_resultList";
             this.el_resultList.Size = new System.Drawing.Size(336, 21);
+            this.el_resultList.Sorted = true;
             this.el_resultList.TabIndex = 5;
             // 
             // el_promotionList
@@ -596,6 +597,7 @@
             this.el_promotionList.Location = new System.Drawing.Point(361, 27);
             this.el_promotionList.Name = "el_promotionList";
             this.el_promotionList.Size = new System.Drawing.Size(374, 21);
+            this.el_promotionList.Sorted = true;
             this.el_promotionList.TabIndex = 4;
             // 
             // label2
@@ -788,7 +790,6 @@
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Survival Road Setup";
             this.tabPage3.UseVisualStyleBackColor = true;
-            this.tabPage3.Click += new System.EventHandler(this.tabPage3_Click);
             // 
             // groupBox4
             // 
@@ -1328,6 +1329,7 @@
             this.sr_searchResult.Location = new System.Drawing.Point(6, 72);
             this.sr_searchResult.Name = "sr_searchResult";
             this.sr_searchResult.Size = new System.Drawing.Size(336, 21);
+            this.sr_searchResult.Sorted = true;
             this.sr_searchResult.TabIndex = 5;
             // 
             // sr_promotionList
@@ -1337,7 +1339,9 @@
             this.sr_promotionList.Location = new System.Drawing.Point(361, 27);
             this.sr_promotionList.Name = "sr_promotionList";
             this.sr_promotionList.Size = new System.Drawing.Size(374, 21);
+            this.sr_promotionList.Sorted = true;
             this.sr_promotionList.TabIndex = 4;
+            this.sr_promotionList.SelectedIndexChanged += new System.EventHandler(this.sr_promotionList_SelectedIndexChanged);
             // 
             // label22
             // 
@@ -1443,7 +1447,6 @@
             this.tt_normal.IsBalloon = true;
             this.tt_normal.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             this.tt_normal.ToolTipTitle = "Normal Match Info";
-            this.tt_normal.Popup += new System.Windows.Forms.PopupEventHandler(this.tt_normal_Popup);
             // 
             // MoreMatchTypes_Form
             // 

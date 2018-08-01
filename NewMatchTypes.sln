@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interfaces", "Interfaces\In
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoreMatchTypes", "MoreMatchTypes\MoreMatchTypes.csproj", "{F2F06873-F2A2-44F0-A30A-2DEF3FAB5D7C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatchConfig", "MatchConfig\MatchConfig.csproj", "{210D1E6B-819B-4ACA-A4E2-A3318BB9B209}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,14 @@ Global
 		{F2F06873-F2A2-44F0-A30A-2DEF3FAB5D7C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F2F06873-F2A2-44F0-A30A-2DEF3FAB5D7C}.Release|x86.ActiveCfg = Release|x86
 		{F2F06873-F2A2-44F0-A30A-2DEF3FAB5D7C}.Release|x86.Build.0 = Release|x86
+		{210D1E6B-819B-4ACA-A4E2-A3318BB9B209}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{210D1E6B-819B-4ACA-A4E2-A3318BB9B209}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{210D1E6B-819B-4ACA-A4E2-A3318BB9B209}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{210D1E6B-819B-4ACA-A4E2-A3318BB9B209}.Debug|x86.Build.0 = Debug|Any CPU
+		{210D1E6B-819B-4ACA-A4E2-A3318BB9B209}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{210D1E6B-819B-4ACA-A4E2-A3318BB9B209}.Release|Any CPU.Build.0 = Release|Any CPU
+		{210D1E6B-819B-4ACA-A4E2-A3318BB9B209}.Release|x86.ActiveCfg = Release|Any CPU
+		{210D1E6B-819B-4ACA-A4E2-A3318BB9B209}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

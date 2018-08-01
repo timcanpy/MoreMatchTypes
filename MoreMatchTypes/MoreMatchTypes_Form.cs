@@ -14,6 +14,7 @@ namespace MoreMatchTypes
     {
         #region Variables
         public static MoreMatchTypes_Form form = null;
+        public static List<String> promotionList = new List<string>();
         public static List<uint> gameSpeed = new List<uint>();
         public static List<String> venues = new List<String>();
         public static List<WresIDGroup> wrestlerList = new List<WresIDGroup>();
@@ -265,19 +266,21 @@ namespace MoreMatchTypes
         {
             //Elimination
             this.el_promotionList.Items.Clear();
-            this.el_promotionList.Items.Add("ALL");
 
             //Survival Road
             this.sr_promotionList.Items.Clear();
-            this.sr_promotionList.Items.Add("ALL");
 
             foreach (GroupInfo current in SaveData.GetInst().groupList)
             {
                 string longName = SaveData.GetInst().organizationList[current.organizationID].longName;
+
+                //Ignoring the retired group
                 this.el_promotionList.Items.Add(longName + " : " + current.longName);
                 this.sr_promotionList.Items.Add(longName + " : " + current.longName);
+                promotionList.Add(longName + " : " + current.longName);
 
             }
+
         }
 
         private void LoadDifficulty()
@@ -335,19 +338,26 @@ namespace MoreMatchTypes
             {
                 return;
             }
-
-            if (promotionField.SelectedIndex == 0)
+            if(promotionField.SelectedItem.ToString().Contains("未登録"))
             {
-                this.LoadSubs();
+                LoadSubs();
             }
             else
             {
                 foreach (WresIDGroup current in wrestlerList)
                 {
-                    if (current.Group == promotionField.SelectedIndex - 1)
+                    try
                     {
-                        resultField.Items.Add(current.Name + ":" + current.ID);
+                        if (current.Group == FindGroup(promotionField.SelectedItem.ToString()))
+                        {
+                            resultField.Items.Add(current.Name + ":" + current.ID);
+                        }
                     }
+                    catch (Exception ex)
+                    {
+                        L.D("Error: " + ex.Message);
+                    }
+
                 }
             }
         }
@@ -1211,22 +1221,22 @@ namespace MoreMatchTypes
 
         #endregion
 
-        private void tabPage3_Click(object sender, EventArgs e)
-        {
-
-        }
-
         #region Helper Methods
         private void ShowError(String message)
         {
             MessageBox.Show(message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
-        #endregion
-        private void tt_normal_Popup(object sender, PopupEventArgs e)
+        private int FindGroup(String groupName)
         {
-
+            return promotionList.IndexOf(groupName);
         }
 
+        #endregion
+
+        private void sr_promotionList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            L.D(sr_promotionList.SelectedItem.ToString());
+        }
     }
 }
