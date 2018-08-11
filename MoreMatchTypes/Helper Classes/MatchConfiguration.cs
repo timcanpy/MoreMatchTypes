@@ -55,12 +55,21 @@ namespace MoreMatchTypes.Helper_Classes
             return settings;
         }
 
-        public static WrestlerID GetWrestlerNo(String wrestlerData)
+        public static WrestlerID GetWrestlerNo(WresIDGroup wrestler)
         {
-            String[] wrestlerName = wrestlerData.Split(':');
-            return (WrestlerID)Int32.Parse(wrestlerName[wrestlerName.Length - 1]);
+            return (WrestlerID)wrestler.ID;
         }
 
+        public static WresIDGroup GetWrestlerData(String wrestler, List<WresIDGroup> wrestlerList)
+        {
+            WresIDGroup wrestlerData = null;
+
+            if(!String.IsNullOrEmpty(wrestler))
+            {
+ 
+            }
+            return wrestlerData;
+        }
         public static String GetWrestlerName(String wrestlerData)
         {
             String[] wrestlerName = wrestlerData.Split(':');

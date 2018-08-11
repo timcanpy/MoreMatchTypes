@@ -106,9 +106,7 @@
             this.sr_secondClear = new System.Windows.Forms.Button();
             this.sr_wrestlerClear = new System.Windows.Forms.Button();
             this.label20 = new System.Windows.Forms.Label();
-            this.sr_wrestler = new System.Windows.Forms.TextBox();
             this.label19 = new System.Windows.Forms.Label();
-            this.sr_second = new System.Windows.Forms.TextBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.sr_reverse = new System.Windows.Forms.CheckBox();
             this.sr_teamName = new System.Windows.Forms.TextBox();
@@ -150,6 +148,8 @@
             this.cb_survival = new System.Windows.Forms.RadioButton();
             this.matchHelp = new System.Windows.Forms.Button();
             this.tt_normal = new System.Windows.Forms.ToolTip(this.components);
+            this.sr_wrestler = new System.Windows.Forms.ComboBox();
+            this.sr_second = new System.Windows.Forms.ComboBox();
             this.rulesTabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -599,6 +599,7 @@
             this.el_promotionList.Size = new System.Drawing.Size(374, 21);
             this.el_promotionList.Sorted = true;
             this.el_promotionList.TabIndex = 4;
+            this.el_promotionList.SelectedIndexChanged += new System.EventHandler(this.el_promotionList_SelectedIndexChanged);
             // 
             // label2
             // 
@@ -793,6 +794,8 @@
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.sr_second);
+            this.groupBox4.Controls.Add(this.sr_wrestler);
             this.groupBox4.Controls.Add(this.sr_simulate);
             this.groupBox4.Controls.Add(this.sr_resetContinues);
             this.groupBox4.Controls.Add(this.sr_resetMatches);
@@ -810,9 +813,7 @@
             this.groupBox4.Controls.Add(this.sr_secondClear);
             this.groupBox4.Controls.Add(this.sr_wrestlerClear);
             this.groupBox4.Controls.Add(this.label20);
-            this.groupBox4.Controls.Add(this.sr_wrestler);
             this.groupBox4.Controls.Add(this.label19);
-            this.groupBox4.Controls.Add(this.sr_second);
             this.groupBox4.Location = new System.Drawing.Point(10, 178);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(406, 272);
@@ -993,14 +994,6 @@
             this.label20.TabIndex = 46;
             this.label20.Text = "Second";
             // 
-            // sr_wrestler
-            // 
-            this.sr_wrestler.Enabled = false;
-            this.sr_wrestler.Location = new System.Drawing.Point(3, 34);
-            this.sr_wrestler.Name = "sr_wrestler";
-            this.sr_wrestler.Size = new System.Drawing.Size(336, 20);
-            this.sr_wrestler.TabIndex = 43;
-            // 
             // label19
             // 
             this.label19.AutoSize = true;
@@ -1009,14 +1002,6 @@
             this.label19.Size = new System.Drawing.Size(46, 13);
             this.label19.TabIndex = 45;
             this.label19.Text = "Wrestler";
-            // 
-            // sr_second
-            // 
-            this.sr_second.Enabled = false;
-            this.sr_second.Location = new System.Drawing.Point(3, 76);
-            this.sr_second.Name = "sr_second";
-            this.sr_second.Size = new System.Drawing.Size(336, 20);
-            this.sr_second.TabIndex = 44;
             // 
             // groupBox3
             // 
@@ -1448,6 +1433,26 @@
             this.tt_normal.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             this.tt_normal.ToolTipTitle = "Normal Match Info";
             // 
+            // sr_wrestler
+            // 
+            this.sr_wrestler.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.sr_wrestler.Enabled = false;
+            this.sr_wrestler.FormattingEnabled = true;
+            this.sr_wrestler.Location = new System.Drawing.Point(7, 35);
+            this.sr_wrestler.Name = "sr_wrestler";
+            this.sr_wrestler.Size = new System.Drawing.Size(332, 21);
+            this.sr_wrestler.TabIndex = 65;
+            // 
+            // sr_second
+            // 
+            this.sr_second.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.sr_second.Enabled = false;
+            this.sr_second.FormattingEnabled = true;
+            this.sr_second.Location = new System.Drawing.Point(8, 75);
+            this.sr_second.Name = "sr_second";
+            this.sr_second.Size = new System.Drawing.Size(331, 21);
+            this.sr_second.TabIndex = 66;
+            // 
             // MoreMatchTypes_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1602,8 +1607,6 @@
         public System.Windows.Forms.CheckBox el_redControl;
         public System.Windows.Forms.CheckBox el_blueControl;
         private System.Windows.Forms.Label label27;
-        public System.Windows.Forms.TextBox sr_wrestler;
-        public System.Windows.Forms.TextBox sr_second;
         public System.Windows.Forms.Button sr_secondClear;
         public System.Windows.Forms.Button sr_wrestlerClear;
         public System.Windows.Forms.RadioButton sr_tag;
@@ -1618,5 +1621,7 @@
         public System.Windows.Forms.RadioButton cb_survival;
         public System.Windows.Forms.CheckBox sr_simulate;
         public System.Windows.Forms.CheckBox sr_reverse;
+        public System.Windows.Forms.ComboBox sr_second;
+        public System.Windows.Forms.ComboBox sr_wrestler;
     }
 }

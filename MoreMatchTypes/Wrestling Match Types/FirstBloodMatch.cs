@@ -19,9 +19,15 @@ namespace MoreMatchTypes
         [Hook(TargetClass = "MatchMain", TargetMethod = "CreatePlayers", InjectionLocation = int.MaxValue, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.None, Group = "MoreMatchTypes")]
         public static void SetMatchRules()
         {
+            
+
             if (MoreMatchTypes_Form.form.cb_FirstBlood.Checked && GlobalWork.inst.MatchSetting.BattleRoyalKind == BattleRoyalKindEnum.Off)
             {
                 isFirstBlood = true;
+            }
+            else
+            {
+                isFirstBlood = false;
             }
 
             if (!isFirstBlood)

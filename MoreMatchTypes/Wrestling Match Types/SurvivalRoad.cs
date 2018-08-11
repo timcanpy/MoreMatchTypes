@@ -44,10 +44,10 @@ namespace MoreMatchTypes.Wrestling_Match_Types
         private static bool isReverse;
         private static int loserTrack;
         private static string[] teamNames;
-        private static string[] currOpponents;
-        private static List<String> teamList;
-        private static List<String> waitingOpponents;
-        private static List<String> usedOpponents;
+        private static WresIDGroup[] currOpponents;
+        private static List<WresIDGroup> teamList;
+        private static List<WresIDGroup> waitingOpponents;
+        private static List<WresIDGroup> usedOpponents;
         private static System.Random rnd = new System.Random();
         private static String playerEdit;
         private static String secondEdit;
@@ -293,9 +293,9 @@ namespace MoreMatchTypes.Wrestling_Match_Types
                 L.D("Refresh Player Error: " + ex.Message);
             }
         }
-        private static String SelectOpponent(int index)
+        private static WresIDGroup SelectOpponent(int index)
         {
-            String opponent = "";
+            WresIDGroup opponent = null;
             int randomIndex;
             if (waitingOpponents.Count == 0)
             {
@@ -325,12 +325,12 @@ namespace MoreMatchTypes.Wrestling_Match_Types
                     L.D("Waiting Opponents: " + waitingOpponents.Count);
                     L.D("First Opponent: " + currOpponents[0]);
                     L.D("Second Opponent: " + waitingOpponents[randomIndex]);
-                    String firstOpp = currOpponents[0];
-                    String secondOpp = waitingOpponents[randomIndex];
+                    WresIDGroup firstOpp = currOpponents[0];
+                    WresIDGroup secondOpp = waitingOpponents[randomIndex];
                     if (firstOpp.Equals(secondOpp))
                     {
                         L.D("Looking for new opponent");
-                        foreach (String wrestler in waitingOpponents)
+                        foreach (WresIDGroup wrestler in waitingOpponents)
                         {
                             if (!firstOpp.Equals(wrestler))
                             {
@@ -393,8 +393,8 @@ namespace MoreMatchTypes.Wrestling_Match_Types
                 return;
             }
 
-            String firstOpp = currOpponents[0];
-            String secondOpp = "";
+            WresIDGroup firstOpp = currOpponents[0];
+            WresIDGroup secondOpp = null;
             if (isTag)
             {
                 secondOpp = currOpponents[1];
@@ -466,14 +466,14 @@ namespace MoreMatchTypes.Wrestling_Match_Types
                 {
                     for (int i = 0; i < opponents.Count; i++)
                     {
-                        teamList.Add(opponents[i].ToString());
+                        teamList.Add((WresIDGroup)opponents[i]);
                     }
                 }
                 else
                 {
                     for (int i = opponents.Count - 1; i >= 0; i--)
                     {
-                        teamList.Add(opponents[i].ToString());
+                        teamList.Add((WresIDGroup)opponents[i]);
                     }
                 }
             }
@@ -481,7 +481,7 @@ namespace MoreMatchTypes.Wrestling_Match_Types
             waitingOpponents.Clear();
             usedOpponents.Clear();
 
-            foreach (String wrestler in teamList)
+            foreach (WresIDGroup wrestler in teamList)
             {
                 waitingOpponents.Add(wrestler);
             }
@@ -496,13 +496,13 @@ namespace MoreMatchTypes.Wrestling_Match_Types
             opponentTeam = MoreMatchTypes_Form.form.sr_teamName.Text;
 
             //Create Initial Wrestler List
-            waitingOpponents = new List<string>();
-            usedOpponents = new List<string>();
-            teamList = new List<string>();
+            waitingOpponents = new List<WresIDGroup>();
+            usedOpponents = new List<WresIDGroup>();
+            teamList = new List<WresIDGroup>();
             InitializeLists();
-            currOpponents = new string[2];
+            currOpponents = new WresIDGroup[2];
             currOpponents[0] = waitingOpponents[0];
-            currOpponents[1] = "";
+            currOpponents[1] = null;
             if (isTag)
             {
                 currOpponents[1] = waitingOpponents[1];
@@ -538,13 +538,13 @@ namespace MoreMatchTypes.Wrestling_Match_Types
             if (loserTrack > 3)
             {
                 UpdateTeamMembers();
-                WrestlerID wrestler = MatchConfiguration.GetWrestlerNo(SelectOpponent(0));
+                WrestlerID wrestler = (WrestlerID)SelectOpponent(0).ID;
                 settings = MatchConfiguration.AddPlayers(true, wrestler, 4, 0, false, 0, settings);
 
                 //Adding new tag partner
                 if (isTag)
                 {
-                    wrestler = MatchConfiguration.GetWrestlerNo(SelectOpponent(1));
+                    wrestler = (WrestlerID)SelectOpponent(1).ID;
                     settings = MatchConfiguration.AddPlayers(true, wrestler, 5, 0, false, 0, settings);
                 }
             }
@@ -590,10 +590,10 @@ namespace MoreMatchTypes.Wrestling_Match_Types
         {
             string info = "\nMatch #" + gameDetails[8]+"\n";
             string playerTeam = MatchConfiguration.GetWrestlerName(playerEdit);
-            string opponent = opponentTeam;
+            String opponent = opponentTeam;
             if(opponent.Equals(""))
             {
-                opponent = currOpponents[0];
+                opponent = currOpponents[0].ToString();
             }
 
             if(isTag)

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 using DG;
+using MoreMatchTypes.Helper_Classes;
 using UnityEngine;
 
 namespace MoreMatchTypes
@@ -23,8 +24,8 @@ namespace MoreMatchTypes
         #region Variables
         public static int[] wins = new int[2];
         public static string[] teamNames = new string[2];
-        public static Queue<String> blueTeamMembers;
-        public static Queue<String> redTeamMembers;
+        public static Queue<WresIDGroup> blueTeamMembers;
+        public static Queue<WresIDGroup> redTeamMembers;
         public static int[] memberTrack;
         public static bool endRound = false;
         public static bool endMatch = false;
@@ -349,17 +350,17 @@ namespace MoreMatchTypes
         }
         private static void SetTeamMembers()
         {
-            blueTeamMembers = new Queue<string>();
-            redTeamMembers = new Queue<string>();
+            blueTeamMembers = new Queue<WresIDGroup>();
+            redTeamMembers = new Queue<WresIDGroup>();
 
             //Create Blue Team Member List
-            foreach (String member in MoreMatchTypes_Form.form.el_blueList.Items)
+            foreach (WresIDGroup member in MoreMatchTypes_Form.form.el_blueList.Items)
             {
                 blueTeamMembers.Enqueue(member);
             }
 
             //Create Red Team Member List
-            foreach (String member in MoreMatchTypes_Form.form.el_redList.Items)
+            foreach (WresIDGroup member in MoreMatchTypes_Form.form.el_redList.Items)
             {
                 redTeamMembers.Enqueue(member);
             }
@@ -570,7 +571,7 @@ namespace MoreMatchTypes
             //Update Blue Team Members
             if (loserTrack == 0)
             {
-                String[] wrestlers = blueTeamMembers.ToArray();
+                WresIDGroup[] wrestlers = blueTeamMembers.ToArray();
 
                 for (int i = 0; i < 4; i++)
                 {
@@ -578,8 +579,7 @@ namespace MoreMatchTypes
                     {
                         settings.matchWrestlerInfo[i].entry = true;
 
-                        String[] wrestlerName = wrestlers[i].Split(':');
-                        settings.matchWrestlerInfo[i].wrestlerID = (WrestlerID)Int32.Parse(wrestlerName[wrestlerName.Length - 1]);
+                        settings.matchWrestlerInfo[i].wrestlerID = (WrestlerID)wrestlers[i].ID;
                         settings.matchWrestlerInfo[i].costume_no = 0;
                         settings.matchWrestlerInfo[i].alignment = WrestlerAlignmentEnum.Neutral;
                         settings.matchWrestlerInfo[i].assignedPad = PadPort.AI;
@@ -636,7 +636,7 @@ namespace MoreMatchTypes
             //Update Red Team Members
             if (loserTrack == 1)
             {
-                String[] wrestlers = redTeamMembers.ToArray();
+                WresIDGroup[] wrestlers = redTeamMembers.ToArray();
                 int spot = 4;
 
                 for (int i = 0; i < 4; i++)
@@ -644,8 +644,8 @@ namespace MoreMatchTypes
                     try
                     {
                         settings.matchWrestlerInfo[spot].entry = true;
-                        String[] wrestlerName = wrestlers[i].Split(':');
-                        settings.matchWrestlerInfo[spot].wrestlerID = (WrestlerID)Int32.Parse(wrestlerName[wrestlerName.Length - 1]);
+
+                        settings.matchWrestlerInfo[spot].wrestlerID = (WrestlerID)wrestlers[i].ID;
                         settings.matchWrestlerInfo[spot].costume_no = 0;
                         settings.matchWrestlerInfo[spot].alignment = WrestlerAlignmentEnum.Neutral;
                         settings.matchWrestlerInfo[spot].assignedPad = PadPort.AI;
