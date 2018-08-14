@@ -72,6 +72,9 @@
     <Reference Include="Carlzilla">
       <HintPath>..\DLL Files\Carlzilla.dll</HintPath>
     </Reference>
+    <Reference Include="MatchConfig">
+      <HintPath>..\MatchConfig\bin\Debug\MatchConfig.dll</HintPath>
+    </Reference>
     <Reference Include="PWGR Framework">
       <HintPath>..\DLL Files\PWGR Framework.dll</HintPath>
     </Reference>
@@ -86,13 +89,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataAccess\DataMethods.cs" />
-    <Compile Include="Helper Classes\MatchConfiguration.cs" />
-    <Compile Include="Helper Classes\MatchEndFunctions.cs" />
     <Compile Include="Wrestling Match Types\Elimination.cs" />
     <Compile Include="Wrestling Match Types\ExtendedElimination.cs" />
     <Compile Include="Wrestling Match Types\FirstBloodMatch.cs" />
-    <Compile Include="Helper Classes\IDObject.cs" />
-    <Compile Include="Helper Classes\WresIDGroup.cs" />
     <Compile Include="Wrestling Match Types\IronManMatch.cs" />
     <Compile Include="MoreMatchTypes_Form.cs">
       <SubType>Form</SubType>

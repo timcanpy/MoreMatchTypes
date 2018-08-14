@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using DG;
 using UnityEngine;
-using MoreMatchTypes.Helper_Classes;
 using MoreMatchTypes.DataAccess;
+using MatchConfig;
 
 namespace MoreMatchTypes.Wrestling_Match_Types
 {

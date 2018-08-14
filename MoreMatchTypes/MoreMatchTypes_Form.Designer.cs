@@ -89,6 +89,9 @@
             this.el_blueList = new System.Windows.Forms.ListBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.sr_cutplay = new System.Windows.Forms.CheckBox();
+            this.sr_second = new System.Windows.Forms.ComboBox();
+            this.sr_wrestler = new System.Windows.Forms.ComboBox();
             this.sr_simulate = new System.Windows.Forms.CheckBox();
             this.sr_resetContinues = new System.Windows.Forms.LinkLabel();
             this.sr_resetMatches = new System.Windows.Forms.LinkLabel();
@@ -148,8 +151,7 @@
             this.cb_survival = new System.Windows.Forms.RadioButton();
             this.matchHelp = new System.Windows.Forms.Button();
             this.tt_normal = new System.Windows.Forms.ToolTip(this.components);
-            this.sr_wrestler = new System.Windows.Forms.ComboBox();
-            this.sr_second = new System.Windows.Forms.ComboBox();
+            this.sr_simSecond = new System.Windows.Forms.CheckBox();
             this.rulesTabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -794,6 +796,8 @@
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.sr_simSecond);
+            this.groupBox4.Controls.Add(this.sr_cutplay);
             this.groupBox4.Controls.Add(this.sr_second);
             this.groupBox4.Controls.Add(this.sr_wrestler);
             this.groupBox4.Controls.Add(this.sr_simulate);
@@ -821,6 +825,37 @@
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Player Options";
             // 
+            // sr_cutplay
+            // 
+            this.sr_cutplay.AutoSize = true;
+            this.sr_cutplay.Location = new System.Drawing.Point(132, 168);
+            this.sr_cutplay.Name = "sr_cutplay";
+            this.sr_cutplay.Size = new System.Drawing.Size(65, 17);
+            this.sr_cutplay.TabIndex = 67;
+            this.sr_cutplay.Text = "Cut Play";
+            this.sr_cutplay.UseVisualStyleBackColor = true;
+            this.sr_cutplay.Visible = false;
+            // 
+            // sr_second
+            // 
+            this.sr_second.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.sr_second.Enabled = false;
+            this.sr_second.FormattingEnabled = true;
+            this.sr_second.Location = new System.Drawing.Point(8, 75);
+            this.sr_second.Name = "sr_second";
+            this.sr_second.Size = new System.Drawing.Size(331, 21);
+            this.sr_second.TabIndex = 66;
+            // 
+            // sr_wrestler
+            // 
+            this.sr_wrestler.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.sr_wrestler.Enabled = false;
+            this.sr_wrestler.FormattingEnabled = true;
+            this.sr_wrestler.Location = new System.Drawing.Point(7, 35);
+            this.sr_wrestler.Name = "sr_wrestler";
+            this.sr_wrestler.Size = new System.Drawing.Size(332, 21);
+            this.sr_wrestler.TabIndex = 65;
+            // 
             // sr_simulate
             // 
             this.sr_simulate.AutoSize = true;
@@ -832,6 +867,7 @@
             this.sr_simulate.TabIndex = 64;
             this.sr_simulate.Text = "Simulate";
             this.sr_simulate.UseVisualStyleBackColor = true;
+            this.sr_simulate.CheckedChanged += new System.EventHandler(this.sr_simulate_CheckedChanged);
             // 
             // sr_resetContinues
             // 
@@ -905,19 +941,19 @@
             // 
             // sr_progress
             // 
-            this.sr_progress.Location = new System.Drawing.Point(10, 173);
+            this.sr_progress.Location = new System.Drawing.Point(10, 192);
             this.sr_progress.Multiline = true;
             this.sr_progress.Name = "sr_progress";
             this.sr_progress.ReadOnly = true;
             this.sr_progress.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.sr_progress.Size = new System.Drawing.Size(386, 89);
+            this.sr_progress.Size = new System.Drawing.Size(386, 70);
             this.sr_progress.TabIndex = 56;
             this.sr_progress.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label26
             // 
             this.label26.AutoSize = true;
-            this.label26.Location = new System.Drawing.Point(12, 159);
+            this.label26.Location = new System.Drawing.Point(10, 176);
             this.label26.Name = "label26";
             this.label26.Size = new System.Drawing.Size(81, 13);
             this.label26.TabIndex = 55;
@@ -1433,25 +1469,16 @@
             this.tt_normal.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             this.tt_normal.ToolTipTitle = "Normal Match Info";
             // 
-            // sr_wrestler
+            // sr_simSecond
             // 
-            this.sr_wrestler.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.sr_wrestler.Enabled = false;
-            this.sr_wrestler.FormattingEnabled = true;
-            this.sr_wrestler.Location = new System.Drawing.Point(7, 35);
-            this.sr_wrestler.Name = "sr_wrestler";
-            this.sr_wrestler.Size = new System.Drawing.Size(332, 21);
-            this.sr_wrestler.TabIndex = 65;
-            // 
-            // sr_second
-            // 
-            this.sr_second.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.sr_second.Enabled = false;
-            this.sr_second.FormattingEnabled = true;
-            this.sr_second.Location = new System.Drawing.Point(8, 75);
-            this.sr_second.Name = "sr_second";
-            this.sr_second.Size = new System.Drawing.Size(331, 21);
-            this.sr_second.TabIndex = 66;
+            this.sr_simSecond.AutoSize = true;
+            this.sr_simSecond.Location = new System.Drawing.Point(278, 168);
+            this.sr_simSecond.Name = "sr_simSecond";
+            this.sr_simSecond.Size = new System.Drawing.Size(99, 17);
+            this.sr_simSecond.TabIndex = 68;
+            this.sr_simSecond.Text = "Control Second";
+            this.sr_simSecond.UseVisualStyleBackColor = true;
+            this.sr_simSecond.Visible = false;
             // 
             // MoreMatchTypes_Form
             // 
@@ -1623,5 +1650,7 @@
         public System.Windows.Forms.CheckBox sr_reverse;
         public System.Windows.Forms.ComboBox sr_second;
         public System.Windows.Forms.ComboBox sr_wrestler;
+        private System.Windows.Forms.CheckBox sr_cutplay;
+        private System.Windows.Forms.CheckBox sr_simSecond;
     }
 }

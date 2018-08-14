@@ -5,7 +5,7 @@ using DG;
 using DG.DG;
 using System.Diagnostics;
 using System.IO;
-using MoreMatchTypes.Helper_Classes;
+using MatchConfig;
 using System.Linq;
 
 namespace MoreMatchTypes
@@ -16,7 +16,6 @@ namespace MoreMatchTypes
         public static MoreMatchTypes_Form form = null;
         public static List<String> promotionList = new List<string>();
         public static List<uint> gameSpeed = new List<uint>();
-        public static List<String> venues = new List<String>();
         public static List<WresIDGroup> wrestlerList = new List<WresIDGroup>();
         #endregion
 
@@ -264,36 +263,29 @@ namespace MoreMatchTypes
         #region Rule Setup Methods
         public void LoadOrgs()
         {
-            //Elimination
+            promotionList.Clear();
             this.el_promotionList.Items.Clear();
-
-            //Survival Road
             this.sr_promotionList.Items.Clear();
 
-            foreach (GroupInfo current in SaveData.GetInst().groupList)
+            foreach (String promotion in MatchConfiguration.LoadPromotions())
             {
-                string longName = SaveData.GetInst().organizationList[current.organizationID].longName;
-
-                //Ignoring the retired group
-                this.el_promotionList.Items.Add(longName + " : " + current.longName);
-                this.sr_promotionList.Items.Add(longName + " : " + current.longName);
-                promotionList.Add(longName + " : " + current.longName);
-
+                this.el_promotionList.Items.Add(promotion);
+                this.sr_promotionList.Items.Add(promotion);
+                promotionList.Add(promotion);
             }
-
         }
 
         private void LoadDifficulty()
         {
             //Set Difficulty Levels
-            for (int i = 1; i <= 10; i++)
+            foreach (String i in MatchConfiguration.LoadDifficulty())
             {
                 el_difficulty.Items.Add(i);
                 sr_difficultyList.Items.Add(i);
             }
 
-            el_difficulty.SelectedIndex = 0;
-            sr_difficultyList.SelectedIndex = 0;
+            el_difficulty.SelectedIndex = 8;
+            sr_difficultyList.SelectedIndex = 8;
         }
 
         private void LoadSubsFromOrg(String matchType)
@@ -338,7 +330,7 @@ namespace MoreMatchTypes
             {
                 return;
             }
-            if(promotionField.SelectedItem.ToString().Contains("未登録"))
+            if (promotionField.SelectedItem.ToString().Contains("未登録"))
             {
                 LoadSubs();
             }
@@ -368,17 +360,12 @@ namespace MoreMatchTypes
             this.el_resultList.Items.Clear();
             this.sr_searchResult.Items.Clear();
 
-            foreach (EditWrestlerData current in SaveData.inst.editWrestlerData)
+            wrestlerList = MatchConfiguration.LoadWrestlers();
+
+            foreach(WresIDGroup wrestler in wrestlerList)
             {
-                WresIDGroup wresIDGroup = new WresIDGroup
-                {
-                    Name = DataBase.GetWrestlerFullName(current.wrestlerParam),
-                    ID = (Int32)WrestlerID.EditWrestlerIDTop + SaveData.inst.editWrestlerData.IndexOf(current),
-                    Group = current.wrestlerParam.groupID
-                };
-                wrestlerList.Add(wresIDGroup);
-                this.el_resultList.Items.Add(wresIDGroup);
-                this.sr_searchResult.Items.Add(wresIDGroup);
+                this.el_resultList.Items.Add(wrestler);
+                this.sr_searchResult.Items.Add(wrestler);
             }
 
             this.el_promotionList.SelectedIndex = 0;
@@ -390,12 +377,10 @@ namespace MoreMatchTypes
 
         private void LoadRings()
         {
-            el_ringList.Items.Add("SWA");
-            sr_ringList.Items.Add("SWA");
-            foreach (RingData current in SaveData.GetInst().editRingData)
+            foreach (String ring in MatchConfiguration.LoadRings())
             {
-                el_ringList.Items.Add(current.name);
-                sr_ringList.Items.Add(current.name);
+                el_ringList.Items.Add(ring);
+                sr_ringList.Items.Add(ring);
             }
 
             el_ringList.SelectedIndex = 0;
@@ -404,33 +389,23 @@ namespace MoreMatchTypes
 
         private void LoadVenues()
         {
-            venues.Add("Big Garden Arena");
-            venues.Add("SCS Stadium");
-            venues.Add("Arena De Universo");
-            venues.Add("Spike Dome");
-            venues.Add("Yurakuen Hall");
-            venues.Add("Dojo");
-
+            String[] venues = MatchConfiguration.LoadVenue();
             foreach (String venue in venues)
             {
                 el_venueList.Items.Add(venue);
                 sr_venueList.Items.Add(venue);
             }
 
-            el_venueList.SelectedIndex = 0;
-            sr_venueList.SelectedIndex = 0;
+            el_venueList.SelectedIndex = 4;
+            sr_venueList.SelectedIndex = 4;
         }
 
         private void LoadReferees()
         {
-            el_refereeList.Items.Add("Mr Judgement");
-            sr_refereeList.Items.Add("Mr Judgement");
-
-            foreach (RefereeData current in SaveData.GetInst().editRefereeData)
+            foreach (String referee in MatchConfiguration.LoadReferees())
             {
-                IDObject referee = new IDObject(current.Prm.name, current.referee_id);
-                el_refereeList.Items.Add(current.Prm.name);
-                sr_refereeList.Items.Add(current.Prm.name);
+                el_refereeList.Items.Add(referee);
+                sr_refereeList.Items.Add(referee);
             }
 
             el_refereeList.SelectedIndex = 0;
@@ -439,34 +414,14 @@ namespace MoreMatchTypes
 
         private void LoadThemes()
         {
-            el_bgm.Items.Add("Fire Pro Wrestling 2017");
-            el_bgm.Items.Add("Spinning Panther 2017");
-            el_bgm.Items.Add("Lonely Stage 2017");
-
-            //Survival Road
-            sr_bgmList.Items.Add("Fire Pro Wrestling 2017");
-            sr_bgmList.Items.Add("Spinning Panther 2017");
-            sr_bgmList.Items.Add("Lonely Stage 2017");
-
-            string currentPath = System.IO.Directory.GetCurrentDirectory();
-
-            try
+            foreach (String theme in MatchConfiguration.LoadBGMs())
             {
-                IEnumerable<String> themes;
-                themes = Directory.GetFiles(currentPath + @"\BGM");
-                foreach (String theme in themes)
-                {
-                    el_bgm.Items.Add(theme.Replace(currentPath + @"\BGM", "").Replace(@"\", ""));
-                    sr_bgmList.Items.Add(theme.Replace(currentPath + @"\BGM", "").Replace(@"\", ""));
-                }
-
-                el_bgm.SelectedIndex = 0;
-                sr_bgmList.SelectedIndex = 0;
+                el_bgm.Items.Add(theme);
+                sr_bgmList.Items.Add(theme);
             }
-            catch
-            {
 
-            }
+            el_bgm.SelectedIndex = 0;
+            sr_bgmList.SelectedIndex = 0;
 
         }
 
@@ -474,24 +429,13 @@ namespace MoreMatchTypes
         {
             try
             {
-                //Set Game Speeds
-                gameSpeed.Add(100);
-                gameSpeed.Add(125);
-                gameSpeed.Add(150);
-                gameSpeed.Add(175);
-                gameSpeed.Add(200);
-                gameSpeed.Add(300);
-                gameSpeed.Add(400);
-                gameSpeed.Add(800);
-                gameSpeed.Add(1000);
-
-                foreach (uint speed in gameSpeed)
+                foreach (uint speed in MatchConfiguration.LoadSpeed())
                 {
                     el_gameSpeed.Items.Add(speed);
                     sr_speedList.Items.Add(speed);
                 }
-                el_gameSpeed.SelectedIndex = 0;
-                sr_speedList.SelectedIndex = 0;
+                el_gameSpeed.SelectedIndex = 1;
+                sr_speedList.SelectedIndex = 1;
             }
             catch
             { }
@@ -749,6 +693,10 @@ namespace MoreMatchTypes
                     if (sr_simulate.Checked)
                     {
                         control = 0;
+                        if (sr_simSecond.Checked && i == 1 && selectedType.Equals("Normal"))
+                        {
+                            control = 1;
+                        }
                     }
                     settings = MatchConfiguration.AddPlayers(validEntry, wrestlerNo, i, control, isSecond, 0, settings);
                     if (validEntry)
@@ -891,12 +839,15 @@ namespace MoreMatchTypes
                 if (sr_tag.Checked)
                 {
                     sr_controlBoth.Visible = true;
+                    sr_cutplay.Visible = true;
                 }
             }
             else
             {
                 sr_controlBoth.Visible = false;
+                sr_cutplay.Visible = false;
                 sr_controlBoth.Checked = false;
+                sr_cutplay.Checked = false;
             }
 
             //Ensuring that modes disallowing tag matches are accounted for.
@@ -922,6 +873,8 @@ namespace MoreMatchTypes
             {
                 sr_controlBoth.Checked = false;
                 sr_controlBoth.Visible = false;
+                sr_cutplay.Visible = false;
+                sr_cutplay.Checked = false;
             }
         }
 
@@ -930,6 +883,7 @@ namespace MoreMatchTypes
             if (sr_tag.Checked && sr_matchType.SelectedIndex == 0)
             {
                 sr_controlBoth.Visible = true;
+                sr_cutplay.Visible = true;
             }
         }
 
@@ -1154,7 +1108,9 @@ namespace MoreMatchTypes
                     settings.isOutOfRingCount = false;
                     if (type.Equals("Normal"))
                     {
+                        //settings.isOutOfRingCount = true;
                         settings.isFoulCount = true;
+                        settings.isCutPlay = sr_cutplay.Checked;
                         settings.CriticalRate = CriticalRateEnum.Half;
                     }
                     if (type.Equals("Cage"))
@@ -1246,6 +1202,19 @@ namespace MoreMatchTypes
         private void el_promotionList_SelectedIndexChanged(object sender, EventArgs e)
         {
             el_searchBtn_Click(sender, e);
+        }
+
+        private void sr_simulate_CheckedChanged(object sender, EventArgs e)
+        {
+            if (sr_simulate.Checked)
+            {
+                sr_simSecond.Visible = true;
+            }
+            else
+            {
+                sr_simSecond.Visible = false;
+                sr_simSecond.Checked = false;
+            }
         }
     }
 }
