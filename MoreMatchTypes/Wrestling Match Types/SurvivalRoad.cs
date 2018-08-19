@@ -285,6 +285,10 @@ namespace MoreMatchTypes.Wrestling_Match_Types
                 plObj.SetSP(65535f);
                 plObj.SetHP(65535f);
                 plObj.SetBP(65535f);
+                plObj.AddHP_Arm(65535f);
+                plObj.AddHP_Leg(65535f);
+                plObj.AddHP_Neck(65535f);
+                plObj.AddHP_Waist(65535f);
 
                 L.D("Refreshed Player: " + playerIndex);
             }
