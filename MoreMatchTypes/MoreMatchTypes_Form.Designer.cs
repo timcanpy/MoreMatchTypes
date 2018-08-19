@@ -89,6 +89,7 @@
             this.el_blueList = new System.Windows.Forms.ListBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.sr_simSecond = new System.Windows.Forms.CheckBox();
             this.sr_cutplay = new System.Windows.Forms.CheckBox();
             this.sr_second = new System.Windows.Forms.ComboBox();
             this.sr_wrestler = new System.Windows.Forms.ComboBox();
@@ -151,7 +152,8 @@
             this.cb_survival = new System.Windows.Forms.RadioButton();
             this.matchHelp = new System.Windows.Forms.Button();
             this.tt_normal = new System.Windows.Forms.ToolTip(this.components);
-            this.sr_simSecond = new System.Windows.Forms.CheckBox();
+            this.sr_singleOpponent = new System.Windows.Forms.Label();
+            this.sr_tagOpponent = new System.Windows.Forms.Label();
             this.rulesTabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -825,6 +827,17 @@
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Player Options";
             // 
+            // sr_simSecond
+            // 
+            this.sr_simSecond.AutoSize = true;
+            this.sr_simSecond.Location = new System.Drawing.Point(278, 168);
+            this.sr_simSecond.Name = "sr_simSecond";
+            this.sr_simSecond.Size = new System.Drawing.Size(99, 17);
+            this.sr_simSecond.TabIndex = 68;
+            this.sr_simSecond.Text = "Control Second";
+            this.sr_simSecond.UseVisualStyleBackColor = true;
+            this.sr_simSecond.Visible = false;
+            // 
             // sr_cutplay
             // 
             this.sr_cutplay.AutoSize = true;
@@ -859,11 +872,11 @@
             // sr_simulate
             // 
             this.sr_simulate.AutoSize = true;
-            this.sr_simulate.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.sr_simulate.Font = new System.Drawing.Font("NCAA Utah St Aggies Bold", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.sr_simulate.ForeColor = System.Drawing.Color.Red;
             this.sr_simulate.Location = new System.Drawing.Point(278, 145);
             this.sr_simulate.Name = "sr_simulate";
-            this.sr_simulate.Size = new System.Drawing.Size(74, 17);
+            this.sr_simulate.Size = new System.Drawing.Size(81, 15);
             this.sr_simulate.TabIndex = 64;
             this.sr_simulate.Text = "Simulate";
             this.sr_simulate.UseVisualStyleBackColor = true;
@@ -1063,6 +1076,7 @@
             this.sr_reverse.TabIndex = 5;
             this.sr_reverse.Text = "Reverse Selection";
             this.sr_reverse.UseVisualStyleBackColor = true;
+            this.sr_reverse.Visible = false;
             // 
             // sr_teamName
             // 
@@ -1469,22 +1483,33 @@
             this.tt_normal.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             this.tt_normal.ToolTipTitle = "Normal Match Info";
             // 
-            // sr_simSecond
+            // sr_singleOpponent
             // 
-            this.sr_simSecond.AutoSize = true;
-            this.sr_simSecond.Location = new System.Drawing.Point(278, 168);
-            this.sr_simSecond.Name = "sr_simSecond";
-            this.sr_simSecond.Size = new System.Drawing.Size(99, 17);
-            this.sr_simSecond.TabIndex = 68;
-            this.sr_simSecond.Text = "Control Second";
-            this.sr_simSecond.UseVisualStyleBackColor = true;
-            this.sr_simSecond.Visible = false;
+            this.sr_singleOpponent.AutoSize = true;
+            this.sr_singleOpponent.Location = new System.Drawing.Point(618, 86);
+            this.sr_singleOpponent.Name = "sr_singleOpponent";
+            this.sr_singleOpponent.Size = new System.Drawing.Size(86, 13);
+            this.sr_singleOpponent.TabIndex = 17;
+            this.sr_singleOpponent.Text = "Single Opponent";
+            this.sr_singleOpponent.Visible = false;
+            // 
+            // sr_tagOpponent
+            // 
+            this.sr_tagOpponent.AutoSize = true;
+            this.sr_tagOpponent.Location = new System.Drawing.Point(618, 108);
+            this.sr_tagOpponent.Name = "sr_tagOpponent";
+            this.sr_tagOpponent.Size = new System.Drawing.Size(76, 13);
+            this.sr_tagOpponent.TabIndex = 18;
+            this.sr_tagOpponent.Text = "Tag Opponent";
+            this.sr_tagOpponent.Visible = false;
             // 
             // MoreMatchTypes_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(852, 620);
+            this.Controls.Add(this.sr_tagOpponent);
+            this.Controls.Add(this.sr_singleOpponent);
             this.Controls.Add(this.matchHelp);
             this.Controls.Add(this.cb_survival);
             this.Controls.Add(this.cb_exElim);
@@ -1652,5 +1677,7 @@
         public System.Windows.Forms.ComboBox sr_wrestler;
         private System.Windows.Forms.CheckBox sr_cutplay;
         private System.Windows.Forms.CheckBox sr_simSecond;
+        public System.Windows.Forms.Label sr_singleOpponent;
+        public System.Windows.Forms.Label sr_tagOpponent;
     }
 }

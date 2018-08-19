@@ -107,7 +107,7 @@ namespace MatchConfig
 
         public static String[] LoadVenue()
         {
-            String[] venues = new String[5];
+            String[] venues = new String[6];
             venues[0] = "Big Garden Arena";
             venues[1] = "SCS Stadium";
             venues[2] = "Arena De Universo";

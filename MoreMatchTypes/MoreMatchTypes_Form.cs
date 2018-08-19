@@ -29,16 +29,24 @@ namespace MoreMatchTypes
         public void MoreMatchTypes_Form_Load(object sender, EventArgs e)
         {
             #region Shared Methods
-            LoadOrgs();
-            LoadSubs();
-            LoadRings();
-            LoadVenues();
-            LoadReferees();
-            LoadThemes();
-            LoadDifficulty();
-            LoadGameSpeed();
-            #endregion
+            try
+            {
 
+
+                LoadOrgs();
+                LoadSubs();
+                LoadRings();
+                LoadReferees();
+                LoadThemes();
+                LoadDifficulty();
+                LoadGameSpeed();
+                LoadVenues();
+                #endregion
+            }
+            catch(Exception ex)
+            {
+                L.D("Load Match Type Execption: " + ex.Message);
+            }
             #region Survival Road Methods
             LoadContinues();
             LoadMatches();
@@ -1108,7 +1116,7 @@ namespace MoreMatchTypes
                     settings.isOutOfRingCount = false;
                     if (type.Equals("Normal"))
                     {
-                        //settings.isOutOfRingCount = true;
+                        settings.isOutOfRingCount = true;
                         settings.isFoulCount = true;
                         settings.isCutPlay = sr_cutplay.Checked;
                         settings.CriticalRate = CriticalRateEnum.Half;
