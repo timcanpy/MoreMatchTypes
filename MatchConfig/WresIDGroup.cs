@@ -13,6 +13,8 @@ namespace MatchConfig
 
         public int Group;
 
+        public SubscribeItemInfo Info;
+
         public override string ToString()
         {
             return this.Name;

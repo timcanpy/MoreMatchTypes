@@ -61,13 +61,17 @@ namespace MatchConfig
             return (WrestlerID)wrestler.ID;
         }
 
-        public static WresIDGroup GetWrestlerData(String wrestler, List<WresIDGroup> wrestlerList)
+        public static WresIDGroup GetWrestlerData(int id, List<WresIDGroup> wrestlerList)
         {
             WresIDGroup wrestlerData = null;
-
-            if (!String.IsNullOrEmpty(wrestler))
+            foreach (WresIDGroup wrestler in wrestlerList)
             {
-
+                if (wrestler.ID == id)
+                {
+                    L.D("Returning wrestler " + wrestler.Name);
+                    wrestlerData = wrestler;
+                    break;
+                }
             }
             return wrestlerData;
         }

@@ -53,8 +53,7 @@ namespace MoreMatchTypes
             memberTrack = new int[2];
             endRound = false;
             loserTrack = 0;
-            settings.CriticalRate = CriticalRateEnum.Off;
-            settings.isOutOfRingCount = false;
+            settings.CriticalRate = CriticalRateEnum.Half;
             SetTeamNames();
             SetTeamMembers();
         }
@@ -436,23 +435,6 @@ namespace MoreMatchTypes
             }
         }
 
-        //Set anyone out of starting positions as a second.
-        //Player plObj = PlayerMan.inst.GetPlObj(i);
-        //            if (!plObj)
-        //            {
-        //                continue;
-        //            }
-
-        //            if (MoreMatchTypes_Form.form.cb_membersWait.Checked)
-        //            {
-        //                plObj.isSecond = true;
-        //            }
-        //            else
-        //            {
-        //                plObj.isSecond = false;
-        //                plObj.isSleep = true;
-        //            }
-
         public static void SetTeamNames()
         {
             PlayerMan p = PlayerMan.inst;
@@ -576,7 +558,7 @@ namespace MoreMatchTypes
         {
             Player plObj = PlayerMan.inst.GetPlObj(playerIndex);
 
-            plObj.isKO = false;
+            //plObj.isKO = false;
             
             if (MoreMatchTypes_Form.form.cb_losersLeave.Checked)
             {

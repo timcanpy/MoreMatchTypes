@@ -6,6 +6,7 @@ using DG;
 using UnityEngine;
 using MoreMatchTypes.DataAccess;
 using MatchConfig;
+using System.IO;
 
 namespace MoreMatchTypes.Wrestling_Match_Types
 {
@@ -16,12 +17,11 @@ namespace MoreMatchTypes.Wrestling_Match_Types
     [FieldAccess(Class = "Referee", Field = "CheckMatchEnd", Group = "MoreMatchTypes")]
     [FieldAccess(Class = "Menu_Result", Field = "Set_FinishSkill", Group = "MoreMatchTypes")]
     [FieldAccess(Class = "Menu_SoundManager", Field = "MyMusic_Play", Group = "MoreMatchTypes")]
+    [FieldAccess(Class = "Menu_Title", Field = "Awake", Group = "MoreMatchTypes")]
     #endregion
 
     class SurvivalRoad
     {
-        #region Remaining Bugs
-        #endregion
         #region Variables
         private static bool isSurvival = false;
 
@@ -54,6 +54,7 @@ namespace MoreMatchTypes.Wrestling_Match_Types
         private static String opponentTeam;
 
         #endregion
+
         [Hook(TargetClass = "MatchMain", TargetMethod = "CreatePlayers", InjectionLocation = 0, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.None, Group = "MoreMatchTypes")]
         public static void SetMatchRules()
         {
@@ -462,33 +463,29 @@ namespace MoreMatchTypes.Wrestling_Match_Types
         }
         private static void InitializeLists()
         {
-            if (teamList.Count == 0)
-            {
-                L.D("Initializing team list");
-                var opponents = MoreMatchTypes_Form.form.sr_teamList.Items;
-                if (!isReverse)
-                {
-                    for (int i = 0; i < opponents.Count; i++)
-                    {
-                        teamList.Add((WresIDGroup)opponents[i]);
-                    }
-                }
-                else
-                {
-                    for (int i = opponents.Count - 1; i >= 0; i--)
-                    {
-                        teamList.Add((WresIDGroup)opponents[i]);
-                    }
-                }
-            }
-
             waitingOpponents.Clear();
             usedOpponents.Clear();
 
-            foreach (WresIDGroup wrestler in teamList)
+            if (teamList.Count == 0)
             {
-                waitingOpponents.Add(wrestler);
+                L.D("Initializing team list");
+
+                foreach (var wrestler in MoreMatchTypes_Form.form.sr_teamList.Items)
+                {
+                    try
+                    {
+                        teamList.Add((WresIDGroup)wrestler);
+                        waitingOpponents.Add((WresIDGroup)wrestler);
+                    }
+                    catch
+                    { }
+                }
+
+                L.D("Team List Count: " + teamList.Count());
+
+                L.D("Waiting Opponent List Count: " + waitingOpponents.Count());
             }
+
         }
         private static void InitializeSettings()
         {
@@ -505,14 +502,18 @@ namespace MoreMatchTypes.Wrestling_Match_Types
             teamList = new List<WresIDGroup>();
             InitializeLists();
             currOpponents = new WresIDGroup[2];
-            currOpponents[0] = waitingOpponents[0];
-            currOpponents[1] = null;
+
+            //Adding single wrestler
+            int.TryParse(MoreMatchTypes_Form.form.sr_singleOpponent.Text, out int singleID);
+            currOpponents[0] = MatchConfiguration.GetWrestlerData(singleID, teamList);
+
+            //Adding tag wrestler
             if (isTag)
             {
-                currOpponents[1] = waitingOpponents[1];
+                int.TryParse(MoreMatchTypes_Form.form.sr_tagOpponent.Text, out int tagID);
+                currOpponents[1] = MatchConfiguration.GetWrestlerData(tagID, teamList);
             }
 
-            L.D("First Opponent: " + currOpponents[0]);
             endMatch = false;
             endGame = false;
             loserTrack = -1;
@@ -589,28 +590,28 @@ namespace MoreMatchTypes.Wrestling_Match_Types
 
             return result;
         }
-       
+
         private static void UpdateProgress(String result)
         {
-            string info = "\nMatch #" + gameDetails[8]+"\n";
+            string info = "\nMatch #" + gameDetails[8] + "\n";
             string playerTeam = MatchConfiguration.GetWrestlerName(playerEdit);
             String opponent = opponentTeam;
-            if(opponent.Equals(""))
+            if (opponent.Equals(""))
             {
                 opponent = currOpponents[0].ToString();
             }
 
-            if(isTag)
+            if (isTag)
             {
                 playerTeam += " & " + MatchConfiguration.GetWrestlerName(secondEdit);
-                if(opponentTeam.Equals(""))
+                if (opponentTeam.Equals(""))
                 {
                     opponent += currOpponents[1];
                 }
             }
 
             //Determine winner
-            if(loserTrack > 3)
+            if (loserTrack > 3)
             {
                 info += playerTeam + " defeated " + opponent + ".";
             }

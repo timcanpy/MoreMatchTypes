@@ -43,7 +43,7 @@ namespace MoreMatchTypes
                 LoadVenues();
                 #endregion
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 L.D("Load Match Type Execption: " + ex.Message);
             }
@@ -370,7 +370,7 @@ namespace MoreMatchTypes
 
             wrestlerList = MatchConfiguration.LoadWrestlers();
 
-            foreach(WresIDGroup wrestler in wrestlerList)
+            foreach (WresIDGroup wrestler in wrestlerList)
             {
                 this.el_resultList.Items.Add(wrestler);
                 this.sr_searchResult.Items.Add(wrestler);
@@ -715,6 +715,7 @@ namespace MoreMatchTypes
                 }
 
                 //Set-up opponents
+                WresIDGroup opponent;
                 int opponentCount = sr_teamList.Items.Count;
                 for (int i = 4; i < 8; i++)
                 {
@@ -725,32 +726,33 @@ namespace MoreMatchTypes
                     else
                     {
                         validEntry = true;
+
+                        //Get Random opponent
+                        int rngValue = UnityEngine.Random.Range(0, opponentCount - 1);
+
                         //Determine if we're creating a tag team or single competitor
                         if (opponentCount == 1)
                         {
-                            wrestlerNo = MatchConfiguration.GetWrestlerNo((WresIDGroup)sr_teamList.Items[0]);
+                            wrestlerNo = MatchConfiguration.GetWrestlerNo((WresIDGroup)sr_teamList.Items[rngValue]);
+                            sr_singleOpponent.Text = wrestlerNo.ToString();
                         }
                         else if (i == 4)
                         {
-                            if (!sr_reverse.Checked)
-                            {
-                                wrestlerNo = MatchConfiguration.GetWrestlerNo((WresIDGroup)sr_teamList.Items[0]);
-                            }
-                            else
-                            {
-                                wrestlerNo = MatchConfiguration.GetWrestlerNo((WresIDGroup)sr_teamList.Items[oppCount - 1]);
-                            }
+                            wrestlerNo = MatchConfiguration.GetWrestlerNo((WresIDGroup)sr_teamList.Items[rngValue]);
+                            sr_singleOpponent.Text = wrestlerNo.ToString();
                         }
                         else if (i == 5)
                         {
-                            if (!sr_reverse.Checked)
+                            wrestlerNo = MatchConfiguration.GetWrestlerNo((WresIDGroup)sr_teamList.Items[rngValue]);
+
+                            //Ensure that we aren't fielding duplicate wrestlers
+                            while (sr_singleOpponent.Text.Equals(wrestlerNo.ToString()))
                             {
-                                wrestlerNo = MatchConfiguration.GetWrestlerNo((WresIDGroup)sr_teamList.Items[1]);
+                                rngValue = UnityEngine.Random.Range(0, opponentCount - 1);
+                                wrestlerNo = MatchConfiguration.GetWrestlerNo((WresIDGroup)sr_teamList.Items[rngValue]);
                             }
-                            else
-                            {
-                                wrestlerNo = MatchConfiguration.GetWrestlerNo((WresIDGroup)sr_teamList.Items[oppCount - 2]);
-                            }
+
+                            sr_tagOpponent.Text = wrestlerNo.ToString();
                         }
 
                         if (sr_tag.Checked && i == 5)
@@ -805,6 +807,7 @@ namespace MoreMatchTypes
                 foreach (WresIDGroup wrestler in sr_searchResult.Items)
                 {
                     sr_teamList.Items.Add(wrestler);
+                    L.D("Storing Wrestler " + wrestler.Name + ", " + wrestler.ID);
                 }
             }
         }
@@ -1103,20 +1106,20 @@ namespace MoreMatchTypes
             settings.isTornadoBattle = false;
             settings.isCutPlay = false;
             settings.isDisableTimeCount = false;
+            settings.isOutOfRingCount = true;
 
             //Setting Custom Rules
             switch (matchType)
             {
                 case "Elimination":
                     settings.isFoulCount = true;
-                    settings.CriticalRate = CriticalRateEnum.Off;
+                    settings.CriticalRate = CriticalRateEnum.Half;
                     break;
                 case "Survival":
                     String type = sr_matchType.SelectedItem.ToString();
                     settings.isOutOfRingCount = false;
                     if (type.Equals("Normal"))
                     {
-                        settings.isOutOfRingCount = true;
                         settings.isFoulCount = true;
                         settings.isCutPlay = sr_cutplay.Checked;
                         settings.CriticalRate = CriticalRateEnum.Half;
