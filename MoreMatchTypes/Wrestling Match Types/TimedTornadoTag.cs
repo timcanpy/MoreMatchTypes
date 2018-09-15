@@ -24,6 +24,7 @@ namespace MoreMatchTypes
         public static void SetMatchRules()
         {
             MatchSetting settings = GlobalWork.inst.MatchSetting;
+            isTTT = false;
 
             if (settings.arena == VenueEnum.BarbedWire || settings.arena == VenueEnum.Dodecagon || settings.BattleRoyalKind != BattleRoyalKindEnum.Off || IsOneOnOne() || settings.isS1Rule)
             {

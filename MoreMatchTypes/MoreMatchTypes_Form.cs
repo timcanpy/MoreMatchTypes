@@ -94,7 +94,7 @@ namespace MoreMatchTypes
             }
             if (cb_survival.Checked)
             {
-                MessageBox.Show("Take part in a gauntlet of matches.\n The game will proceed until all matches are completed, or the player runs out of continues.\nEvery continue resets a player team's health and spirit.", "Survival Road", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Take part in a gauntlet of matches.\nThe game will proceed until all matches are completed, or the player runs out of continues.\nEvery continue resets a player team's health and spirit.", "Survival Road", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             }
             if (cb_timedElim.Checked)
