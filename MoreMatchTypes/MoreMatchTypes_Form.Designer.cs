@@ -154,6 +154,8 @@
             this.tt_normal = new System.Windows.Forms.ToolTip(this.components);
             this.sr_singleOpponent = new System.Windows.Forms.Label();
             this.sr_tagOpponent = new System.Windows.Forms.Label();
+            this.cb_ttt = new System.Windows.Forms.RadioButton();
+            this.cb_timedElim = new System.Windows.Forms.RadioButton();
             this.rulesTabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -1503,11 +1505,36 @@
             this.sr_tagOpponent.Text = "Tag Opponent";
             this.sr_tagOpponent.Visible = false;
             // 
+            // cb_ttt
+            // 
+            this.cb_ttt.AutoSize = true;
+            this.cb_ttt.Location = new System.Drawing.Point(256, 38);
+            this.cb_ttt.Name = "cb_ttt";
+            this.cb_ttt.Size = new System.Drawing.Size(119, 17);
+            this.cb_ttt.TabIndex = 19;
+            this.cb_ttt.TabStop = true;
+            this.cb_ttt.Text = "Timed Tornado Tag";
+            this.cb_ttt.UseVisualStyleBackColor = true;
+            // 
+            // cb_timedElim
+            // 
+            this.cb_timedElim.AutoSize = true;
+            this.cb_timedElim.Location = new System.Drawing.Point(256, 61);
+            this.cb_timedElim.Name = "cb_timedElim";
+            this.cb_timedElim.Size = new System.Drawing.Size(107, 17);
+            this.cb_timedElim.TabIndex = 20;
+            this.cb_timedElim.TabStop = true;
+            this.cb_timedElim.Text = "Timed Elimination";
+            this.cb_timedElim.UseVisualStyleBackColor = true;
+            this.cb_timedElim.Visible = false;
+            // 
             // MoreMatchTypes_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(852, 620);
+            this.Controls.Add(this.cb_timedElim);
+            this.Controls.Add(this.cb_ttt);
             this.Controls.Add(this.sr_tagOpponent);
             this.Controls.Add(this.sr_singleOpponent);
             this.Controls.Add(this.matchHelp);
@@ -1679,5 +1706,7 @@
         private System.Windows.Forms.CheckBox sr_simSecond;
         public System.Windows.Forms.Label sr_singleOpponent;
         public System.Windows.Forms.Label sr_tagOpponent;
+        public System.Windows.Forms.RadioButton cb_ttt;
+        public System.Windows.Forms.RadioButton cb_timedElim;
     }
 }

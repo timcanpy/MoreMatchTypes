@@ -92,11 +92,37 @@ namespace MoreMatchTypes
                 return;
             }
 
+            float rngValue = UnityEngine.Random.Range(1, 2);
+
+            //Handle back grapples
+            if (attacker.animator.SkillSlotID == SkillSlotEnum.Back_X || attacker.animator.SkillSlotID == SkillSlotEnum.Back_A || attacker.animator.SkillSlotID == SkillSlotEnum.Back_B || attacker.animator.SkillSlotID == SkillSlotEnum.Back_B_UD || attacker.animator.SkillSlotID == SkillSlotEnum.Back_B_LR || attacker.animator.SkillSlotID == SkillSlotEnum.Back_XA)
+            {
+                if (rngValue == 1)
+                {
+                    attacker.animator.ReqBasicAnm(global::BasicSkillEnum.S1_Substitution_BackHold, true, defender.TargetPlIdx);
+                }
+                else
+                {
+                    defender.animator.ReqBasicAnm(global::BasicSkillEnum.S1_Substitution_BackRev, true, attacker.TargetPlIdx);
+                }
+                return;
+            }
+
+
             //Substitute animation on invalid move or if the defender isn't worn down enough
             if (!basicAttacks.Contains(sd.skillName[1]) && (defender.HP > (.25 * 65535f) && defender.SP > (.25 * 65535f) && defender.BP > (.25 * 65535f)))
             {
                 attacker.ChangeState(global::PlStateEnum.NormalAnm);
-                attacker.animator.ReqBasicAnm(global::BasicSkillEnum.S1_Substitution_FrontHold, true, attacker.TargetPlIdx);
+
+                //Get animation
+                if(rngValue == 1)
+                {
+                    attacker.animator.ReqBasicAnm(global::BasicSkillEnum.S1_Substitution_FrontHold, true, defender.TargetPlIdx);
+                }
+                else
+                {
+                    defender.animator.ReqBasicAnm(global::BasicSkillEnum.PushAway_S, true, attacker.TargetPlIdx);
+                }
                 attacker.SetGrappleResult(attacker.TargetPlIdx, true);
                 attacker.SetGrappleResult(plIDx, false);
             }

@@ -31,8 +31,6 @@ namespace MoreMatchTypes
             #region Shared Methods
             try
             {
-
-
                 LoadOrgs();
                 LoadSubs();
                 LoadRings();
@@ -96,7 +94,12 @@ namespace MoreMatchTypes
             }
             if (cb_survival.Checked)
             {
+                MessageBox.Show("Take part in a gauntlet of matches.\n The game will proceed until all matches are completed, or the player runs out of continues.\nEvery continue resets a player team's health and spirit.", "Survival Road", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
+            }
+            if (cb_timedElim.Checked)
+            {
+                MessageBox.Show("Take place in a timed tornado tag battle, where players join over the course of a match.\nThe first player joins after five minutes, then the next joins every two minutes afterwards.\nWhen all players have joined the match, pinfall or submission victories are possible.\nThe first team to score a victory wins the match.", "Timed Tornado Tag", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
 
         }
@@ -117,7 +120,7 @@ namespace MoreMatchTypes
             lbl_Basic.Visible = true;
             tb_basic.Visible = true;
 
-            tb_basic.Text = "Shoutei\nFace Slap B\nChest Slap\nKnife-Edge Chop\nKoppo Style Shoutei\nThroat Chop\nJigoku-Tsuki";
+            tb_basic.Text = "Shoutei\nFace Slap B\nChest Slap\nKnife-Edge Chop\nKoppo Style Shoutei\nThroat Chop\nJigoku-Tsuki\nElbow Butt";
             rulesTabControl.SelectedIndex = 0;
         }
 
@@ -1117,7 +1120,7 @@ namespace MoreMatchTypes
                     break;
                 case "Survival":
                     String type = sr_matchType.SelectedItem.ToString();
-                    settings.isOutOfRingCount = false;
+                    //settings.isOutOfRingCount = false;
                     if (type.Equals("Normal"))
                     {
                         settings.isFoulCount = true;
