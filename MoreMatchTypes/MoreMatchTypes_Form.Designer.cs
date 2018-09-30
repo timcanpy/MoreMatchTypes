@@ -194,7 +194,7 @@
             // cb_uwfi
             // 
             this.cb_uwfi.AutoSize = true;
-            this.cb_uwfi.Location = new System.Drawing.Point(153, 61);
+            this.cb_uwfi.Location = new System.Drawing.Point(23, 108);
             this.cb_uwfi.Name = "cb_uwfi";
             this.cb_uwfi.Size = new System.Drawing.Size(53, 17);
             this.cb_uwfi.TabIndex = 2;
@@ -205,12 +205,13 @@
             // cb_sumo
             // 
             this.cb_sumo.AutoSize = true;
-            this.cb_sumo.Location = new System.Drawing.Point(153, 38);
+            this.cb_sumo.Location = new System.Drawing.Point(256, 104);
             this.cb_sumo.Name = "cb_sumo";
             this.cb_sumo.Size = new System.Drawing.Size(52, 17);
             this.cb_sumo.TabIndex = 3;
             this.cb_sumo.Text = "Sumo";
             this.cb_sumo.UseVisualStyleBackColor = true;
+            this.cb_sumo.Visible = false;
             this.cb_sumo.CheckedChanged += new System.EventHandler(this.cb_sumo_CheckedChanged);
             // 
             // cb_normalMatch
@@ -229,7 +230,7 @@
             // cb_Pancrase
             // 
             this.cb_Pancrase.AutoSize = true;
-            this.cb_Pancrase.Location = new System.Drawing.Point(153, 84);
+            this.cb_Pancrase.Location = new System.Drawing.Point(144, 38);
             this.cb_Pancrase.Name = "cb_Pancrase";
             this.cb_Pancrase.Size = new System.Drawing.Size(70, 17);
             this.cb_Pancrase.TabIndex = 5;
@@ -335,7 +336,7 @@
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage1.Size = new System.Drawing.Size(841, 446);
             this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Attack Rules (Sumo, UWFI, Pancrase)";
+            this.tabPage1.Text = "Attack Rules (UWFI, Pancrase)";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // tabPage2
@@ -1446,25 +1447,27 @@
             // cb_exElim
             // 
             this.cb_exElim.AutoSize = true;
-            this.cb_exElim.Location = new System.Drawing.Point(23, 107);
+            this.cb_exElim.Location = new System.Drawing.Point(381, 38);
             this.cb_exElim.Name = "cb_exElim";
             this.cb_exElim.Size = new System.Drawing.Size(123, 17);
             this.cb_exElim.TabIndex = 14;
             this.cb_exElim.TabStop = true;
             this.cb_exElim.Text = "Extended Elimination";
             this.cb_exElim.UseVisualStyleBackColor = true;
+            this.cb_exElim.Visible = false;
             this.cb_exElim.CheckedChanged += new System.EventHandler(this.cb_exElim_CheckedChanged);
             // 
             // cb_survival
             // 
             this.cb_survival.AutoSize = true;
-            this.cb_survival.Location = new System.Drawing.Point(153, 108);
+            this.cb_survival.Location = new System.Drawing.Point(256, 84);
             this.cb_survival.Name = "cb_survival";
             this.cb_survival.Size = new System.Drawing.Size(92, 17);
             this.cb_survival.TabIndex = 15;
             this.cb_survival.TabStop = true;
             this.cb_survival.Text = "Survival Road";
             this.cb_survival.UseVisualStyleBackColor = true;
+            this.cb_survival.Visible = false;
             this.cb_survival.CheckedChanged += new System.EventHandler(this.cb_survival_CheckedChanged);
             // 
             // matchHelp
@@ -1515,6 +1518,7 @@
             this.cb_ttt.TabStop = true;
             this.cb_ttt.Text = "Timed Tornado Tag";
             this.cb_ttt.UseVisualStyleBackColor = true;
+            this.cb_ttt.Visible = false;
             // 
             // cb_timedElim
             // 

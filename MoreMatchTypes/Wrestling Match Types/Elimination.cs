@@ -5,7 +5,7 @@ using DG;
 
 namespace MoreMatchTypes
 {
-    [FieldAccess(Class = "MatchMain", Field = "CreatePlayers", Group = "MoreMatchTypes"), FieldAccess(Class = "MatchMain", Field = "InitRound", Group = "MoreMatchTypes"), FieldAccess(Class = "Referee", Field = "CheckMatchEnd", Group = "MoreMatchTypes")]
+    [FieldAccess(Class = "MatchMain", Field = "InitMatch", Group = "MoreMatchTypes"), FieldAccess(Class = "MatchMain", Field = "InitRound", Group = "MoreMatchTypes"), FieldAccess(Class = "Referee", Field = "CheckMatchEnd", Group = "MoreMatchTypes")]
     [FieldAccess(Class = "PlayerForcedController", Field = "FoceControl_SecondStandby", Group = "MoreMatchTypes")]
     [FieldAccess(Class = "PlayerForcedController", Field = "FoceControl_LoseAndExit_ToStage", Group = "MoreMatchTypes")]
     public class Elimination
@@ -24,7 +24,7 @@ namespace MoreMatchTypes
         #endregion
 
 
-        [Hook(TargetClass = "MatchMain", TargetMethod = "CreatePlayers", InjectionLocation = int.MaxValue, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.None, Group = "MoreMatchTypes")]
+        [Hook(TargetClass = "MatchMain", TargetMethod = "InitMatch", InjectionLocation = int.MaxValue, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.None, Group = "MoreMatchTypes")]
         public static void SetMatchRules()
         {
             isElimination = false;
@@ -127,8 +127,8 @@ namespace MoreMatchTypes
             SetSeconds();
         }
 
-        [Hook(TargetClass = "Referee", TargetMethod = "CheckMatchEnd_Draw", InjectionLocation = int.MaxValue, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.PassInvokingInstance, Group = "MoreMatchTypes")]
-        public static void CheckCountOut(Referee matchRef)
+        [Hook(TargetClass = "MatchMain", TargetMethod = "ProcessMatchEnd_Draw", InjectionLocation = int.MaxValue, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.None, Group = "MoreMatchTypes")]
+        public static void CheckCountOut()
         {
             if (!isElimination)
             {

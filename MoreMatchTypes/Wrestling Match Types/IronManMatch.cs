@@ -6,8 +6,8 @@ using DG;
 namespace MoreMatchTypes
 {
     #region Access Modifiers
-    [FieldAccess(Class = "Referee", Field = "CheckMatchEnd", Group = "MoreMatchTypes"), FieldAccess(Class = "MatchMain", Field = "CreatePlayers", Group = "MoreMatchTypes")]
-    [FieldAccess(Class = "Menu_Result", Field = "Set_FinishSkill", Group = "MoreMatchTypes"), FieldAccess(Class = "Referee", Field = "CheckMatchEnd_Draw", Group = "MoreMatchTypes")]
+    [FieldAccess(Class = "Referee", Field = "CheckMatchEnd", Group = "MoreMatchTypes"), FieldAccess(Class = "MatchMain", Field = "InitMatch", Group = "MoreMatchTypes")]
+    [FieldAccess(Class = "Menu_Result", Field = "Set_FinishSkill", Group = "MoreMatchTypes"), FieldAccess(Class = "MatchMain", Field = "ProcessMatchEnd_Draw", Group = "MoreMatchTypes")]
     [FieldAccess(Class = "MatchMain", Field = "EndMatch", Group = "MoreMatchTypes")]
     [FieldAccess(Class = "MatchMain", Field = "InitRound", Group = "MoreMatchTypes")]
     #endregion
@@ -24,7 +24,7 @@ namespace MoreMatchTypes
 
         #region Injection methods
 
-        [Hook(TargetClass = "MatchMain", TargetMethod = "CreatePlayers", InjectionLocation = int.MaxValue, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.None, Group = "MoreMatchTypes")]
+        [Hook(TargetClass = "MatchMain", TargetMethod = "InitMatch", InjectionLocation = int.MaxValue, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.None, Group = "MoreMatchTypes")]
         public static void SetMatchRules()
         {
             if (MoreMatchTypes_Form.form.cb_IronManMatch.Checked && GlobalWork.inst.MatchSetting.BattleRoyalKind == BattleRoyalKindEnum.Off)
@@ -126,13 +126,14 @@ namespace MoreMatchTypes
             }
         }
 
-        [Hook(TargetClass = "Referee", TargetMethod = "CheckMatchEnd_Draw", InjectionLocation = int.MaxValue, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.PassInvokingInstance, Group = "MoreMatchTypes")]
-        public static void SetVictoryConditions(Referee matchRef)
+        [Hook(TargetClass = "MatchMain", TargetMethod = "ProcessMatchEnd_Draw", InjectionLocation = int.MaxValue, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.None, Group = "MoreMatchTypes")]
+        public static void SetVictoryConditions()
         {
             if (!isIronMan)
             { return; }
             else
             {
+                Referee matchRef = RefereeMan.inst.GetRefereeObj();
                 MatchMain main = MatchMain.inst;
                 if (main.isTimeUp)
                 {

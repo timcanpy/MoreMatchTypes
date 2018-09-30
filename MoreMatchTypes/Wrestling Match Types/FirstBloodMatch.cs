@@ -6,7 +6,7 @@ using UnityEngine;
 namespace MoreMatchTypes
 {
     [FieldAccess(Class = "Player", Field = "Bleeding", Group = "MoreMatchTypes"), FieldAccess(Class = "Menu_Result", Field = "Set_FinishSkill", Group = "MoreMatchTypes")]
-    [FieldAccess(Class = "MatchMain", Field = "CreatePlayers", Group = "MoreMatchTypes")]
+    [FieldAccess(Class = "MatchMain", Field = "InitMatch", Group = "MoreMatchTypes")]
     public class FirstBloodMatch
     {
         #region Variables
@@ -16,7 +16,7 @@ namespace MoreMatchTypes
         #endregion
 
         #region Injection Methods
-        [Hook(TargetClass = "MatchMain", TargetMethod = "CreatePlayers", InjectionLocation = int.MaxValue, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.None, Group = "MoreMatchTypes")]
+        [Hook(TargetClass = "MatchMain", TargetMethod = "InitMatch", InjectionLocation = int.MaxValue, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.None, Group = "MoreMatchTypes")]
         public static void SetMatchRules()
         {
             

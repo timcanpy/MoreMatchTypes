@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace MoreMatchTypes.Wrestling_Match_Types
 {
-    [FieldAccess(Class = "MatchMain", Field = "CreatePlayers", Group = "MoreMatchTypes"), FieldAccess(Class = "Player", Field = "UpdatePlayer", Group = "MoreMatchTypes"), FieldAccess(Class = "MatchMain", Field = "InitRound", Group = "MoreMatchTypes")]
+    [FieldAccess(Class = "MatchMain", Field = "InitMatch", Group = "MoreMatchTypes"), FieldAccess(Class = "Player", Field = "UpdatePlayer", Group = "MoreMatchTypes"), FieldAccess(Class = "MatchMain", Field = "InitRound", Group = "MoreMatchTypes")]
 
     class TimedElimination
     {
@@ -15,7 +15,7 @@ namespace MoreMatchTypes.Wrestling_Match_Types
         public static int nextEntry = 2;
         public static int minutePassed = 0;
 
-        [Hook(TargetClass = "MatchMain", TargetMethod = "CreatePlayers", InjectionLocation = int.MaxValue, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.None, Group = "MoreMatchTypes")]
+        [Hook(TargetClass = "MatchMain", TargetMethod = "InitMatch", InjectionLocation = int.MaxValue, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.None, Group = "MoreMatchTypes")]
         public static void SetMatchRules()
         {
             MatchSetting settings = GlobalWork.inst.MatchSetting;

@@ -23,6 +23,8 @@ namespace MoreMatchTypes
         {
             form = this;
             InitializeComponent();
+            rulesTabControl.TabPages.RemoveAt(2);
+            rulesTabControl.TabPages.RemoveAt(1);
 
         }
 

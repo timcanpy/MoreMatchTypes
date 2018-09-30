@@ -8,7 +8,7 @@ using UnityEngine;
 namespace MoreMatchTypes
 {
     #region Access Modifiers
-    [FieldAccess(Class = "MatchMain", Field = "CreatePlayers", Group = "MoreMatchTypes")]
+    [FieldAccess(Class = "MatchMain", Field = "InitMatch", Group = "MoreMatchTypes")]
     [FieldAccess(Class = "MatchMain", Field = "EndMatch", Group = "MoreMatchTypes")]
     [FieldAccess(Class = "MatchMain", Field = "InitRound", Group = "MoreMatchTypes")]
     [FieldAccess(Class = "Referee", Field = "CheckMatchEnd", Group = "MoreMatchTypes")]
@@ -34,7 +34,7 @@ namespace MoreMatchTypes
         public static MatchTime currMatchTime;
         #endregion
 
-        [Hook(TargetClass = "MatchMain", TargetMethod = "CreatePlayers", InjectionLocation = 0, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.None, Group = "MoreMatchTypes")]
+        [Hook(TargetClass = "MatchMain", TargetMethod = "InitMatch", InjectionLocation = 0, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.None, Group = "MoreMatchTypes")]
         public static void SetMatchRules()
         {
             isExElimination = false;
