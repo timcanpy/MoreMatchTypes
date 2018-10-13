@@ -156,6 +156,8 @@
             this.sr_tagOpponent = new System.Windows.Forms.Label();
             this.cb_ttt = new System.Windows.Forms.RadioButton();
             this.cb_timedElim = new System.Windows.Forms.RadioButton();
+            this.Boxing = new System.Windows.Forms.RadioButton();
+            this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.rulesTabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -194,7 +196,7 @@
             // cb_uwfi
             // 
             this.cb_uwfi.AutoSize = true;
-            this.cb_uwfi.Location = new System.Drawing.Point(23, 108);
+            this.cb_uwfi.Location = new System.Drawing.Point(185, 38);
             this.cb_uwfi.Name = "cb_uwfi";
             this.cb_uwfi.Size = new System.Drawing.Size(53, 17);
             this.cb_uwfi.TabIndex = 2;
@@ -205,7 +207,7 @@
             // cb_sumo
             // 
             this.cb_sumo.AutoSize = true;
-            this.cb_sumo.Location = new System.Drawing.Point(256, 104);
+            this.cb_sumo.Location = new System.Drawing.Point(401, 116);
             this.cb_sumo.Name = "cb_sumo";
             this.cb_sumo.Size = new System.Drawing.Size(52, 17);
             this.cb_sumo.TabIndex = 3;
@@ -230,7 +232,7 @@
             // cb_Pancrase
             // 
             this.cb_Pancrase.AutoSize = true;
-            this.cb_Pancrase.Location = new System.Drawing.Point(144, 38);
+            this.cb_Pancrase.Location = new System.Drawing.Point(185, 61);
             this.cb_Pancrase.Name = "cb_Pancrase";
             this.cb_Pancrase.Size = new System.Drawing.Size(70, 17);
             this.cb_Pancrase.TabIndex = 5;
@@ -303,7 +305,7 @@
             // cb_elimination
             // 
             this.cb_elimination.AutoSize = true;
-            this.cb_elimination.Location = new System.Drawing.Point(22, 84);
+            this.cb_elimination.Location = new System.Drawing.Point(23, 84);
             this.cb_elimination.Name = "cb_elimination";
             this.cb_elimination.Size = new System.Drawing.Size(111, 17);
             this.cb_elimination.TabIndex = 12;
@@ -1447,7 +1449,7 @@
             // cb_exElim
             // 
             this.cb_exElim.AutoSize = true;
-            this.cb_exElim.Location = new System.Drawing.Point(381, 38);
+            this.cb_exElim.Location = new System.Drawing.Point(397, 70);
             this.cb_exElim.Name = "cb_exElim";
             this.cb_exElim.Size = new System.Drawing.Size(123, 17);
             this.cb_exElim.TabIndex = 14;
@@ -1460,7 +1462,7 @@
             // cb_survival
             // 
             this.cb_survival.AutoSize = true;
-            this.cb_survival.Location = new System.Drawing.Point(256, 84);
+            this.cb_survival.Location = new System.Drawing.Point(401, 93);
             this.cb_survival.Name = "cb_survival";
             this.cb_survival.Size = new System.Drawing.Size(92, 17);
             this.cb_survival.TabIndex = 15;
@@ -1511,19 +1513,18 @@
             // cb_ttt
             // 
             this.cb_ttt.AutoSize = true;
-            this.cb_ttt.Location = new System.Drawing.Point(256, 38);
+            this.cb_ttt.Location = new System.Drawing.Point(23, 106);
             this.cb_ttt.Name = "cb_ttt";
             this.cb_ttt.Size = new System.Drawing.Size(119, 17);
             this.cb_ttt.TabIndex = 19;
             this.cb_ttt.TabStop = true;
             this.cb_ttt.Text = "Timed Tornado Tag";
             this.cb_ttt.UseVisualStyleBackColor = true;
-            this.cb_ttt.Visible = false;
             // 
             // cb_timedElim
             // 
             this.cb_timedElim.AutoSize = true;
-            this.cb_timedElim.Location = new System.Drawing.Point(256, 61);
+            this.cb_timedElim.Location = new System.Drawing.Point(397, 47);
             this.cb_timedElim.Name = "cb_timedElim";
             this.cb_timedElim.Size = new System.Drawing.Size(107, 17);
             this.cb_timedElim.TabIndex = 20;
@@ -1532,11 +1533,35 @@
             this.cb_timedElim.UseVisualStyleBackColor = true;
             this.cb_timedElim.Visible = false;
             // 
+            // Boxing
+            // 
+            this.Boxing.AutoSize = true;
+            this.Boxing.Location = new System.Drawing.Point(185, 86);
+            this.Boxing.Name = "Boxing";
+            this.Boxing.Size = new System.Drawing.Size(57, 17);
+            this.Boxing.TabIndex = 21;
+            this.Boxing.TabStop = true;
+            this.Boxing.Text = "Boxing";
+            this.Boxing.UseVisualStyleBackColor = true;
+            // 
+            // radioButton1
+            // 
+            this.radioButton1.AutoSize = true;
+            this.radioButton1.Location = new System.Drawing.Point(185, 110);
+            this.radioButton1.Name = "radioButton1";
+            this.radioButton1.Size = new System.Drawing.Size(81, 17);
+            this.radioButton1.TabIndex = 22;
+            this.radioButton1.TabStop = true;
+            this.radioButton1.Text = "Kick Boxing";
+            this.radioButton1.UseVisualStyleBackColor = true;
+            // 
             // MoreMatchTypes_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(852, 620);
+            this.Controls.Add(this.radioButton1);
+            this.Controls.Add(this.Boxing);
             this.Controls.Add(this.cb_timedElim);
             this.Controls.Add(this.cb_ttt);
             this.Controls.Add(this.sr_tagOpponent);
@@ -1712,5 +1737,7 @@
         public System.Windows.Forms.Label sr_tagOpponent;
         public System.Windows.Forms.RadioButton cb_ttt;
         public System.Windows.Forms.RadioButton cb_timedElim;
+        public System.Windows.Forms.RadioButton Boxing;
+        public System.Windows.Forms.RadioButton radioButton1;
     }
 }

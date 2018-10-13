@@ -176,13 +176,7 @@ namespace MoreMatchTypes
             {
                 return;
             }
-            if (MSCForm.Instance.checkBox7.Checked)
-            {
-                fiveCount = true;
-                MSCForm.Instance.checkBox7.Checked = false;
-                MSCForm.Instance.checkBox7.Enabled = false;
-            }
-
+      
             foulChecked = false;
             checkKo = false;
             ropeBreak = false;
@@ -401,7 +395,7 @@ namespace MoreMatchTypes
                 }
 
                 //If the spot includes another fighter, this is not a One vs One match
-                if(!pl.isSecond)
+                if (!pl.isSecond)
                 {
                     isOneOnOne = false;
                     break;

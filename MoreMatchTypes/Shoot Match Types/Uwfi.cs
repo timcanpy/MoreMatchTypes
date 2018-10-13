@@ -129,13 +129,7 @@ namespace MoreMatchTypes
             }
             ptEndMatch = false;
             fiveCount = false;
-            if (MSCForm.Instance.checkBox7.Checked)
-            {
-                fiveCount = true;
-                MSCForm.Instance.checkBox7.Checked = false;
-                MSCForm.Instance.checkBox7.Enabled = false;
-            }
-
+           
             settings.VictoryCondition = VictoryConditionEnum.OnlyGiveUp;
             settings.is10CountKO = true;
             settings.isLumberjack = true;
@@ -336,7 +330,7 @@ namespace MoreMatchTypes
                 defender.SetDownTime(0);
             }
 
-            if(instantDQ.Contains(sd.skillName[1]))
+            if (instantDQ.Contains(sd.skillName[1]))
             {
 
                 if (plIDx < 4)
@@ -356,7 +350,7 @@ namespace MoreMatchTypes
                 defender.SetDownTime(0);
             }
 
-            if(ptChange)
+            if (ptChange)
             {
                 DispNotification.inst.Show(teamNames[0] + ": " + points[0] + " points \t\t" + teamNames[1] + ": " + points[1] + " points");
             }
@@ -375,7 +369,7 @@ namespace MoreMatchTypes
             }
         }
 
-        [Hook(TargetClass ="Referee", TargetMethod ="Start_SubmissionCheck", InjectionLocation =36, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.PassInvokingInstance, Group = "MoreMatchTypes")]
+        [Hook(TargetClass = "Referee", TargetMethod = "Start_SubmissionCheck", InjectionLocation = 36, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.PassInvokingInstance, Group = "MoreMatchTypes")]
         public static void RopeBreakPtLoss(Referee mRef)
         {
             if (!isUwfi)
@@ -408,10 +402,10 @@ namespace MoreMatchTypes
             }
         }
 
-        [Hook(TargetClass="MatchMain", TargetMethod ="ExitMatch", InjectionLocation =0, InjectDirection =HookInjectDirection.Before,InjectFlags = HookInjectFlags.None, Group = "MoreMatchTypes")]
+        [Hook(TargetClass = "MatchMain", TargetMethod = "ExitMatch", InjectionLocation = 0, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.None, Group = "MoreMatchTypes")]
         public static void ResetFiveCount()
         {
-            if(!isUwfi)
+            if (!isUwfi)
             { return; }
 
             MSCForm.Instance.checkBox7.Checked = fiveCount;
@@ -421,13 +415,13 @@ namespace MoreMatchTypes
         [Hook(TargetClass = "Menu_Result", TargetMethod = "Set_FinishSkill", InjectionLocation = 8, InjectDirection = HookInjectDirection.After, InjectFlags = HookInjectFlags.PassParametersVal | HookInjectFlags.PassLocals, LocalVarIds = new int[] { 1 }, Group = "MoreMatchTypes")]
         public static void SetResultScreenDisplay(ref UILabel finishText, string str)
         {
-            if(!isUwfi)
+            if (!isUwfi)
             {
                 return;
             }
             if (ptEndMatch && isUwfi)
             {
-                if(resultText.Equals(""))
+                if (resultText.Equals(""))
                 {
                     resultText = "T.K.O. By Point Loss";
                 }
@@ -439,12 +433,12 @@ namespace MoreMatchTypes
 
         public static void CheckBleeding(Player pl)
         {
-            if(!isUwfi)
+            if (!isUwfi)
             { return; }
 
             bloodState[pl.PlIdx]++;
 
-            switch(bloodState[pl.PlIdx])
+            switch (bloodState[pl.PlIdx])
             {
                 case 2:
                     break;

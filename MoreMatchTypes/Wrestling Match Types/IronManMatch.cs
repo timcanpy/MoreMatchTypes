@@ -10,6 +10,7 @@ namespace MoreMatchTypes
     [FieldAccess(Class = "Menu_Result", Field = "Set_FinishSkill", Group = "MoreMatchTypes"), FieldAccess(Class = "MatchMain", Field = "ProcessMatchEnd_Draw", Group = "MoreMatchTypes")]
     [FieldAccess(Class = "MatchMain", Field = "EndMatch", Group = "MoreMatchTypes")]
     [FieldAccess(Class = "MatchMain", Field = "InitRound", Group = "MoreMatchTypes")]
+    [FieldAccess(Class = "Referee", Field = "SentenceLose", Group = "MoreMatchTypes")]
     #endregion
     public class IronManMatch
     {
@@ -58,6 +59,8 @@ namespace MoreMatchTypes
             }
             else
             {
+
+                //Determine if this is a draw
                 MatchMain main = MatchMain.inst;
 
                 //If a victory condition is met
@@ -94,6 +97,7 @@ namespace MoreMatchTypes
                     { wins[0]++; }
 
                     //Prepare the next round
+                    WaitForNextRound();
                     main.isMatchEnd = false;
                     main.isRoundEnd = true;
                     currMatchTime = new MatchTime
@@ -126,11 +130,11 @@ namespace MoreMatchTypes
             }
         }
 
-        [Hook(TargetClass = "MatchMain", TargetMethod = "ProcessMatchEnd_Draw", InjectionLocation = int.MaxValue, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.None, Group = "MoreMatchTypes")]
-        public static void SetVictoryConditions()
+        [Hook(TargetClass = "MatchMain", TargetMethod = "ProcessMatchEnd_Draw", InjectionLocation = 0, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.ModifyReturn, Group = "MoreMatchTypes")]
+        public static bool SetVictoryConditions()
         {
             if (!isIronMan)
-            { return; }
+            { return false; }
             else
             {
                 Referee matchRef = RefereeMan.inst.GetRefereeObj();
@@ -160,10 +164,12 @@ namespace MoreMatchTypes
                         matchRef.SentenceLose(p.GetPlObj(0).PlIdx);
                         SetLosers(0, p);
                     }
+
+                    return true;
                 }
                 else
                 {
-                    return;
+                    return false;
                 }
             }
         }
@@ -368,6 +374,24 @@ namespace MoreMatchTypes
                 return;
             }
 
+        }
+
+        public static void WaitForNextRound()
+        {
+            for(int i = 0; i < 8; i ++)
+            {
+                Player plObj = PlayerMan.inst.GetPlObj(i);
+
+                if(!plObj)
+                {
+                    continue;
+                }
+
+                if(plObj.WresParam.fightStyle != FightStyleEnum.Heel)
+                {
+                    plObj.Start_ForceControl(ForceCtrlEnum.WaitMatchStart);
+                }
+            }
         }
         #endregion
     }
