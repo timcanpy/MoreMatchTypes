@@ -156,8 +156,8 @@
             this.sr_tagOpponent = new System.Windows.Forms.Label();
             this.cb_ttt = new System.Windows.Forms.RadioButton();
             this.cb_timedElim = new System.Windows.Forms.RadioButton();
-            this.Boxing = new System.Windows.Forms.RadioButton();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
+            this.cb_boxing = new System.Windows.Forms.RadioButton();
+            this.cb_kickboxing = new System.Windows.Forms.RadioButton();
             this.rulesTabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -338,7 +338,7 @@
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage1.Size = new System.Drawing.Size(841, 446);
             this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Attack Rules (UWFI, Pancrase)";
+            this.tabPage1.Text = "Attack Rules (UWFI, Pancrase, Boxing)";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // tabPage2
@@ -1533,35 +1533,37 @@
             this.cb_timedElim.UseVisualStyleBackColor = true;
             this.cb_timedElim.Visible = false;
             // 
-            // Boxing
+            // cb_boxing
             // 
-            this.Boxing.AutoSize = true;
-            this.Boxing.Location = new System.Drawing.Point(185, 86);
-            this.Boxing.Name = "Boxing";
-            this.Boxing.Size = new System.Drawing.Size(57, 17);
-            this.Boxing.TabIndex = 21;
-            this.Boxing.TabStop = true;
-            this.Boxing.Text = "Boxing";
-            this.Boxing.UseVisualStyleBackColor = true;
+            this.cb_boxing.AutoSize = true;
+            this.cb_boxing.Location = new System.Drawing.Point(185, 86);
+            this.cb_boxing.Name = "cb_boxing";
+            this.cb_boxing.Size = new System.Drawing.Size(57, 17);
+            this.cb_boxing.TabIndex = 21;
+            this.cb_boxing.TabStop = true;
+            this.cb_boxing.Text = "Boxing";
+            this.cb_boxing.UseVisualStyleBackColor = true;
+            this.cb_boxing.CheckedChanged += new System.EventHandler(this.cb_boxing_CheckedChanged);
             // 
-            // radioButton1
+            // cb_kickboxing
             // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Location = new System.Drawing.Point(185, 110);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(81, 17);
-            this.radioButton1.TabIndex = 22;
-            this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "Kick Boxing";
-            this.radioButton1.UseVisualStyleBackColor = true;
+            this.cb_kickboxing.AutoSize = true;
+            this.cb_kickboxing.Location = new System.Drawing.Point(185, 110);
+            this.cb_kickboxing.Name = "cb_kickboxing";
+            this.cb_kickboxing.Size = new System.Drawing.Size(81, 17);
+            this.cb_kickboxing.TabIndex = 22;
+            this.cb_kickboxing.TabStop = true;
+            this.cb_kickboxing.Text = "Kick Boxing";
+            this.cb_kickboxing.UseVisualStyleBackColor = true;
+            this.cb_kickboxing.CheckedChanged += new System.EventHandler(this.cb_kickboxing_CheckedChanged);
             // 
             // MoreMatchTypes_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(852, 620);
-            this.Controls.Add(this.radioButton1);
-            this.Controls.Add(this.Boxing);
+            this.Controls.Add(this.cb_kickboxing);
+            this.Controls.Add(this.cb_boxing);
             this.Controls.Add(this.cb_timedElim);
             this.Controls.Add(this.cb_ttt);
             this.Controls.Add(this.sr_tagOpponent);
@@ -1737,7 +1739,7 @@
         public System.Windows.Forms.Label sr_tagOpponent;
         public System.Windows.Forms.RadioButton cb_ttt;
         public System.Windows.Forms.RadioButton cb_timedElim;
-        public System.Windows.Forms.RadioButton Boxing;
-        public System.Windows.Forms.RadioButton radioButton1;
+        public System.Windows.Forms.RadioButton cb_boxing;
+        public System.Windows.Forms.RadioButton cb_kickboxing;
     }
 }

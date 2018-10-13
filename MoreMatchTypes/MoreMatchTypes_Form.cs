@@ -1232,5 +1232,58 @@ namespace MoreMatchTypes
                 sr_simSecond.Checked = false;
             }
         }
+
+        private void cb_boxing_CheckedChanged(object sender, EventArgs e)
+        {
+            if(cb_boxing.Checked)
+            {
+                SetDQMoves();
+            }
+        }
+
+        private void cb_kickboxing_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cb_kickboxing.Checked)
+            {
+                
+            }
+        }
+
+        private void SetDQMoves()
+        {
+                tb_basic.Visible = false;
+                tb_illegal.Visible = false;
+                tb_dq.Visible = true;
+            
+            List<String> instantDQ = new List<String>()
+            {
+                "Giant Steel Knuckles",
+                "Brass Knuckle Punch",
+                "Weapon Attack",
+                "Scythe Attack",
+                "Bite",
+                "Testicular Claw",
+                "Chair's Illusion",
+                "Low Blow",
+                "Lip Lock",
+                "Back Low Blow",
+                "Groin Head Drop",
+                "Groin Knee Stamp",
+                "Groin Stomping",
+                "Ategai",
+                "Bronco Buster",
+                "Mist",
+                "Big Fire"
+            };
+
+            tb_dq.Text = "";
+            foreach (String move in instantDQ)
+            {
+                tb_dq.Text += move + "\n";
+            }
+
+            tb_dq.Text = tb_dq.Text.Remove(tb_dq.Text.Length - 1);
+            rulesTabControl.SelectedIndex = 0;
+        }
     }
 }

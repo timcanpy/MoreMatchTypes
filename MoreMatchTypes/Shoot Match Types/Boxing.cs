@@ -24,7 +24,7 @@ namespace MoreMatchTypes.Shoot_Match_Types
         public static bool isDown = false;
         #endregion
 
-        [Hook(TargetClass = "MatchMain", TargetMethod = "CreatePlayers", InjectionLocation = int.MaxValue, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.None, Group = "MoreMatchTypes")]
+        [Hook(TargetClass = "MatchMain", TargetMethod = "InitMatch", InjectionLocation = int.MaxValue, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.None, Group = "MoreMatchTypes")]
         public static void SetMatchRules()
         {
             MatchSetting settings = GlobalWork.inst.MatchSetting;
@@ -83,6 +83,8 @@ namespace MoreMatchTypes.Shoot_Match_Types
             refName = mref.RefePrm.name;
             isFoul = false;
             isDown = false;
+            L.D("Foul Ceiling: " + foulCeiling);
+            L.D("Bleed Ceiling: " + bleedCeiling);
         }
 
         [Hook(TargetClass = "Player", TargetMethod = "IsS1Waza", InjectionLocation = 0, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.PassInvokingInstance | HookInjectFlags.PassParametersVal | HookInjectFlags.ModifyReturn, Group = "MoreMatchTypes")]
@@ -125,9 +127,9 @@ namespace MoreMatchTypes.Shoot_Match_Types
                 }
 
                 //Increase bleeding rate on headbutts and elbows
-                if(sd.filteringType == SkillFilteringType.Headbutt || sd.filteringType == SkillFilteringType.Elbow)
+                if (sd.filteringType == SkillFilteringType.Headbutt || sd.filteringType == SkillFilteringType.Elbow)
                 {
-                    if(sd.bleedingRate < 10)
+                    if (sd.bleedingRate < 10)
                     {
                         sd.bleedingRate = 10;
                     }
@@ -144,7 +146,6 @@ namespace MoreMatchTypes.Shoot_Match_Types
                     isFoul = true;
                     int foulIncrement = 1;
                     int currFouls = 0;
-                    L.D(sd.skillName[1].ToLower());
 
                     if (dqAttacks.Contains(sd.skillName[1].ToLower()))
                     {
@@ -173,7 +174,8 @@ namespace MoreMatchTypes.Shoot_Match_Types
                     {
                         foulValue = foulCeiling * (currFouls + 2);
                     }
-                    if (UnityEngine.Random.Range(1, 20) > foulValue)
+                    L.D("Foul Value: " + foulValue);
+                    if (UnityEngine.Random.Range(1, 50) > foulValue)
                     {
                         if (plIDx < 4)
                         {

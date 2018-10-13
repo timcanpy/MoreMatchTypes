@@ -12,7 +12,7 @@ namespace MoreMatchTypes
     [FieldAccess(Class = "Player", Field = "UpdatePlayer", Group = "MoreMatchTypes"), FieldAccess(Class = "Referee", Field = "Start_SubmissionCheck", Group = "MoreMatchTypes")]
     [FieldAccess(Class = "MatchMain", Field = "ExitMatch", Group = "MoreMatchTypes"), FieldAccess(Class = "MatchMain", Field = "InitMatch", Group = "MoreMatchTypes")]
     [FieldAccess(Class = "Menu_Result", Field = "Set_FinishSkill", Group = "MoreMatchTypes"), FieldAccess(Class = "MatchEvaluation", Field = "EvaluateSkill", Group = "MoreMatchTypes")]
-    [FieldAccess(Class = "MatchMain", Field = "InitRound", Group = "MoreMatchTypes"), FieldAccess(Class = "MatchMain", Field = "Update_Match", Group = "MoreMatchTypes")]
+    [FieldAccess(Class = "MatchMain", Field = "InitRound", Group = "MoreMatchTypes"), FieldAccess(Class = "MatchMain", Field = "Update_Match", Group = "MoreMatchTypes"), FieldAccess(Class = "Player", Field = "SetGrappleResult", Group = "MoreMatchTypes")]
     #endregion
     class Pancrase
     {

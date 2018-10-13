@@ -89,6 +89,7 @@
     <Compile Include="IDObject.cs" />
     <Compile Include="MatchConfiguration.cs" />
     <Compile Include="MatchEndFunctions.cs" />
+    <Compile Include="Shoot Match Types\Boxing.cs" />
     <Compile Include="Wrestling Match Types\TimedElimination.cs" />
     <Compile Include="Wrestling Match Types\TimedTornadoTag.cs" />
     <Compile Include="WresIDGroup.cs" />
