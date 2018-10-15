@@ -202,7 +202,7 @@ namespace MoreMatchTypes
                         loser = i;
                         break;
                     }
-                    else if(i > 3 && i == (memberTrack[1] + 4))
+                    else if (i > 3 && i == (memberTrack[1] + 4))
                     {
                         loserTrack = 1;
                         loser = i;
@@ -233,7 +233,7 @@ namespace MoreMatchTypes
                     return true;
                 }
             }
-            else if(loserTrack == 1)
+            else if (loserTrack == 1)
             {
                 if (redTeamMembers.Count == 1)
                 {
@@ -273,7 +273,7 @@ namespace MoreMatchTypes
             mref.PlDir = PlDirEnum.Left;
             mref.State = RefeStateEnum.DeclareVictory;
             mref.ReqRefereeAnm(BasicSkillEnum.Refe_Stand_MatchEnd_Front_Left);
-            
+
             //Ignore if all players have been eliminated
             if (loserIndex != -1)
             {
@@ -373,18 +373,15 @@ namespace MoreMatchTypes
             plObj.hasRight = true;
             plObj.isSecond = false;
             plObj.isSleep = false;
-            
+
             //Ensure that player comes in fresh
             plObj.SetSP(65535f);
             plObj.SetHP(65535f);
             plObj.SetBP(65535f);
 
             //Determine how they enter the ring
-            if (!MoreMatchTypes_Form.form.cb_membersWait.Checked)
-            {
-                plObj.isLose = false;
-                plObj.Start_ForceControl(ForceCtrlEnum.GoBackToRing);
-            }
+            plObj.isLose = false;
+            plObj.Start_ForceControl(global::ForceCtrlEnum.GoBackToRing);
         }
 
         public static void SetSeconds()
@@ -406,7 +403,7 @@ namespace MoreMatchTypes
                 }
 
                 //Ensure losers are forced to leave ringside if applicable
-                if(MoreMatchTypes_Form.form.cb_losersLeave.Checked && i <4 && i < memberTrack[0])
+                if (MoreMatchTypes_Form.form.cb_losersLeave.Checked && i < 4 && i < memberTrack[0])
                 {
                     plObj.Start_ForceControl(ForceCtrlEnum.LoseAndExit);
                     continue;
@@ -439,7 +436,7 @@ namespace MoreMatchTypes
         {
             PlayerMan p = PlayerMan.inst;
             int playerCount = p.GetPlayerNum();
-            
+
             //Set-up if only two wrestlers exist
             if (playerCount == 2)
             {
@@ -559,7 +556,7 @@ namespace MoreMatchTypes
             Player plObj = PlayerMan.inst.GetPlObj(playerIndex);
 
             //plObj.isKO = false;
-            
+
             if (MoreMatchTypes_Form.form.cb_losersLeave.Checked)
             {
                 plObj.Start_ForceControl(ForceCtrlEnum.LoseAndExit);

@@ -17,15 +17,31 @@ namespace MoreMatchTypes
         public static List<String> promotionList = new List<string>();
         public static List<uint> gameSpeed = new List<uint>();
         public static List<WresIDGroup> wrestlerList = new List<WresIDGroup>();
+        private static String[] saveFileNames = new String[] { "SumoMoves.dat", "UWFIMoves.dat", "PancraseMoves.dat", "BoxingMoves.dat", "KickBoxingMoves.dat" };
+        private static String[] saveFolderNames = new String[] { "./MatchTypeData/" };
+        private static String sectionDivider = "|-------------------|";
+
+        #region Move Listing
+        private static List<String> legalSumoMoves = new List<String>();
+        private static List<String> illegalPancraseMoves = new List<String>();
+        private static List<String> dqPancraseMoves = new List<String>();
+        private static List<String> illegalUWFIMoves = new List<String>();
+        private static List<String> dqUWFIMoves = new List<String>();
+        private static List<String> dqBoxingMoves = new List<String>();
+        private static List<String> dqKickboxingMoves = new List<String>();
+        #endregion
         #endregion
 
         public MoreMatchTypes_Form()
         {
             form = this;
             InitializeComponent();
+            FormClosing += MoreMatchTypes_FormClosing;
+            tb_basic.LostFocus += tb_basic_LostFocus;
+            tb_illegal.LostFocus += tb_illegal_LostFocus;
+            tb_dq.LostFocus += tb_dq_LostFocus;
             rulesTabControl.TabPages.RemoveAt(2);
             rulesTabControl.TabPages.RemoveAt(1);
-
         }
 
         public void MoreMatchTypes_Form_Load(object sender, EventArgs e)
@@ -41,12 +57,12 @@ namespace MoreMatchTypes
                 LoadDifficulty();
                 LoadGameSpeed();
                 LoadVenues();
-                #endregion
             }
             catch (Exception ex)
             {
                 L.D("Load Match Type Execption: " + ex.Message);
             }
+            #endregion
             #region Survival Road Methods
             LoadContinues();
             LoadMatches();
@@ -56,9 +72,316 @@ namespace MoreMatchTypes
             #region Tooltips
             tt_normal.SetToolTip(cb_normalMatch, "Disables the More Match Types Mod.");
             #endregion
+
+            #region Move Load
+            LoadMoves();
+            UpdateMoves();
+            #endregion
         }
 
+        #region Data Save
+        private void SaveMoves()
+        {
+            //Pancrase Moves
+            String filePath = CheckSaveFile("Pancrase");
+
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
+
+            using (StreamWriter sw = File.AppendText(filePath))
+            {
+                foreach (String move in illegalPancraseMoves)
+                {
+                    if (!move.Equals("\n") && !move.Equals(""))
+                    {
+                        sw.WriteLine(move);
+                    }
+                }
+
+                sw.WriteLine(sectionDivider);
+
+                foreach (String move in dqPancraseMoves)
+                {
+                    if (!move.Equals("\n") && !move.Equals(""))
+                    {
+                        sw.WriteLine(move);
+                    }
+                }
+            }
+
+            //UWFI Moves
+            filePath = CheckSaveFile("UWFI");
+
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
+
+            using (StreamWriter sw = File.AppendText(filePath))
+            {
+                foreach (String move in illegalUWFIMoves)
+                {
+                    if (move.Equals("\n") || move.Equals(""))
+                    {
+                        continue;
+                    }
+                    sw.WriteLine(move);
+                }
+
+                sw.WriteLine(sectionDivider);
+
+                foreach (String move in dqUWFIMoves)
+                {
+                    if (!move.Equals("\n") && !move.Equals(""))
+                    {
+                        sw.WriteLine(move);
+                    }
+                }
+            }
+
+            //Boxing Moves
+            filePath = CheckSaveFile("Boxing");
+
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
+
+            using (StreamWriter sw = File.AppendText(filePath))
+            {
+                foreach (String move in dqBoxingMoves)
+                {
+                    if (!move.Equals("\n") && !move.Equals(""))
+                    {
+                        sw.WriteLine(move);
+                    }
+                }
+            }
+
+            //Boxing Moves
+            filePath = CheckSaveFile("KickBoxing");
+
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
+
+            using (StreamWriter sw = File.AppendText(filePath))
+            {
+                foreach (String move in dqKickboxingMoves)
+                {
+                    if (move.Equals("\n") || move.Equals(""))
+                    {
+                        continue;
+                    }
+                    sw.WriteLine(move);
+                }
+            }
+        }
+        private String CheckSaveFile(String dataType)
+        {
+            String path = CheckSaveFolder(dataType);
+
+            switch (dataType)
+            {
+                case "Sumo":
+                    path = path + saveFileNames[0];
+                    break;
+                case "UWFI":
+                    path = path + saveFileNames[1];
+                    break;
+                case "Pancrase":
+                    path = path + saveFileNames[2];
+                    break;
+                case "Boxing":
+                    path = path + saveFileNames[3];
+                    break;
+                case "KickBoxing":
+                    path = path + saveFileNames[4];
+                    break;
+                default:
+                    path = path + saveFileNames[0];
+                    break;
+            }
+
+            return path;
+
+        }
+        private String CheckSaveFolder(String dataType)
+        {
+            String folder = "";
+            switch (dataType)
+            {
+                default:
+                    folder = saveFolderNames[0];
+                    break;
+            }
+
+            if (!Directory.Exists(folder))
+            {
+                Directory.CreateDirectory(folder);
+            }
+
+            return folder;
+
+        }
+
+        #endregion
+
+        #region Data Load
+        private void LoadMoves()
+        {
+            String filePath = CheckSaveFile("Sumo");
+            if (File.Exists(filePath))
+            {
+                using (StreamReader sr = new StreamReader(filePath))
+                {
+                    legalSumoMoves.Clear();
+                    var lines = File.ReadAllLines(filePath);
+                    foreach (String move in lines)
+                    {
+                        legalSumoMoves.Add(move);
+                    }
+                }
+            }
+
+            filePath = CheckSaveFile("UWFI");
+            if (File.Exists(filePath))
+            {
+                using (StreamReader sr = new StreamReader(filePath))
+                {
+                    illegalUWFIMoves.Clear();
+                    dqUWFIMoves.Clear();
+                    var lines = File.ReadAllLines(filePath);
+                    bool isDq = false;
+                    foreach (String move in lines)
+                    {
+                        if (move.Equals(sectionDivider))
+                        {
+                            isDq = true;
+                            continue;
+                        }
+
+                        if (!isDq)
+                        {
+                            illegalUWFIMoves.Add(move);
+                        }
+                        else
+                        {
+                            dqUWFIMoves.Add(move);
+                        }
+                    }
+                }
+            }
+
+            filePath = CheckSaveFile("Pancrase");
+            if (File.Exists(filePath))
+            {
+                using (StreamReader sr = new StreamReader(filePath))
+                {
+                    illegalPancraseMoves.Clear();
+                    dqPancraseMoves.Clear();
+                    var lines = File.ReadAllLines(filePath);
+                    bool isDq = false;
+                    foreach (String move in lines)
+                    {
+                        if (move.Equals(sectionDivider))
+                        {
+                            isDq = true;
+                            continue;
+                        }
+
+                        if (!isDq)
+                        {
+                            illegalPancraseMoves.Add(move);
+                        }
+                        else
+                        {
+                            dqPancraseMoves.Add(move);
+                        }
+                    }
+                }
+            }
+
+            filePath = CheckSaveFile("Boxing");
+            if (File.Exists(filePath))
+            {
+                using (StreamReader sr = new StreamReader(filePath))
+                {
+                    dqBoxingMoves.Clear();
+                    var lines = File.ReadAllLines(filePath);
+                    foreach (String move in lines)
+                    {
+                        dqBoxingMoves.Add(move);
+                    }
+                }
+            }
+
+            filePath = CheckSaveFile("KickBoxing");
+            if (File.Exists(filePath))
+            {
+                using (StreamReader sr = new StreamReader(filePath))
+                {
+                    dqKickboxingMoves.Clear();
+                    var lines = File.ReadAllLines(filePath);
+                    foreach (String move in lines)
+                    {
+                        dqKickboxingMoves.Add(move);
+                    }
+                }
+            }
+
+        }
+        #endregion
+
         #region General Window Methods
+
+        private void tb_basic_LostFocus(object sender, EventArgs e)
+        {
+            UpdateMoveList("Sumo");
+        }
+
+        private void tb_illegal_LostFocus(object sender, EventArgs e)
+        {
+            if (cb_uwfi.Checked)
+            {
+                UpdateMoveList("UWFI");
+            }
+            else if (cb_Pancrase.Checked)
+            {
+                UpdateMoveList("Pancrase");
+            }
+        }
+
+        private void tb_dq_LostFocus(object sender, EventArgs e)
+        {
+            if (cb_uwfi.Checked)
+            {
+                UpdateMoveList("UWFI");
+            }
+            else if (cb_Pancrase.Checked)
+            {
+                UpdateMoveList("Pancrase");
+            }
+            else if (cb_boxing.Checked)
+            {
+                UpdateMoveList("Boxing");
+            }
+            else if (cb_kickboxing.Checked)
+            {
+                UpdateMoveList("Kickboxing");
+            }
+
+        }
+
+
+
+        private void MoreMatchTypes_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            SaveMoves();
+        }
 
         private void matchHelp_Click(object sender, EventArgs e)
         {
@@ -121,8 +444,14 @@ namespace MoreMatchTypes
             Clear();
             lbl_Basic.Visible = true;
             tb_basic.Visible = true;
+            tb_basic.Clear();
 
-            tb_basic.Text = "Shoutei\nFace Slap B\nChest Slap\nKnife-Edge Chop\nKoppo Style Shoutei\nThroat Chop\nJigoku-Tsuki\nElbow Butt";
+            String moveList = "";
+            foreach (String move in legalSumoMoves)
+            {
+                moveList += move + "\n";
+            }
+            tb_basic.Text = moveList;
             rulesTabControl.SelectedIndex = 0;
         }
 
@@ -134,6 +463,143 @@ namespace MoreMatchTypes
             tb_illegal.Visible = true;
             tb_dq.Visible = true;
 
+
+            //Illegal Moves
+            tb_illegal.Text = "";
+            foreach (String move in illegalUWFIMoves)
+            {
+                tb_illegal.Text += move + "\n";
+            }
+
+            //DQ Moves
+            tb_dq.Text = "";
+            foreach (String move in dqUWFIMoves)
+            {
+                tb_dq.Text += move + "\n";
+            }
+
+            rulesTabControl.SelectedIndex = 0;
+
+        }
+
+        private void cb_Pancrase_CheckedChanged(object sender, EventArgs e)
+        {
+            Clear();
+            lbl_illegal.Visible = true;
+            lbl_dq.Visible = true;
+            tb_illegal.Visible = true;
+            tb_dq.Visible = true;
+
+            //Illegal Moves
+            tb_illegal.Text = "";
+            foreach (String move in illegalPancraseMoves)
+            {
+                tb_illegal.Text += move + "\n";
+            }
+
+            //DQ Moves
+            tb_dq.Text = "";
+            foreach (String move in dqPancraseMoves)
+            {
+                tb_dq.Text += move + "\n";
+            }
+
+            rulesTabControl.SelectedIndex = 0;
+
+        }
+
+        private void tb_illegal_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cb_normalMatch_CheckedChanged(object sender, EventArgs e)
+        {
+            Clear();
+        }
+
+        private void cb_elimination_CheckedChanged(object sender, EventArgs e)
+        {
+            Clear();
+        }
+
+        private void cb_exElim_CheckedChanged(object sender, EventArgs e)
+        {
+            rulesTabControl.SelectedIndex = 1;
+        }
+
+        private void cb_survival_CheckedChanged(object sender, EventArgs e)
+        {
+            rulesTabControl.SelectedIndex = 2;
+        }
+
+        private void cb_boxing_CheckedChanged(object sender, EventArgs e)
+        {
+            Clear();
+            lbl_dq.Visible = true;
+            tb_dq.Visible = true;
+
+            foreach (String move in dqBoxingMoves)
+            {
+                tb_dq.Text += move + "\n";
+            }
+
+            rulesTabControl.SelectedIndex = 0;
+        }
+
+        private void cb_kickboxing_CheckedChanged(object sender, EventArgs e)
+        {
+            Clear();
+            lbl_dq.Visible = true;
+            tb_dq.Visible = true;
+
+            foreach (String move in dqKickboxingMoves)
+            {
+                tb_dq.Text += move + "\n";
+            }
+
+            rulesTabControl.SelectedIndex = 0;
+        }
+
+        public void Clear()
+        {
+            //Hiding all customization items
+            lbl_Basic.Visible = false;
+            lbl_dq.Visible = false;
+            lbl_illegal.Visible = false;
+            tb_basic.Visible = false;
+            tb_basic.Text = "";
+            tb_illegal.Visible = false;
+            tb_illegal.Text = "";
+            tb_dq.Visible = false;
+            tb_dq.Text = "";
+        }
+
+        #endregion
+
+        #region Move Methods
+        private void UpdateMoves()
+        {
+            List<String> dqMoves = new List<String>()
+            {
+                "Giant Steel Knuckles",
+                "Brass Knuckle Punch",
+                "Weapon Attack",
+                "Scythe Attack",
+                "Bite",
+                "Testicular Claw",
+                "Chair's Illusion",
+                "Low Blow",
+                "Lip Lock",
+                "Back Low Blow",
+                "Groin Head Drop",
+                "Groin Knee Stamp",
+                "Groin Stomping",
+                "Ategai",
+                "Bronco Buster",
+                "Mist",
+                "Big Fire"
+            };
             List<String> illegalMoves = new List<String>()
             {
                 "Knuckle Arrow",
@@ -169,107 +635,41 @@ namespace MoreMatchTypes
                 "Back Mount Punches"
 
             };
-            List<String> instantDQ = new List<String>()
+            if (legalSumoMoves.Count == 0)
             {
-                "Giant Steel Knuckles",
-                "Brass Knuckle Punch",
-                "Weapon Attack",
-                "Scythe Attack",
-                "Bite",
-                "Testicular Claw",
-                "Chair's Illusion",
-                "Low Blow",
-                "Lip Lock",
-                "Back Low Blow",
-                "Groin Head Drop",
-                "Groin Knee Stamp",
-                "Groin Stomping",
-                "Ategai",
-                "Bronco Buster",
-                "Mist",
-                "Big Fire"
-            };
-
-            //Illegal Moves
-            tb_illegal.Text = "";
-            foreach (String move in illegalMoves)
-            {
-                tb_illegal.Text += move + "\n";
+                legalSumoMoves = new List<String> { "Shoutei", "Face Slap B", "Chest Slap", "Knife - Edge Chop", "Koppo Style Shoutei", "Throat Chop", "Jigoku - Tsuki", "Elbow Butt" };
             }
 
-            tb_illegal.Text = tb_illegal.Text.Remove(tb_illegal.Text.Length - 1);
-
-            //DQ Moves
-            tb_dq.Text = "";
-            foreach (String move in instantDQ)
+            if (illegalPancraseMoves.Count == 0)
             {
-                tb_dq.Text += move + "\n";
+                illegalPancraseMoves = illegalMoves;
             }
 
-            tb_dq.Text = tb_dq.Text.Remove(tb_dq.Text.Length - 1);
-            rulesTabControl.SelectedIndex = 0;
+            if (dqPancraseMoves.Count == 0)
+            {
+                dqPancraseMoves = dqMoves;
 
-        }
+                if (illegalUWFIMoves.Count == 0)
+                {
+                    illegalUWFIMoves = illegalMoves;
+                }
 
-        private void cb_Pancrase_CheckedChanged(object sender, EventArgs e)
-        {
-            Clear();
-            lbl_illegal.Visible = true;
-            lbl_dq.Visible = true;
-            tb_illegal.Visible = true;
-            tb_dq.Visible = true;
+                if (dqUWFIMoves.Count == 0)
+                {
+                    dqUWFIMoves = dqMoves;
+                }
 
-            //Illegal Moves
-            tb_illegal.Text = "Knuckle Arrow\nKnuckle Pat\nElbow to the Crown\nElbow Stamp\nElbow Stamp (Neck)\nElbow Stamp (Arm)\nElbow Stamp (Leg)\nStomping (Face)\nStomping (Neck)\nClap Kick\n";
-            tb_illegal.Text += "Thumbing to the Eyes\nThumbing to the Eyes B\nFace Raking\nChoke Attack\nCobra Claw\nHeadbutt\nHeadbutt Rush\nJumping Headbutt\nLeg-Lift Headbutt Rush\nNo-Touch Headbutt\n";
-            tb_illegal.Text += "Enzui Headbutt\nManhattan Drop\nManhattan Drop B\nMount Headbutt\nMount Knuckle Arrow\nCorner Headbutt Rush\nRope Trailing\nGuillotine Whip\nCorner Strike Rush\n";
-            tb_illegal.Text += "Mount Punches\nBack Mount Punches";
+                if (dqBoxingMoves.Count == 0)
+                {
+                    dqBoxingMoves = dqMoves;
+                }
 
-            //DQ Moves
-            tb_dq.Text = "Giant Steel Knuckles\nBrass Knuckle Punch\nWeapon Attack\nScythe Attack\nBite\nTesticular Claw\nChair's Illusion\nLow Blow\nLip Lock\nBack Low Blow\nGroin Head Drop\n";
-            tb_dq.Text += "Groin Knee Stamp\nGroin Stomping\nAtegai\nBronco Buster\nMist\nBig Fire";
+                if (dqKickboxingMoves.Count == 0)
+                {
+                    dqKickboxingMoves = dqMoves;
+                }
 
-            rulesTabControl.SelectedIndex = 0;
-
-        }
-
-        private void tb_illegal_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void cb_normalMatch_CheckedChanged(object sender, EventArgs e)
-        {
-            Clear();
-        }
-
-        private void cb_elimination_CheckedChanged(object sender, EventArgs e)
-        {
-            Clear();
-        }
-
-        private void cb_exElim_CheckedChanged(object sender, EventArgs e)
-        {
-            rulesTabControl.SelectedIndex = 1;
-        }
-
-        private void cb_survival_CheckedChanged(object sender, EventArgs e)
-        {
-            rulesTabControl.SelectedIndex = 2;
-        }
-
-        public void Clear()
-        {
-            //Hiding all customization items
-            lbl_Basic.Visible = false;
-            lbl_dq.Visible = false;
-            lbl_illegal.Visible = false;
-            tb_basic.Visible = false;
-            tb_basic.Text = "";
-            tb_illegal.Visible = false;
-            tb_illegal.Text = "";
-            tb_dq.Visible = false;
-            tb_dq.Text = "";
+            }
         }
         #endregion
 
@@ -343,7 +743,7 @@ namespace MoreMatchTypes
             {
                 return;
             }
-            if (promotionField.SelectedItem.ToString().Contains("未登録"))
+            if (promotionField.SelectedItem.ToString().Contains("???"))
             {
                 LoadSubs();
             }
@@ -622,6 +1022,11 @@ namespace MoreMatchTypes
             LoadSubsFromOrg("Elimination");
             el_resultList.SelectedIndex = 0;
         }
+        private void el_promotionList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            el_searchBtn_Click(sender, e);
+        }
+
         #endregion
 
         #region Survival Road Controls
@@ -922,6 +1327,25 @@ namespace MoreMatchTypes
         {
             sr_second.Items.Clear();
         }
+
+        private void sr_promotionList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            sr_Search_Click(sender, e);
+        }
+
+        private void sr_simulate_CheckedChanged(object sender, EventArgs e)
+        {
+            if (sr_simulate.Checked)
+            {
+                sr_simSecond.Visible = true;
+            }
+            else
+            {
+                sr_simSecond.Visible = false;
+                sr_simSecond.Checked = false;
+            }
+        }
+
         #endregion
 
         #region Shared Execution Methods
@@ -1208,82 +1632,38 @@ namespace MoreMatchTypes
             return promotionList.IndexOf(groupName);
         }
 
+        private void UpdateMoveList(String matchType)
+        {
+            switch (matchType)
+            {
+                case "Sumo":
+                    legalSumoMoves = tb_basic.Text.Split('\n').ToList();
+                    break;
+                case "Pancrase":
+                    illegalPancraseMoves = tb_illegal.Text.Split('\n').ToList();
+                    dqPancraseMoves = tb_dq.Text.Split('\n').ToList();
+                    break;
+                case "UWFI":
+                    illegalUWFIMoves = tb_illegal.Text.Split('\n').ToList();
+                    dqUWFIMoves = tb_dq.Text.Split('\n').ToList();
+                    break;
+                case "Boxing":
+                    dqBoxingMoves = tb_dq.Text.Split('\n').ToList();
+                    break;
+                case "Kickboxing":
+                    dqKickboxingMoves = tb_dq.Text.Split('\n').ToList();
+                    break;
+                default:
+                    break;
+
+            }
+        }
+
         #endregion
 
-        private void sr_promotionList_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            sr_Search_Click(sender, e);
-        }
+        #region Boxing Methods
 
-        private void el_promotionList_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            el_searchBtn_Click(sender, e);
-        }
 
-        private void sr_simulate_CheckedChanged(object sender, EventArgs e)
-        {
-            if (sr_simulate.Checked)
-            {
-                sr_simSecond.Visible = true;
-            }
-            else
-            {
-                sr_simSecond.Visible = false;
-                sr_simSecond.Checked = false;
-            }
-        }
-
-        private void cb_boxing_CheckedChanged(object sender, EventArgs e)
-        {
-            if(cb_boxing.Checked)
-            {
-                SetDQMoves();
-            }
-        }
-
-        private void cb_kickboxing_CheckedChanged(object sender, EventArgs e)
-        {
-            if (cb_kickboxing.Checked)
-            {
-                
-            }
-        }
-
-        private void SetDQMoves()
-        {
-                tb_basic.Visible = false;
-                tb_illegal.Visible = false;
-                tb_dq.Visible = true;
-            
-            List<String> instantDQ = new List<String>()
-            {
-                "Giant Steel Knuckles",
-                "Brass Knuckle Punch",
-                "Weapon Attack",
-                "Scythe Attack",
-                "Bite",
-                "Testicular Claw",
-                "Chair's Illusion",
-                "Low Blow",
-                "Lip Lock",
-                "Back Low Blow",
-                "Groin Head Drop",
-                "Groin Knee Stamp",
-                "Groin Stomping",
-                "Ategai",
-                "Bronco Buster",
-                "Mist",
-                "Big Fire"
-            };
-
-            tb_dq.Text = "";
-            foreach (String move in instantDQ)
-            {
-                tb_dq.Text += move + "\n";
-            }
-
-            tb_dq.Text = tb_dq.Text.Remove(tb_dq.Text.Length - 1);
-            rulesTabControl.SelectedIndex = 0;
-        }
+        #endregion
     }
 }
