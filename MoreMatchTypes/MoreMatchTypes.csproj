@@ -69,9 +69,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\DLL Files\Assembly-CSharp.dll</HintPath>
     </Reference>
-    <Reference Include="Carlzilla">
-      <HintPath>..\DLL Files\Carlzilla.dll</HintPath>
-    </Reference>
     <Reference Include="PWGR Framework">
       <HintPath>..\DLL Files\PWGR Framework.dll</HintPath>
     </Reference>
@@ -90,11 +87,8 @@
     <Compile Include="MatchConfiguration.cs" />
     <Compile Include="MatchEndFunctions.cs" />
     <Compile Include="Shoot Match Types\Boxing.cs" />
-    <Compile Include="Wrestling Match Types\TimedElimination.cs" />
-    <Compile Include="Wrestling Match Types\TimedTornadoTag.cs" />
     <Compile Include="WresIDGroup.cs" />
     <Compile Include="Wrestling Match Types\Elimination.cs" />
-    <Compile Include="Wrestling Match Types\ExtendedElimination.cs" />
     <Compile Include="Wrestling Match Types\FirstBloodMatch.cs" />
     <Compile Include="Wrestling Match Types\IronManMatch.cs" />
     <Compile Include="MoreMatchTypes_Form.cs">
@@ -105,9 +99,7 @@
     </Compile>
     <Compile Include="Shoot Match Types\Pancrase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Shoot Match Types\SumoMatch.cs" />
     <Compile Include="Shoot Match Types\Uwfi.cs" />
-    <Compile Include="Wrestling Match Types\SurvivalRoad.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="MoreMatchTypes_Form.resx">

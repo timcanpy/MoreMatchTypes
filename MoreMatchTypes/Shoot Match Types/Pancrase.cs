@@ -361,18 +361,7 @@ namespace MoreMatchTypes
             }
         }
 
-        [Hook(TargetClass = "MatchMain", TargetMethod = "ExitMatch", InjectionLocation = 0, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.None, Group = "MoreMatchTypes")]
-        public static void ResetFiveCount()
-        {
-            if (isPancrase)
-            {
-                MSCForm.Instance.checkBox7.Checked = fiveCount;
-                MSCForm.Instance.checkBox7.Enabled = true;
-            }
-        }
-        public static void CheckBleeding(Player pl)
-        {
-        }
+     
 
         #region Helper Methods
         //Ensure that the match is One vs One
@@ -507,10 +496,7 @@ namespace MoreMatchTypes
                 }
                 else
                 {
-                    if (!GetTeamName(wrestlers, out teamNames[0]))
-                    {
                         teamNames[0] = "Blue Team";
-                    }
                 }
 
                 //Get Team Two Members
@@ -536,10 +522,7 @@ namespace MoreMatchTypes
                 }
                 else
                 {
-                    if (!GetTeamName(wrestlers, out teamNames[1]))
-                    {
                         teamNames[1] = "Red Team";
-                    }
                 }
             }
             catch
@@ -550,21 +533,7 @@ namespace MoreMatchTypes
 
         }
 
-        public static bool GetTeamName(List<string> members, out string result)
-        {
-            result = string.Empty;
-
-            foreach (Team t in DG.TagTeamCreatorForm.Teams)
-            {
-                if (Contains(members, t.Members))
-                {
-                    result = t.Name;
-                    return true;
-                }
-            }
-
-            return false;
-        }
+    
 
         public static bool Contains(List<string> thisTeam, List<string> tMembers)
         {

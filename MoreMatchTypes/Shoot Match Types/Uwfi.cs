@@ -402,16 +402,7 @@ namespace MoreMatchTypes
             }
         }
 
-        [Hook(TargetClass = "MatchMain", TargetMethod = "ExitMatch", InjectionLocation = 0, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.None, Group = "MoreMatchTypes")]
-        public static void ResetFiveCount()
-        {
-            if (!isUwfi)
-            { return; }
-
-            MSCForm.Instance.checkBox7.Checked = fiveCount;
-            MSCForm.Instance.checkBox7.Enabled = true;
-        }
-
+      
         [Hook(TargetClass = "Menu_Result", TargetMethod = "Set_FinishSkill", InjectionLocation = 8, InjectDirection = HookInjectDirection.After, InjectFlags = HookInjectFlags.PassParametersVal | HookInjectFlags.PassLocals, LocalVarIds = new int[] { 1 }, Group = "MoreMatchTypes")]
         public static void SetResultScreenDisplay(ref UILabel finishText, string str)
         {
@@ -492,10 +483,7 @@ namespace MoreMatchTypes
                 }
                 else
                 {
-                    if (!GetTeamName(wrestlers, out teamNames[0]))
-                    {
                         teamNames[0] = "Blue Team";
-                    }
                 }
 
                 //Get Team Two Members
@@ -521,10 +509,7 @@ namespace MoreMatchTypes
                 }
                 else
                 {
-                    if (!GetTeamName(wrestlers, out teamNames[1]))
-                    {
                         teamNames[1] = "Red Team";
-                    }
                 }
             }
             catch
@@ -535,22 +520,7 @@ namespace MoreMatchTypes
 
         }
 
-        public static bool GetTeamName(List<string> members, out string result)
-        {
-            result = string.Empty;
-
-            foreach (Team t in DG.TagTeamCreatorForm.Teams)
-            {
-                if (Contains(members, t.Members))
-                {
-                    result = t.Name;
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
+      
         public static bool Contains(List<string> thisTeam, List<string> tMembers)
         {
             foreach (string w in thisTeam)

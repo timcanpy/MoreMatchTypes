@@ -472,11 +472,8 @@ namespace MoreMatchTypes
                 }
                 else
                 {
-                    if (!GetTeamName(wrestlers, out teamNames[0]))
-                    {
                         teamNames[0] = "Blue Team";
                     }
-                }
 
                 //Get Team Two Members
                 wrestlers.Clear();
@@ -501,10 +498,7 @@ namespace MoreMatchTypes
                 }
                 else
                 {
-                    if (!GetTeamName(wrestlers, out teamNames[1]))
-                    {
                         teamNames[1] = "Red Team";
-                    }
                 }
             }
             catch
@@ -512,17 +506,6 @@ namespace MoreMatchTypes
                 teamNames[0] = "Blue Team";
                 teamNames[1] = "Red Team";
             }
-
-            //Pull Team Names from the control
-            if (!MoreMatchTypes_Form.form.el_blueTeamName.Text.TrimStart().TrimEnd().Equals(""))
-            {
-                teamNames[0] = MoreMatchTypes_Form.form.el_blueTeamName.Text;
-            }
-            if (!MoreMatchTypes_Form.form.el_redTeamName.Text.TrimStart().TrimEnd().Equals(""))
-            {
-                teamNames[0] = MoreMatchTypes_Form.form.el_redTeamName.Text;
-            }
-
         }
 
         public static void SetTeamMembers()
@@ -568,22 +551,7 @@ namespace MoreMatchTypes
             }
         }
 
-        public static bool GetTeamName(List<string> members, out string result)
-        {
-            result = string.Empty;
-
-            foreach (Team t in DG.TagTeamCreatorForm.Teams)
-            {
-                if (Contains(members, t.Members))
-                {
-                    result = t.Name;
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
+      
         public static bool Contains(List<string> thisTeam, List<string> tMembers)
         {
             foreach (string w in thisTeam)

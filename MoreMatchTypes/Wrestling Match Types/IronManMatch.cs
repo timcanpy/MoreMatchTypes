@@ -180,7 +180,6 @@ namespace MoreMatchTypes
             if (isIronMan)
             {
                 MoreMatchTypes_Form.form.Enabled = true;
-                DG.Carlzilla.WentToDecision = false;
                 currMatchTime = null;
             }
         }
@@ -286,11 +285,8 @@ namespace MoreMatchTypes
                 }
                 else
                 {
-                    if (!GetTeamName(wrestlers, out teamNames[0]))
-                    {
                         teamNames[0] = "Blue Team";
-                    }
-                }
+                 }
 
                 //Get Team Two Members
                 wrestlers.Clear();
@@ -315,10 +311,7 @@ namespace MoreMatchTypes
                 }
                 else
                 {
-                    if (!GetTeamName(wrestlers, out teamNames[1]))
-                    {
                         teamNames[1] = "Red Team";
-                    }
                 }
             }
             catch
@@ -329,21 +322,7 @@ namespace MoreMatchTypes
 
         }
 
-        public static bool GetTeamName(List<string> members, out string result)
-        {
-            result = string.Empty;
-
-            foreach (Team t in DG.TagTeamCreatorForm.Teams)
-            {
-                if (Contains(members, t.Members))
-                {
-                    result = t.Name;
-                    return true;
-                }
-            }
-
-            return false;
-        }
+    
 
         public static bool Contains(List<string> thisTeam, List<string> tMembers)
         {

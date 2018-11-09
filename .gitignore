@@ -260,3 +260,4 @@ paket-files/
 __pycache__/
 *.pyc
 /MatchConfig
+/MoreMatchTypes/Wrestling Match Types/World of Sport.cs
