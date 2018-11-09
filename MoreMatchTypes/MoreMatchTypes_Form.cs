@@ -39,16 +39,10 @@ namespace MoreMatchTypes
             tb_basic.LostFocus += tb_basic_LostFocus;
             tb_illegal.LostFocus += tb_illegal_LostFocus;
             tb_dq.LostFocus += tb_dq_LostFocus;
-            rulesTabControl.TabPages.RemoveAt(2);
-            rulesTabControl.TabPages.RemoveAt(1);
         }
 
         public void MoreMatchTypes_Form_Load(object sender, EventArgs e)
         {
-            #region Tooltips
-            tt_normal.SetToolTip(cb_normalMatch, "Disables the More Match Types Mod.");
-            #endregion
-
             #region Move Load
             LoadMoves();
             UpdateMoves();
