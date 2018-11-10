@@ -100,6 +100,7 @@
     <Compile Include="Shoot Match Types\Pancrase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Shoot Match Types\Uwfi.cs" />
+    <Compile Include="Wrestling Match Types\TimedTornadaTag.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="MoreMatchTypes_Form.resx">
