@@ -55,6 +55,7 @@ namespace MoreMatchTypes
             memberTrack = new int[2];
             endRound = false;
             loserTrack = 0;
+            settings.isSkipEntranceScene = true;
             settings.CriticalRate = CriticalRateEnum.Half;
             SetTeamNames();
             SetTeamMembers();
@@ -567,17 +568,9 @@ namespace MoreMatchTypes
         {
             Player plObj = PlayerMan.inst.GetPlObj(playerIndex);
 
-            //plObj.isKO = false;
-
-            if (MoreMatchTypes_Form.form.cb_losersLeave.Checked)
-            {
-                plObj.Start_ForceControl(ForceCtrlEnum.LoseAndExit);
-            }
-            else
-            {
-                plObj.isSecond = true;
-
-            }
+            //Ensure that the loser leaves the ring.
+            plObj.Start_ForceControl(ForceCtrlEnum.LoseAndExit);
+            plObj.AddBP(1000f);
         }
         
         public static bool Contains(List<string> thisTeam, List<string> tMembers)
