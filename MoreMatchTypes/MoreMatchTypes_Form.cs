@@ -680,5 +680,13 @@ namespace MoreMatchTypes
 
 
         #endregion
+
+        private void removePosts_CheckedChanged(object sender, EventArgs e)
+        {
+            if (removePosts.Checked)
+            {
+                removeRopes.Checked = true;
+            }
+        }
     }
 }

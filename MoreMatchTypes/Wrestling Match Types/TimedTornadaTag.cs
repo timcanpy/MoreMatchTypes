@@ -10,6 +10,8 @@ namespace MoreMatchTypes
 {
     [FieldAccess(Class = "MatchMain", Field = "CreatePlayers", Group = "MoreMatchTypes"), FieldAccess(Class = "Player", Field = "UpdatePlayer", Group = "MoreMatchTypes"), FieldAccess(Class = "MatchMain", Field = "InitRound", Group = "MoreMatchTypes")]
     [FieldAccess(Class = "PlayerController_AI", Field = "Process_CageDeathMatch", Group = "MoreMatchTypes")]
+    [FieldAccess(Class = "Player", Field = "SetGrappleResult", Group = "MoreMatchTypes")]
+    [FieldAccess(Class = "Referee", Field = "SentenceLose", Group = "MoreMatchTypes")]
     class TimedTornadoTag
     {
         public static bool isTTT = false;

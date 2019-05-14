@@ -52,6 +52,8 @@
             this.cb_ttt = new System.Windows.Forms.RadioButton();
             this.cb_boxing = new System.Windows.Forms.RadioButton();
             this.cb_kickboxing = new System.Windows.Forms.RadioButton();
+            this.removePosts = new System.Windows.Forms.CheckBox();
+            this.removeRopes = new System.Windows.Forms.CheckBox();
             this.rulesTabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.SuspendLayout();
@@ -312,11 +314,34 @@
             this.cb_kickboxing.UseVisualStyleBackColor = true;
             this.cb_kickboxing.CheckedChanged += new System.EventHandler(this.cb_kickboxing_CheckedChanged);
             // 
+            // removePosts
+            // 
+            this.removePosts.AutoSize = true;
+            this.removePosts.Location = new System.Drawing.Point(304, 60);
+            this.removePosts.Name = "removePosts";
+            this.removePosts.Size = new System.Drawing.Size(95, 17);
+            this.removePosts.TabIndex = 27;
+            this.removePosts.Text = "Remove Posts";
+            this.removePosts.UseVisualStyleBackColor = true;
+            this.removePosts.CheckedChanged += new System.EventHandler(this.removePosts_CheckedChanged);
+            // 
+            // removeRopes
+            // 
+            this.removeRopes.AutoSize = true;
+            this.removeRopes.Location = new System.Drawing.Point(304, 38);
+            this.removeRopes.Name = "removeRopes";
+            this.removeRopes.Size = new System.Drawing.Size(100, 17);
+            this.removeRopes.TabIndex = 26;
+            this.removeRopes.Text = "Remove Ropes";
+            this.removeRopes.UseVisualStyleBackColor = true;
+            // 
             // MoreMatchTypes_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(852, 620);
+            this.Controls.Add(this.removePosts);
+            this.Controls.Add(this.removeRopes);
             this.Controls.Add(this.cb_kickboxing);
             this.Controls.Add(this.cb_boxing);
             this.Controls.Add(this.cb_ttt);
@@ -368,5 +393,7 @@
         public System.Windows.Forms.RadioButton cb_ttt;
         public System.Windows.Forms.RadioButton cb_boxing;
         public System.Windows.Forms.RadioButton cb_kickboxing;
+        public System.Windows.Forms.CheckBox removePosts;
+        public System.Windows.Forms.CheckBox removeRopes;
     }
 }
