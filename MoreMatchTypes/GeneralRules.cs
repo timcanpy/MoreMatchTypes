@@ -10,11 +10,15 @@ namespace MoreMatchTypes.Match_Rules
 {
     class GeneralRules
     {
-        [Hook(TargetClass = "MatchMain", TargetMethod = "Awake", InjectionLocation = int.MaxValue, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.None, Group = "MoreMatchTypes")]
+        [Hook(TargetClass = "MatchMain", TargetMethod = "InitMatch", InjectionLocation = int.MaxValue, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.None, Group = "MoreMatchTypes")]
         public static void RingSetup()
         {
             List<string> unwantedComponents = new List<string>();
             MatchSetting settings = GlobalWork.inst.MatchSetting;
+            if (MoreMatchTypes_Form.form.removePosts.Checked)
+            {
+                MoreMatchTypes_Form.form.removeRopes.Checked = true;
+            }
 
             if (MoreMatchTypes_Form.form.removeRopes.Checked)
             {
@@ -51,7 +55,7 @@ namespace MoreMatchTypes.Match_Rules
 
             foreach (UnityEngine.Component c in GameObject.FindObjectsOfType<UnityEngine.Component>())
             {
-                L.D("Component: " + c.ToString());
+                //L.D("Component: " + c.ToString());
                 if (unwantedComponents.Contains(c.name))
                 {
                     c.gameObject.SetActive(false);
