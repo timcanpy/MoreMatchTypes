@@ -363,6 +363,25 @@ namespace MoreMatchTypes
             plObj.SetHP(65535f);
             plObj.SetBP(65535f);
 
+            //Determine ukemi bonus; based on player's spot on the team.
+            switch (playerIndex)
+            {
+                case 1:
+                case 5:
+                    plObj.UkeRecoveryPoint += 3840;
+                    break;
+                case 2:
+                case 6:
+                    plObj.UkeRecoveryPoint += 7680;
+                    break;
+                case 3:
+                case 7:
+                    plObj.UkeRecoveryPoint += 15360;
+                    break;
+                default:
+                    break;
+            }
+
             //Determine how they enter the ring
             plObj.isLose = false;
             plObj.Start_ForceControl(global::ForceCtrlEnum.GoBackToRing);
