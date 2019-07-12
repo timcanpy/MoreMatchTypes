@@ -191,6 +191,7 @@ namespace MoreMatchTypes
             settings.isLumberjack = true;
             settings.isFoulCount = false;
             settings.isOutOfRingCount = false;
+            settings.is10CountKO = true;
             settings.MatchTime = 0;
             resultText = "";
             currMatchTime = null;
@@ -361,8 +362,34 @@ namespace MoreMatchTypes
             }
         }
 
-     
+        [Hook(TargetClass = "Referee", TargetMethod = "CheckStartRefereeing", InjectionLocation = 326,
+            InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.PassParametersVal, ParamTypes = new Type[]
+            {
+                typeof(int)
+            }, Group = "MoreMatchTypes")]
+        public static void CheckForTKO_Pancrase(int pl_idx)
+        {
+            if (isPancrase)
+            {
+                int point = 0;
 
+                if (pl_idx < 4)
+                {
+                    point = points[0];
+                }
+                else
+                {
+                    point = points[1];
+                }
+
+                if (point - 1 <= 0)
+                {
+                    GlobalWork.inst.MatchSetting.TKOCount = 1;
+                    global::PlayerMan.inst.GetPlObj(pl_idx).TKO_Count = 1;
+                }
+            }
+        }
+        
         #region Helper Methods
         //Ensure that the match is One vs One
         private static bool IsOneOnOne()

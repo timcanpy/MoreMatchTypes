@@ -137,6 +137,7 @@ namespace MoreMatchTypes
             settings.isOutOfRingCount = false;
             settings.isCutPlay = false;
             settings.MatchTime = 0;
+            settings.is10CountKO = true;
             tdRecorded = new bool[8] { false, false, false, false, false, false, false, false };
             koRecorded = new bool[8] { false, false, false, false, false, false, false, false };
             foulCount = new int[2];
@@ -401,8 +402,7 @@ namespace MoreMatchTypes
                 TriggerLoss(2);
             }
         }
-
-      
+        
         [Hook(TargetClass = "Menu_Result", TargetMethod = "Set_FinishSkill", InjectionLocation = 8, InjectDirection = HookInjectDirection.After, InjectFlags = HookInjectFlags.PassParametersVal | HookInjectFlags.PassLocals, LocalVarIds = new int[] { 1 }, Group = "MoreMatchTypes")]
         public static void SetResultScreenDisplay(ref UILabel finishText, string str)
         {
@@ -419,6 +419,34 @@ namespace MoreMatchTypes
                 string resultString = str.Replace("K.O.", resultText);
                 finishText.text = resultString;
                 ptEndMatch = false;
+            }
+        }
+
+        [Hook(TargetClass = "Referee", TargetMethod = "CheckStartRefereeing", InjectionLocation = 326,
+            InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.PassParametersVal, ParamTypes = new Type[]
+            {
+                typeof(int)
+            }, Group = "MoreMatchTypes")]
+        public static void CheckForTKO_UWFI(int pl_idx)
+        {
+            if (isUwfi && pl_idx >= 0)
+            {
+                int point = 0;
+
+                if (pl_idx < 4)
+                {
+                    point = points[0];
+                }
+                else
+                {
+                    point = points[1];
+                }
+
+                if (point - 4 <= 0)
+                {
+                    GlobalWork.inst.MatchSetting.TKOCount = 1;
+                    global::PlayerMan.inst.GetPlObj(pl_idx).TKO_Count = 1;
+                }
             }
         }
 
