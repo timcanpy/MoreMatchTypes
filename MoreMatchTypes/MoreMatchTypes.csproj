@@ -88,6 +88,7 @@
     <Compile Include="MatchConfiguration.cs" />
     <Compile Include="MatchEndFunctions.cs" />
     <Compile Include="Shoot Match Types\Boxing.cs" />
+    <Compile Include="Shoot Match Types\K1MMA.cs" />
     <Compile Include="Shoot Match Types\Pancrase.cs" />
     <Compile Include="Shoot Match Types\Uwfi.cs" />
     <Compile Include="WresIDGroup.cs" />

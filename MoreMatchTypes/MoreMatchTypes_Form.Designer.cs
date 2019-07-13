@@ -54,6 +54,7 @@
             this.cb_kickboxing = new System.Windows.Forms.RadioButton();
             this.removePosts = new System.Windows.Forms.CheckBox();
             this.removeRopes = new System.Windows.Forms.CheckBox();
+            this.isk1mma = new System.Windows.Forms.RadioButton();
             this.rulesTabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.SuspendLayout();
@@ -317,7 +318,7 @@
             // removePosts
             // 
             this.removePosts.AutoSize = true;
-            this.removePosts.Location = new System.Drawing.Point(304, 60);
+            this.removePosts.Location = new System.Drawing.Point(404, 62);
             this.removePosts.Name = "removePosts";
             this.removePosts.Size = new System.Drawing.Size(95, 17);
             this.removePosts.TabIndex = 27;
@@ -328,18 +329,31 @@
             // removeRopes
             // 
             this.removeRopes.AutoSize = true;
-            this.removeRopes.Location = new System.Drawing.Point(304, 38);
+            this.removeRopes.Location = new System.Drawing.Point(404, 36);
             this.removeRopes.Name = "removeRopes";
             this.removeRopes.Size = new System.Drawing.Size(100, 17);
             this.removeRopes.TabIndex = 26;
             this.removeRopes.Text = "Remove Ropes";
             this.removeRopes.UseVisualStyleBackColor = true;
             // 
+            // isk1mma
+            // 
+            this.isk1mma.AutoSize = true;
+            this.isk1mma.Location = new System.Drawing.Point(255, 37);
+            this.isk1mma.Name = "isk1mma";
+            this.isk1mma.Size = new System.Drawing.Size(132, 17);
+            this.isk1mma.TabIndex = 28;
+            this.isk1mma.TabStop = true;
+            this.isk1mma.Text = "K-1/MMA Mixed Rules";
+            this.isk1mma.UseVisualStyleBackColor = true;
+            this.isk1mma.Visible = false;
+            // 
             // MoreMatchTypes_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(852, 620);
+            this.Controls.Add(this.isk1mma);
             this.Controls.Add(this.removePosts);
             this.Controls.Add(this.removeRopes);
             this.Controls.Add(this.cb_kickboxing);
@@ -395,5 +409,6 @@
         public System.Windows.Forms.RadioButton cb_kickboxing;
         public System.Windows.Forms.CheckBox removePosts;
         public System.Windows.Forms.CheckBox removeRopes;
+        public System.Windows.Forms.RadioButton isk1mma;
     }
 }
