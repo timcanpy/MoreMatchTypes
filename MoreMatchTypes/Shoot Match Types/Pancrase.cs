@@ -362,6 +362,19 @@ namespace MoreMatchTypes
             }
         }
 
+        [Hook(TargetClass = "MatchMain", TargetMethod = "EndMatch", InjectionLocation = 0,
+            InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.None, Group = "MoreMatchTypes")]
+        public static void CleanUp()
+        {
+            if (!isPancrase)
+            {
+                return;
+            }
+
+            currMatchTime = null;
+            MatchMain.inst.matchTime = new MatchTime();
+        }
+
         [Hook(TargetClass = "Referee", TargetMethod = "CheckStartRefereeing", InjectionLocation = 326,
             InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.PassParametersVal, ParamTypes = new Type[]
             {

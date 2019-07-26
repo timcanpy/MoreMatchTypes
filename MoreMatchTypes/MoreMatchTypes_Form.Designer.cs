@@ -55,6 +55,7 @@
             this.removePosts = new System.Windows.Forms.CheckBox();
             this.removeRopes = new System.Windows.Forms.CheckBox();
             this.isk1mma = new System.Windows.Forms.RadioButton();
+            this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.rulesTabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.SuspendLayout();
@@ -192,7 +193,7 @@
             // rulesTabControl
             // 
             this.rulesTabControl.Controls.Add(this.tabPage1);
-            this.rulesTabControl.Location = new System.Drawing.Point(1, 145);
+            this.rulesTabControl.Location = new System.Drawing.Point(1, 197);
             this.rulesTabControl.Name = "rulesTabControl";
             this.rulesTabControl.SelectedIndex = 0;
             this.rulesTabControl.Size = new System.Drawing.Size(849, 472);
@@ -339,7 +340,7 @@
             // isk1mma
             // 
             this.isk1mma.AutoSize = true;
-            this.isk1mma.Location = new System.Drawing.Point(255, 37);
+            this.isk1mma.Location = new System.Drawing.Point(185, 133);
             this.isk1mma.Name = "isk1mma";
             this.isk1mma.Size = new System.Drawing.Size(132, 17);
             this.isk1mma.TabIndex = 28;
@@ -348,11 +349,23 @@
             this.isk1mma.UseVisualStyleBackColor = true;
             this.isk1mma.Visible = false;
             // 
+            // radioButton1
+            // 
+            this.radioButton1.AutoSize = true;
+            this.radioButton1.Location = new System.Drawing.Point(23, 133);
+            this.radioButton1.Name = "radioButton1";
+            this.radioButton1.Size = new System.Drawing.Size(107, 17);
+            this.radioButton1.TabIndex = 29;
+            this.radioButton1.TabStop = true;
+            this.radioButton1.Text = "Lucha Tag Rules";
+            this.radioButton1.UseVisualStyleBackColor = true;
+            // 
             // MoreMatchTypes_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(852, 620);
+            this.ClientSize = new System.Drawing.Size(852, 674);
+            this.Controls.Add(this.radioButton1);
             this.Controls.Add(this.isk1mma);
             this.Controls.Add(this.removePosts);
             this.Controls.Add(this.removeRopes);
@@ -410,5 +423,6 @@
         public System.Windows.Forms.CheckBox removePosts;
         public System.Windows.Forms.CheckBox removeRopes;
         public System.Windows.Forms.RadioButton isk1mma;
+        public System.Windows.Forms.RadioButton radioButton1;
     }
 }

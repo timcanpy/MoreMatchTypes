@@ -102,6 +102,7 @@
     <Compile Include="Wrestling Match Types\Elimination.cs" />
     <Compile Include="Wrestling Match Types\FirstBloodMatch.cs" />
     <Compile Include="Wrestling Match Types\IronManMatch.cs" />
+    <Compile Include="Wrestling Match Types\Lucha Rules.cs" />
     <Compile Include="Wrestling Match Types\TimedTornadaTag.cs" />
   </ItemGroup>
   <ItemGroup>
