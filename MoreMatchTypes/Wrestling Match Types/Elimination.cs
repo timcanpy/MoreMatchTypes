@@ -59,6 +59,7 @@ namespace MoreMatchTypes
             settings.CriticalRate = CriticalRateEnum.Half;
             SetTeamNames();
             SetTeamMembers();
+            SetPadControls();
         }
 
         [Hook(TargetClass = "MatchMain", TargetMethod = "InitRound", InjectionLocation = int.MaxValue, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.PassInvokingInstance, Group = "MoreMatchTypes")]
