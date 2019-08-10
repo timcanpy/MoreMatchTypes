@@ -55,7 +55,7 @@
             this.removePosts = new System.Windows.Forms.CheckBox();
             this.removeRopes = new System.Windows.Forms.CheckBox();
             this.isk1mma = new System.Windows.Forms.RadioButton();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
+            this.cb_luchaTag = new System.Windows.Forms.RadioButton();
             this.rulesTabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.SuspendLayout();
@@ -349,23 +349,23 @@
             this.isk1mma.UseVisualStyleBackColor = true;
             this.isk1mma.Visible = false;
             // 
-            // radioButton1
+            // cb_luchaTag
             // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Location = new System.Drawing.Point(23, 133);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(107, 17);
-            this.radioButton1.TabIndex = 29;
-            this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "Lucha Tag Rules";
-            this.radioButton1.UseVisualStyleBackColor = true;
+            this.cb_luchaTag.AutoSize = true;
+            this.cb_luchaTag.Location = new System.Drawing.Point(23, 133);
+            this.cb_luchaTag.Name = "cb_luchaTag";
+            this.cb_luchaTag.Size = new System.Drawing.Size(107, 17);
+            this.cb_luchaTag.TabIndex = 29;
+            this.cb_luchaTag.TabStop = true;
+            this.cb_luchaTag.Text = "Lucha Tag Rules";
+            this.cb_luchaTag.UseVisualStyleBackColor = true;
             // 
             // MoreMatchTypes_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(852, 674);
-            this.Controls.Add(this.radioButton1);
+            this.Controls.Add(this.cb_luchaTag);
             this.Controls.Add(this.isk1mma);
             this.Controls.Add(this.removePosts);
             this.Controls.Add(this.removeRopes);
@@ -423,6 +423,6 @@
         public System.Windows.Forms.CheckBox removePosts;
         public System.Windows.Forms.CheckBox removeRopes;
         public System.Windows.Forms.RadioButton isk1mma;
-        public System.Windows.Forms.RadioButton radioButton1;
+        public System.Windows.Forms.RadioButton cb_luchaTag;
     }
 }

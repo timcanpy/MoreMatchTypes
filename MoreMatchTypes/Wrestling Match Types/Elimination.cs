@@ -384,8 +384,9 @@ namespace MoreMatchTypes
 
             //Determine how they enter the ring
             plObj.isLose = false;
+            plObj.SetPlayerController(PlayerControllerKind.AI);
             plObj.Start_ForceControl(global::ForceCtrlEnum.GoBackToRing);
-
+            
             MatchWrestlerInfo wrestler = GlobalWork.inst.MatchSetting.matchWrestlerInfo[playerIndex];
             GlobalParam.Set_WrestlerData(playerIndex, padControls[playerIndex], wrestler.wrestlerID, false, wrestler.costume_no, 65535f, 65535f, 65535f, 65535f, 65535f, 65535f);
         }
