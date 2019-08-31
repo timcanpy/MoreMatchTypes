@@ -99,5 +99,20 @@ namespace MoreMatchTypes.Match_Rules
                 return true;
             }
         }
+
+        [Hook(TargetClass = "MatchMisc", TargetMethod = "ApplyDamage", InjectionLocation = int.MaxValue,
+            InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.PassParametersVal,
+            Group = "MoreMatchTypes")]
+        public static void CheckAutoKO(int atk_pl_idx, int def_pl_idx)
+        {
+            if (MoreMatchTypes_Form.form.isAutoKo.Checked)
+            {
+                Player defender = PlayerMan.inst.GetPlObj(def_pl_idx);
+                if (defender.HP <= 0)
+                {
+                    defender.isKO = true;
+                }
+            }
+        }
     }
 }

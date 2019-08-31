@@ -47,8 +47,6 @@
             this.cb_membersWait = new System.Windows.Forms.CheckBox();
             this.matchHelp = new System.Windows.Forms.Button();
             this.tt_normal = new System.Windows.Forms.ToolTip(this.components);
-            this.sr_singleOpponent = new System.Windows.Forms.Label();
-            this.sr_tagOpponent = new System.Windows.Forms.Label();
             this.cb_ttt = new System.Windows.Forms.RadioButton();
             this.cb_boxing = new System.Windows.Forms.RadioButton();
             this.cb_kickboxing = new System.Windows.Forms.RadioButton();
@@ -56,6 +54,9 @@
             this.removeRopes = new System.Windows.Forms.CheckBox();
             this.isk1mma = new System.Windows.Forms.RadioButton();
             this.cb_luchaTag = new System.Windows.Forms.RadioButton();
+            this.sr_singleOpponent = new System.Windows.Forms.Label();
+            this.sr_tagOpponent = new System.Windows.Forms.Label();
+            this.isAutoKo = new System.Windows.Forms.CheckBox();
             this.rulesTabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.SuspendLayout();
@@ -261,26 +262,6 @@
             this.tt_normal.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             this.tt_normal.ToolTipTitle = "Normal Match Info";
             // 
-            // sr_singleOpponent
-            // 
-            this.sr_singleOpponent.AutoSize = true;
-            this.sr_singleOpponent.Location = new System.Drawing.Point(618, 86);
-            this.sr_singleOpponent.Name = "sr_singleOpponent";
-            this.sr_singleOpponent.Size = new System.Drawing.Size(86, 13);
-            this.sr_singleOpponent.TabIndex = 17;
-            this.sr_singleOpponent.Text = "Single Opponent";
-            this.sr_singleOpponent.Visible = false;
-            // 
-            // sr_tagOpponent
-            // 
-            this.sr_tagOpponent.AutoSize = true;
-            this.sr_tagOpponent.Location = new System.Drawing.Point(618, 108);
-            this.sr_tagOpponent.Name = "sr_tagOpponent";
-            this.sr_tagOpponent.Size = new System.Drawing.Size(76, 13);
-            this.sr_tagOpponent.TabIndex = 18;
-            this.sr_tagOpponent.Text = "Tag Opponent";
-            this.sr_tagOpponent.Visible = false;
-            // 
             // cb_ttt
             // 
             this.cb_ttt.AutoSize = true;
@@ -360,11 +341,42 @@
             this.cb_luchaTag.Text = "Lucha Tag Rules";
             this.cb_luchaTag.UseVisualStyleBackColor = true;
             // 
+            // sr_singleOpponent
+            // 
+            this.sr_singleOpponent.AutoSize = true;
+            this.sr_singleOpponent.Location = new System.Drawing.Point(618, 86);
+            this.sr_singleOpponent.Name = "sr_singleOpponent";
+            this.sr_singleOpponent.Size = new System.Drawing.Size(86, 13);
+            this.sr_singleOpponent.TabIndex = 17;
+            this.sr_singleOpponent.Text = "Single Opponent";
+            this.sr_singleOpponent.Visible = false;
+            // 
+            // sr_tagOpponent
+            // 
+            this.sr_tagOpponent.AutoSize = true;
+            this.sr_tagOpponent.Location = new System.Drawing.Point(618, 108);
+            this.sr_tagOpponent.Name = "sr_tagOpponent";
+            this.sr_tagOpponent.Size = new System.Drawing.Size(76, 13);
+            this.sr_tagOpponent.TabIndex = 18;
+            this.sr_tagOpponent.Text = "Tag Opponent";
+            this.sr_tagOpponent.Visible = false;
+            // 
+            // isAutoKo
+            // 
+            this.isAutoKo.AutoSize = true;
+            this.isAutoKo.Location = new System.Drawing.Point(404, 87);
+            this.isAutoKo.Name = "isAutoKo";
+            this.isAutoKo.Size = new System.Drawing.Size(109, 17);
+            this.isAutoKo.TabIndex = 30;
+            this.isAutoKo.Text = "KO When HP < 0";
+            this.isAutoKo.UseVisualStyleBackColor = true;
+            // 
             // MoreMatchTypes_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(852, 674);
+            this.Controls.Add(this.isAutoKo);
             this.Controls.Add(this.cb_luchaTag);
             this.Controls.Add(this.isk1mma);
             this.Controls.Add(this.removePosts);
@@ -415,8 +427,6 @@
         public System.Windows.Forms.TabControl rulesTabControl;
         public System.Windows.Forms.ToolTip tt_normal;
         public System.Windows.Forms.Button matchHelp;
-        public System.Windows.Forms.Label sr_singleOpponent;
-        public System.Windows.Forms.Label sr_tagOpponent;
         public System.Windows.Forms.RadioButton cb_ttt;
         public System.Windows.Forms.RadioButton cb_boxing;
         public System.Windows.Forms.RadioButton cb_kickboxing;
@@ -424,5 +434,8 @@
         public System.Windows.Forms.CheckBox removeRopes;
         public System.Windows.Forms.RadioButton isk1mma;
         public System.Windows.Forms.RadioButton cb_luchaTag;
+        public System.Windows.Forms.Label sr_singleOpponent;
+        public System.Windows.Forms.Label sr_tagOpponent;
+        public System.Windows.Forms.CheckBox isAutoKo;
     }
 }

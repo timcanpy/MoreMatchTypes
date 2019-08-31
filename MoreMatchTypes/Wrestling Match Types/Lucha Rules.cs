@@ -20,7 +20,7 @@ namespace MoreMatchTypes.Wrestling_Match_Types
         public static int[] points;
         public static int playerCount;
         public static int countLimit;
-
+        public static int modifier;
         #endregion
 
         [Hook(TargetClass = "MatchMain", TargetMethod = "InitMatch", InjectionLocation = int.MaxValue,
@@ -31,7 +31,7 @@ namespace MoreMatchTypes.Wrestling_Match_Types
             points = new int[2];
             MatchSetting settings = GlobalWork.inst.MatchSetting;
             playerCount = GetPlayerCount();
-
+            modifier = 0;
 
             if (playerCount < 4 || settings.BattleRoyalKind != BattleRoyalKindEnum.Off || !MoreMatchTypes_Form.form.cb_luchaTag.Checked)
             {
@@ -43,6 +43,12 @@ namespace MoreMatchTypes.Wrestling_Match_Types
                 isLuchaTag = true;
                 settings.isOutOfRingCount = true;
                 settings.isTornadoBattle = false;
+
+                //Determine modifier for Lucha Tags
+                if (playerCount > 4)
+                {
+                    modifier = 1;
+                }
             }
 
         }
@@ -65,20 +71,23 @@ namespace MoreMatchTypes.Wrestling_Match_Types
                     {
                         case 0:
                         case 1:
-                            countLimit = 3;
+                            countLimit = 4;
                             break;
                         case 2:
-                            countLimit = 4;
+                            countLimit = 5;
                             break;
                         case 3:
                         case 4:
-                            countLimit = 5;
+                            countLimit = 6;
                             break;
                     }
+
+                    //Subtract modifier from the final value
+                    countLimit = countLimit - modifier < 0 ? countLimit : countLimit - modifier;
                     countLimit = UnityEngine.Random.Range(0, countLimit);
                 }
 
-                if (referee.RefeCount >= countLimit || NoLegalManInRing() && PlayerMan.inst.GetPlayerNum_OutOfRingCount() != playerCount)
+                if ((referee.RefeCount >= countLimit || NoLegalManInRing()) && PlayerMan.inst.GetPlayerNum_OutOfRingCount() != playerCount)
                 {
                     countLimit = -1;
                     SetLegalMen("");
@@ -88,7 +97,6 @@ namespace MoreMatchTypes.Wrestling_Match_Types
             {
                 L.D("Lucha Error: " + e);
             }
-
         }
 
         [Hook(TargetClass = "Referee", TargetMethod = "Process_FallCount", InjectionLocation = 42,
@@ -100,46 +108,45 @@ namespace MoreMatchTypes.Wrestling_Match_Types
                 return false;
             }
 
-            //MatchMain main = MatchMain.inst;
-
-            //if (!main.isTimeUp && main.isMatchEnd)
-            //{
-            int loser = 0;
-            for (int i = 0; i < 8; i++)
-            {
-                Player plObj = PlayerMan.inst.GetPlObj(i);
-                if (!plObj)
-                {
-                    continue;
-                }
-                if (plObj.isLoseAndStop)
-                {
-                    loser = i;
-                    break;
-                }
-            }
-
+            //Get the loser
+            int loser = r.TargetPlIdx;
             //Determine if a captain has lost
-            if (loser == 0 || loser == 4)
+            if (loser == 0)
             {
+                L.D("Blue Captain lost");
+                points[1] = 2;
+                return false;
+            }
+            else if (loser == 4)
+            {
+                L.D("Red Captain lost");
+                points[0] = 2;
                 return false;
             }
 
             //Knocked out losers automatically end the match
             if (PlayerMan.inst.GetPlObj(loser).isKO)
             {
+                if (loser < 4)
+                {
+                    points[1] = 2;
+                }
+                else
+                {
+                    points[0] = 2;
+                }
                 return false;
             }
 
-            if (loser <= 3)
+            if (loser < 4)
             {
                 points[1]++;
-                L.D("Adding red points");
+                L.D("Blue loses a point");
             }
-            else
+            else if (loser > 4)
             {
                 points[0]++;
-                L.D("Adding blue points");
+                L.D("Red loses a point");
             }
 
             if (points[0] >= 2 || points[1] >= 2)
@@ -148,14 +155,11 @@ namespace MoreMatchTypes.Wrestling_Match_Types
             }
 
             //Signal that the current round has ended
-            Referee matchRef = RefereeMan.inst.GetRefereeObj();
-            matchRef.PlDir = PlDirEnum.Left;
-            matchRef.ReqRefereeAnm(BasicSkillEnum.Refe_Stand_MatchEnd_Front_Left);
             Announcer.inst.PlayGong_Eliminated();
-            //r.SetFree();
-            //main.isMatchEnd = false;
+            r.SetFree();
 
             PlayerMan.inst.GetPlObj(loser).isLoseAndStop = false;
+
             if (loser < 4)
             {
                 SetLegalMen("blue");
@@ -167,11 +171,6 @@ namespace MoreMatchTypes.Wrestling_Match_Types
 
             DispNotification.inst.Show("Blue Team : " + points[0] + "      Red Team : " + points[1], 300);
             return true;
-            //}
-            //else
-            //{
-            //    return false;
-            //}
         }
 
         [Hook(TargetClass = "MatchMain", TargetMethod = "ProcessMatchEnd_Draw", InjectionLocation = 0, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.None, Group = "MoreMatchTypes")]
@@ -182,8 +181,8 @@ namespace MoreMatchTypes.Wrestling_Match_Types
                 return;
             }
 
-            Referee matchRef = RefereeMan.inst.GetRefereeObj();
             MatchMain main = MatchMain.inst;
+            Referee matchRef = RefereeMan.inst.GetRefereeObj();
             if (main.isTimeUp)
             {
                 if (points[0] == points[1])
@@ -193,10 +192,6 @@ namespace MoreMatchTypes.Wrestling_Match_Types
                 else
                 {
                     PlayerMan p = PlayerMan.inst;
-                    main.isMatchEnd = true;
-                    matchRef.PlDir = PlDirEnum.Left;
-                    matchRef.ReqRefereeAnm(BasicSkillEnum.Refe_Stand_MatchEnd_Front_Left);
-                    matchRef.State = RefeStateEnum.DeclareVictory;
                     Announcer.inst.PlayGong_MatchEnd();
 
                     if (points[0] > points[1])
@@ -216,7 +211,7 @@ namespace MoreMatchTypes.Wrestling_Match_Types
         [Hook(TargetClass = "Menu_Result", TargetMethod = "Set_FinishSkill", InjectionLocation = 8, InjectDirection = HookInjectDirection.After, InjectFlags = HookInjectFlags.PassParametersVal | HookInjectFlags.PassLocals, LocalVarIds = new int[] { 1 }, Group = "MoreMatchTypes")]
         public static void SetResultScreenDisplay(ref UILabel finishText, string str)
         {
-            if (!isLuchaTag || !MatchMain.inst.isMatchEnd)
+            if (!isLuchaTag || !MatchMain.inst.isMatchEnd || finishText.text.Contains("K.O."))
             {
                 return;
             }
@@ -231,12 +226,11 @@ namespace MoreMatchTypes.Wrestling_Match_Types
                 result += "Winner - " + (points[0] > points[1] ? "Blue Team" : "Red Team");
             }
 
-            string resultString = str.Replace("Draw", "Lucha Tag Match\n\n" + result);
+            string resultString = "Lucha Tag Match\n\n" + result;
             finishText.text = resultString;
         }
 
         #region Helper Methods
-
         public static void SetLosers(int startIndex, PlayerMan p)
         {
             try
@@ -255,7 +249,6 @@ namespace MoreMatchTypes.Wrestling_Match_Types
             }
 
         }
-
         private static bool NoLegalManInRing()
         {
             bool result = true;
@@ -285,13 +278,10 @@ namespace MoreMatchTypes.Wrestling_Match_Types
 
             return result;
         }
-
         private static bool IsInRing(Player pl)
         {
             return pl.Zone == ZoneEnum.Apron || pl.Zone == ZoneEnum.OnCornerPost || pl.Zone == ZoneEnum.InRing;
         }
-
-        //Current bug with player controlled edits.
         private static void SetLegalMen(String forceSwitch)
         {
             Player blueMan = PlayerMan.inst.GetPlObj(GetLegalMan("blue"));
@@ -308,17 +298,6 @@ namespace MoreMatchTypes.Wrestling_Match_Types
                 nextPlayer.isTagPartnerStandby = false;
                 nextPlayer.Start_ForceControl(ForceCtrlEnum.GoBackToRing);
                 blueMan.Start_ForceControl(ForceCtrlEnum.GoBackToApron);
-
-                blueMan.SetPlayerController(PlayerControllerKind.AI);
-                if (blueMan.plController.kind == PlayerControllerKind.Pad)
-                {
-                    nextPlayer.plController = blueMan.plController;
-                }
-                else
-                {
-                    nextPlayer.SetPlayerController(PlayerControllerKind.AI);
-                }
-
             }
 
             //Process Red Corner
@@ -332,19 +311,8 @@ namespace MoreMatchTypes.Wrestling_Match_Types
                 nextPlayer.isTagPartnerStandby = false;
                 nextPlayer.Start_ForceControl(ForceCtrlEnum.GoBackToRing);
                 redMan.Start_ForceControl(ForceCtrlEnum.GoBackToApron);
-
-                redMan.SetPlayerController(PlayerControllerKind.AI);
-                if (redMan.plController.kind == PlayerControllerKind.Pad)
-                {
-                    nextPlayer.plController = redMan.plController;
-                }
-                else
-                {
-                    nextPlayer.SetPlayerController(PlayerControllerKind.AI);
-                }
             }
         }
-
         private static int GetLegalMan(String corner)
         {
             int legalMan = 0;
@@ -395,8 +363,6 @@ namespace MoreMatchTypes.Wrestling_Match_Types
 
             return legalMan;
         }
-
-        //What if everyone in the corner is outside of the ring?
         private static int GetNextTag(String corner, int legalMan)
         {
             switch (corner.ToLower())
@@ -459,7 +425,6 @@ namespace MoreMatchTypes.Wrestling_Match_Types
 
             return legalMan;
         }
-
         private static int GetPlayerCount()
         {
             int count = 0;
@@ -482,7 +447,6 @@ namespace MoreMatchTypes.Wrestling_Match_Types
 
             return count;
         }
-
         #endregion
     }
 }
