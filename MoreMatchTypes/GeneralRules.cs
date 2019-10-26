@@ -51,6 +51,12 @@ namespace MoreMatchTypes.Match_Rules
                 unwantedComponents.Add("Post_North");
                 unwantedComponents.Add("Post_South");
                 unwantedComponents.Add("Post_East");
+
+                //Remove deathmatch items
+                unwantedComponents.Add("WoodPlate_South");
+                unwantedComponents.Add("WoodPlate_North");
+                unwantedComponents.Add("WoodPlate_East");
+                unwantedComponents.Add("WoodPlate_West");
             }
 
             foreach (UnityEngine.Component c in GameObject.FindObjectsOfType<UnityEngine.Component>())
