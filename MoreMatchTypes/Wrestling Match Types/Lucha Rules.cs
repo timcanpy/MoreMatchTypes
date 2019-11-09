@@ -10,6 +10,8 @@ namespace MoreMatchTypes.Wrestling_Match_Types
     #region Access Modifiers
     [FieldAccess(Class = "Referee", Field = "Refereeing_OutOfRingCount", Group = "MoreMatchTypes")]
     [FieldAccess(Class = "Referee", Field = "SetFree", Group = "MoreMatchTypes")]
+    [FieldAccess(Class = "Referee", Field = "Process_FallCount", Group = "MoreMatchTypes")]
+    [FieldAccess(Class = "Referee", Field = "Process_SubmissionCheck", Group = "MoreMatchTypes")]
     #endregion
     class LuchaTag
     {
@@ -99,12 +101,92 @@ namespace MoreMatchTypes.Wrestling_Match_Types
             }
         }
 
+
         [Hook(TargetClass = "Referee", TargetMethod = "Process_FallCount", InjectionLocation = 42,
             InjectFlags = HookInjectFlags.ModifyReturn | HookInjectFlags.PassInvokingInstance, Group = "MoreMatchTypes")]
+        public static bool ProcessPin(Referee r)
+        {
+            return CheckMatchEnd(r);
+        }
+
+        [Hook(TargetClass = "Referee", TargetMethod = "Process_SubmissionCheck", InjectionLocation = 25,
+            InjectFlags = HookInjectFlags.ModifyReturn | HookInjectFlags.PassInvokingInstance,
+            Group = "MoreMatchTypes")]
+        public static bool ProcessSubmission(Referee r)
+        {
+            int disturbingPlayer = global::PlayerMan.inst.GetDisturbingPlayer();
+            Player plObj = global::PlayerMan.inst.GetPlObj(r.TargetPlIdx);
+            if (disturbingPlayer < 0 && plObj.isWannaGiveUp)
+            {
+                return CheckMatchEnd(r);
+            }
+
+            return false;
+        }
+
+        [Hook(TargetClass = "MatchMain", TargetMethod = "ProcessMatchEnd_Draw", InjectionLocation = 0, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.None, Group = "MoreMatchTypes")]
+        public static void SetVictoryConditions()
+        {
+            if (!isLuchaTag)
+            {
+                return;
+            }
+
+            MatchMain main = MatchMain.inst;
+            Referee matchRef = RefereeMan.inst.GetRefereeObj();
+            if (main.isTimeUp)
+            {
+                if (points[0] == points[1])
+                {
+                    return;
+                }
+                else
+                {
+                    PlayerMan p = PlayerMan.inst;
+                    Announcer.inst.PlayGong_MatchEnd();
+
+                    if (points[0] > points[1])
+                    {
+                        matchRef.SentenceLose(p.GetPlObj(4).PlIdx);
+                        SetLosers(GetLegalMan("red"), p);
+                    }
+                    else
+                    {
+                        matchRef.SentenceLose(p.GetPlObj(0).PlIdx);
+                        SetLosers(GetLegalMan("blue"), p);
+                    }
+                }
+            }
+        }
+
+        [Hook(TargetClass = "Menu_Result", TargetMethod = "Set_FinishSkill", InjectionLocation = 8, InjectDirection = HookInjectDirection.After, InjectFlags = HookInjectFlags.PassParametersVal | HookInjectFlags.PassLocals, LocalVarIds = new int[] { 1 }, Group = "MoreMatchTypes")]
+        public static void SetResultScreenDisplay(ref UILabel finishText, string str)
+        {
+            if (!isLuchaTag || !MatchMain.inst.isMatchEnd || finishText.text.Contains("K.O."))
+            {
+                return;
+            }
+
+            string result = "Blue Team: " + points[0] + " points\nRed Team: " + points[1] + " points\n\n";
+            if (points[0] == points[1])
+            {
+                result += "Draw";
+            }
+            else
+            {
+                result += "Winner - " + (points[0] > points[1] ? "Blue Team" : "Red Team");
+            }
+
+            string resultString = "Lucha Tag Match\n\n" + result;
+            finishText.text = resultString;
+        }
+
+        #region Helper Methods
         public static bool CheckMatchEnd(Referee r)
         {
             if (!isLuchaTag)
             {
+                L.D("Not lucha tag rules");
                 return false;
             }
 
@@ -135,6 +217,8 @@ namespace MoreMatchTypes.Wrestling_Match_Types
                 {
                     points[0] = 2;
                 }
+
+                L.D("Player knocked out");
                 return false;
             }
 
@@ -151,6 +235,7 @@ namespace MoreMatchTypes.Wrestling_Match_Types
 
             if (points[0] >= 2 || points[1] >= 2)
             {
+                L.D("Point total exceeded");
                 return false;
             }
 
@@ -160,77 +245,18 @@ namespace MoreMatchTypes.Wrestling_Match_Types
 
             PlayerMan.inst.GetPlObj(loser).isLoseAndStop = false;
 
-            if (loser < 4)
-            {
-                SetLegalMen("blue");
-            }
-            else
-            {
-                SetLegalMen("red");
-            }
+            //if (loser < 4)
+            //{
+            SetLegalMen("blue");
+            //}
+            //else
+            //{
+            SetLegalMen("red");
+            //}
 
-            DispNotification.inst.Show("Blue Team : " + points[0] + "      Red Team : " + points[1], 300);
+            DispNotification.inst.Show("Score-\t Blue Team: " + points[0] + "\t\tRed Team: " + points[1], 300);
             return true;
         }
-
-        [Hook(TargetClass = "MatchMain", TargetMethod = "ProcessMatchEnd_Draw", InjectionLocation = 0, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.None, Group = "MoreMatchTypes")]
-        public static void SetVictoryConditions()
-        {
-            if (!isLuchaTag)
-            {
-                return;
-            }
-
-            MatchMain main = MatchMain.inst;
-            Referee matchRef = RefereeMan.inst.GetRefereeObj();
-            if (main.isTimeUp)
-            {
-                if (points[0] == points[1])
-                {
-                    return;
-                }
-                else
-                {
-                    PlayerMan p = PlayerMan.inst;
-                    Announcer.inst.PlayGong_MatchEnd();
-
-                    if (points[0] > points[1])
-                    {
-                        matchRef.SentenceLose(p.GetPlObj(4).PlIdx);
-                        SetLosers(4, p);
-                    }
-                    else
-                    {
-                        matchRef.SentenceLose(p.GetPlObj(0).PlIdx);
-                        SetLosers(0, p);
-                    }
-                }
-            }
-        }
-
-        [Hook(TargetClass = "Menu_Result", TargetMethod = "Set_FinishSkill", InjectionLocation = 8, InjectDirection = HookInjectDirection.After, InjectFlags = HookInjectFlags.PassParametersVal | HookInjectFlags.PassLocals, LocalVarIds = new int[] { 1 }, Group = "MoreMatchTypes")]
-        public static void SetResultScreenDisplay(ref UILabel finishText, string str)
-        {
-            if (!isLuchaTag || !MatchMain.inst.isMatchEnd || finishText.text.Contains("K.O."))
-            {
-                return;
-            }
-
-            string result = "Blue Team: " + points[0] + " points\nRed Team: " + points[1] + " points\n\n";
-            if (points[0] == points[1])
-            {
-                result += "Draw";
-            }
-            else
-            {
-                result += "Winner - " + (points[0] > points[1] ? "Blue Team" : "Red Team");
-            }
-
-            string resultString = "Lucha Tag Match\n\n" + result;
-            finishText.text = resultString;
-        }
-
-        #region Helper Methods
         public static void SetLosers(int startIndex, PlayerMan p)
         {
             try
@@ -288,7 +314,7 @@ namespace MoreMatchTypes.Wrestling_Match_Types
             Player redMan = PlayerMan.inst.GetPlObj(GetLegalMan("red"));
 
             //Process Blue Corner
-            if (!IsInRing(blueMan) && !forceSwitch.Equals("blue"))
+            if (!IsInRing(blueMan) || forceSwitch.Equals("blue"))
             {
                 Player nextPlayer = PlayerMan.inst.GetPlObj(GetNextTag("blue", blueMan.PlIdx));
 
@@ -301,7 +327,7 @@ namespace MoreMatchTypes.Wrestling_Match_Types
             }
 
             //Process Red Corner
-            if (!IsInRing(redMan) && !forceSwitch.Equals("red"))
+            if (!IsInRing(redMan) || forceSwitch.Equals("red"))
             {
                 Player nextPlayer = PlayerMan.inst.GetPlObj(GetNextTag("red", redMan.PlIdx));
 
