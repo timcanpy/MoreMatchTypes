@@ -184,10 +184,10 @@
             this.cb_elimination.AutoSize = true;
             this.cb_elimination.Location = new System.Drawing.Point(23, 110);
             this.cb_elimination.Name = "cb_elimination";
-            this.cb_elimination.Size = new System.Drawing.Size(111, 17);
+            this.cb_elimination.Size = new System.Drawing.Size(75, 17);
             this.cb_elimination.TabIndex = 12;
             this.cb_elimination.TabStop = true;
-            this.cb_elimination.Text = "Limited Elimination";
+            this.cb_elimination.Text = "Elimination";
             this.cb_elimination.UseVisualStyleBackColor = true;
             this.cb_elimination.CheckedChanged += new System.EventHandler(this.cb_elimination_CheckedChanged);
             // 
@@ -254,6 +254,7 @@
             this.matchHelp.Text = "Help";
             this.matchHelp.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.matchHelp.UseVisualStyleBackColor = true;
+            this.matchHelp.Visible = false;
             this.matchHelp.Click += new System.EventHandler(this.matchHelp_Click);
             // 
             // tt_normal

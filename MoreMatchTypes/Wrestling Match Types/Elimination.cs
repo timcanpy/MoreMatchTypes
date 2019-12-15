@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 using DG;
+using UnityEngine;
 
 namespace MoreMatchTypes
 {
@@ -387,7 +388,7 @@ namespace MoreMatchTypes
             plObj.isLose = false;
             plObj.SetPlayerController(PlayerControllerKind.AI);
             plObj.Start_ForceControl(global::ForceCtrlEnum.GoBackToRing);
-            
+
             MatchWrestlerInfo wrestler = GlobalWork.inst.MatchSetting.matchWrestlerInfo[playerIndex];
             GlobalParam.Set_WrestlerData(playerIndex, padControls[playerIndex], wrestler.wrestlerID, false, wrestler.costume_no, 65535f, 65535f, 65535f, 65535f, 65535f, 65535f);
         }
@@ -552,36 +553,54 @@ namespace MoreMatchTypes
                     continue;
                 }
 
-                switch (player.plCont_Pad.port)
+                try
                 {
-                    case PadPort.Pad1: padControls[i] = MenuPadKind.Pad1;
-                        break;
-                    case PadPort.Pad2:
-                        padControls[i] = MenuPadKind.Pad2;
-                        break;
-                    case PadPort.Pad3:
-                        padControls[i] = MenuPadKind.Pad3;
-                        break;
-                    case PadPort.Pad4:
-                        padControls[i] = MenuPadKind.Pad4;
-                        break;
-                    case PadPort.Pad5:
-                        padControls[i] = MenuPadKind.Pad5;
-                        break;
-                    case PadPort.Pad6:
-                        padControls[i] = MenuPadKind.Pad6;
-                        break;
-                    case PadPort.Pad7:
-                        padControls[i] = MenuPadKind.Pad7;
-                        break;
-                    case PadPort.Pad8:
-                        padControls[i] = MenuPadKind.Pad8;
-                        break;
-                    case PadPort.AI:
-                    default:
+                    if (player.plController.kind == PlayerControllerKind.AI)
+                    {
                         padControls[i] = MenuPadKind.COM;
-                        break;
+                    }
+                    else
+                    {
+                        switch (player.plCont_Pad.port)
+                        {
+                            case PadPort.Pad1:
+                                padControls[i] = MenuPadKind.Pad1;
+                                break;
+                            case PadPort.Pad2:
+                                padControls[i] = MenuPadKind.Pad2;
+                                break;
+                            case PadPort.Pad3:
+                                padControls[i] = MenuPadKind.Pad3;
+                                break;
+                            case PadPort.Pad4:
+                                padControls[i] = MenuPadKind.Pad4;
+                                break;
+                            case PadPort.Pad5:
+                                padControls[i] = MenuPadKind.Pad5;
+                                break;
+                            case PadPort.Pad6:
+                                padControls[i] = MenuPadKind.Pad6;
+                                break;
+                            case PadPort.Pad7:
+                                padControls[i] = MenuPadKind.Pad7;
+                                break;
+                            case PadPort.Pad8:
+                                padControls[i] = MenuPadKind.Pad8;
+                                break;
+                            case PadPort.AI:
+                            default:
+                                padControls[i] = MenuPadKind.COM;
+                                break;
+                        }
+                    }
                 }
+                catch (Exception e)
+                {
+                    L.D("Error on index " + i);
+                    L.D("SetPadControlError:" + e);
+                    padControls[i] = MenuPadKind.COM;
+                }
+
             }
         }
 
@@ -593,7 +612,7 @@ namespace MoreMatchTypes
             plObj.Start_ForceControl(ForceCtrlEnum.LoseAndExit);
             plObj.AddBP(1000f);
         }
-        
+
         public static bool Contains(List<string> thisTeam, List<string> tMembers)
         {
             foreach (string w in thisTeam)
