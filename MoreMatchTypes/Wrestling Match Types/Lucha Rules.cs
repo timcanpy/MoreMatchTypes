@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using MatchConfig;
 using UnityEngine;
 
 namespace MoreMatchTypes.Wrestling_Match_Types
@@ -23,6 +24,7 @@ namespace MoreMatchTypes.Wrestling_Match_Types
         public static int playerCount;
         public static int countLimit;
         public static int modifier;
+        public static bool is2Falls;
         #endregion
 
         [Hook(TargetClass = "MatchMain", TargetMethod = "InitMatch", InjectionLocation = int.MaxValue,
@@ -35,13 +37,14 @@ namespace MoreMatchTypes.Wrestling_Match_Types
             playerCount = GetPlayerCount();
             modifier = 0;
 
-            if (playerCount < 4 || settings.BattleRoyalKind != BattleRoyalKindEnum.Off || !MoreMatchTypes_Form.form.cb_luchaTag.Checked)
+            if (playerCount < 4 || settings.BattleRoyalKind != BattleRoyalKindEnum.Off || !MoreMatchTypes_Form.moreMatchTypesForm.cb_luchaTag.Checked)
             {
                 return;
             }
             else
             {
                 countLimit = 0;
+                is2Falls = MoreMatchTypes_Form.moreMatchTypesForm.cb_luchaFalls.Checked;
                 isLuchaTag = true;
                 settings.isOutOfRingCount = true;
                 settings.isTornadoBattle = false;
@@ -50,6 +53,13 @@ namespace MoreMatchTypes.Wrestling_Match_Types
                 if (playerCount > 4)
                 {
                     modifier = 1;
+                }
+
+                //Both teams begin with one point; next fall wins.
+                if (!is2Falls)
+                {
+                    points[0] = 1;
+                    points[1] = 1;
                 }
             }
 
@@ -162,7 +172,7 @@ namespace MoreMatchTypes.Wrestling_Match_Types
         [Hook(TargetClass = "Menu_Result", TargetMethod = "Set_FinishSkill", InjectionLocation = 8, InjectDirection = HookInjectDirection.After, InjectFlags = HookInjectFlags.PassParametersVal | HookInjectFlags.PassLocals, LocalVarIds = new int[] { 1 }, Group = "MoreMatchTypes")]
         public static void SetResultScreenDisplay(ref UILabel finishText, string str)
         {
-            if (!isLuchaTag || !MatchMain.inst.isMatchEnd || finishText.text.Contains("K.O."))
+            if (!isLuchaTag || !MatchMain.inst.isMatchEnd || finishText.text.Contains("K.O.") || !is2Falls)
             {
                 return;
             }
@@ -453,25 +463,7 @@ namespace MoreMatchTypes.Wrestling_Match_Types
         }
         private static int GetPlayerCount()
         {
-            int count = 0;
-
-            for (int i = 0; i < 8; i++)
-            {
-                Player pl = PlayerMan.inst.GetPlObj(i);
-
-                //Ignore if this spot is empty.
-                if (!pl)
-                {
-                    continue;
-                }
-
-                if (!pl.isSecond)
-                {
-                    count++;
-                }
-            }
-
-            return count;
+            return MatchConfiguration.GetPlayerCount();
         }
         #endregion
     }

@@ -15,12 +15,12 @@ namespace MoreMatchTypes.Match_Rules
         {
             List<string> unwantedComponents = new List<string>();
             MatchSetting settings = GlobalWork.inst.MatchSetting;
-            if (MoreMatchTypes_Form.form.removePosts.Checked)
+            if (MoreMatchTypes_Form.moreMatchTypesForm.removePosts.Checked)
             {
-                MoreMatchTypes_Form.form.removeRopes.Checked = true;
+                MoreMatchTypes_Form.moreMatchTypesForm.removeRopes.Checked = true;
             }
 
-            if (MoreMatchTypes_Form.form.removeRopes.Checked)
+            if (MoreMatchTypes_Form.moreMatchTypesForm.removeRopes.Checked)
             {
                 unwantedComponents.Add("Shadow_Bottom");
                 unwantedComponents.Add("Shadow_Middle");
@@ -31,7 +31,7 @@ namespace MoreMatchTypes.Match_Rules
                 unwantedComponents.Add("Prefab_Rope(Clone)");
             }
 
-            if (MoreMatchTypes_Form.form.removePosts.Checked)
+            if (MoreMatchTypes_Form.moreMatchTypesForm.removePosts.Checked)
             {
                 unwantedComponents.Add("CornerShadow");
                 unwantedComponents.Add("TurnBuckle_West_A");
@@ -76,7 +76,7 @@ namespace MoreMatchTypes.Match_Rules
         public static bool RemovePostClash(Player p)
         {
             if (global::Ring.inst.venueSetting.ringKind == RingKind.Octagon ||
-                !MoreMatchTypes_Form.form.removePosts.Checked)
+                !MoreMatchTypes_Form.moreMatchTypesForm.removePosts.Checked)
             {
                 return false;
             }
@@ -94,7 +94,7 @@ namespace MoreMatchTypes.Match_Rules
         public static bool RemoveRopeClash(Player p)
         {
             if (global::Ring.inst.venueSetting.ringKind == RingKind.Octagon ||
-                !MoreMatchTypes_Form.form.removeRopes.Checked)
+                !MoreMatchTypes_Form.moreMatchTypesForm.removeRopes.Checked)
             {
                 return false;
             }
@@ -111,7 +111,7 @@ namespace MoreMatchTypes.Match_Rules
             Group = "MoreMatchTypes")]
         public static void CheckAutoKO(int atk_pl_idx, int def_pl_idx)
         {
-            if (MoreMatchTypes_Form.form.isAutoKo.Checked)
+            if (MoreMatchTypes_Form.moreMatchTypesForm.isAutoKo.Checked)
             {
                 Player defender = PlayerMan.inst.GetPlObj(def_pl_idx);
                 if (defender.HP <= 0)

@@ -82,16 +82,31 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataAccess\DataMethods.cs" />
-    <Compile Include="GeneralRules.cs" />
-    <Compile Include="IDObject.cs" />
-    <Compile Include="MatchConfiguration.cs" />
-    <Compile Include="MatchEndFunctions.cs" />
+    <Compile Include="Data Classes\RefereeInfo.cs" />
+    <Compile Include="Data Classes\RingInfo.cs" />
+    <Compile Include="Data Classes\SurvivalRoadData.cs" />
+    <Compile Include="EliminationForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EliminationForm.Designer.cs">
+      <DependentUpon>EliminationForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Match Setup\FormIntegration.cs" />
+    <Compile Include="Match Setup\GeneralRules.cs" />
+    <Compile Include="Data Classes\IDObject.cs" />
+    <Compile Include="Match Setup\MatchConfiguration.cs" />
+    <Compile Include="Match Setup\MatchEndFunctions.cs" />
     <Compile Include="Shoot Match Types\Boxing.cs" />
     <Compile Include="Shoot Match Types\K1MMA.cs" />
     <Compile Include="Shoot Match Types\Pancrase.cs" />
     <Compile Include="Shoot Match Types\Uwfi.cs" />
-    <Compile Include="WresIDGroup.cs" />
+    <Compile Include="SurvivalRoadForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SurvivalRoadForm.Designer.cs">
+      <DependentUpon>SurvivalRoadForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Data Classes\WresIDGroup.cs" />
     <Compile Include="MoreMatchTypes_Form.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -106,18 +121,15 @@
     <Compile Include="Wrestling Match Types\TimedTornadaTag.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="EliminationForm.resx">
+      <DependentUpon>EliminationForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MoreMatchTypes_Form.resx">
       <DependentUpon>MoreMatchTypes_Form.cs</DependentUpon>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="MatchDetails.mdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="MatchDetails_log.ldf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <DependentUpon>MatchDetails.mdf</DependentUpon>
-    </Content>
+    <EmbeddedResource Include="SurvivalRoadForm.resx">
+      <DependentUpon>SurvivalRoadForm.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using MatchConfig;
 using UnityEngine;
 
 namespace MoreMatchTypes.Shoot_Match_Types
@@ -29,7 +30,7 @@ namespace MoreMatchTypes.Shoot_Match_Types
                 return;
             }
 
-            if (MoreMatchTypes_Form.form.isk1mma.Checked && IsOneOnOne())
+            if (MoreMatchTypes_Form.moreMatchTypesForm.isk1mma.Checked && IsOneOnOne())
             {
                 isK1MMA = true;
                 settings.VictoryCondition = VictoryConditionEnum.OnlyGiveUp;
@@ -110,30 +111,7 @@ namespace MoreMatchTypes.Shoot_Match_Types
 
         private static bool IsOneOnOne()
         {
-            bool isOneOnOne = true;
-            for (int i = 0; i < 8; i++)
-            {
-                //These spots should hold the fighters, therefore we do not need to check
-                if (i == 0 || i == 4)
-                {
-                    continue;
-                }
-                Player pl = PlayerMan.inst.GetPlObj(i);
-
-                //Ignore if this spot is empty.
-                if (!pl)
-                {
-                    continue;
-                }
-
-                //If the spot includes another fighter, this is not a One vs One match
-                if (!pl.isSecond)
-                {
-                    isOneOnOne = false;
-                    break;
-                }
-            }
-            return isOneOnOne;
+            return MatchConfiguration.GetPlayerCount() == 2;
         }
 
         private static void PrepareGear(String type)

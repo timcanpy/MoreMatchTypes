@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using DG;
+using MatchConfig;
 using UnityEngine;
 
 namespace MoreMatchTypes
@@ -50,12 +51,12 @@ namespace MoreMatchTypes
             }
 
             isPancrase = false;
-            if (MoreMatchTypes_Form.form.cb_Pancrase.Checked && IsOneOnOne())
+            if (MoreMatchTypes_Form.moreMatchTypesForm.cb_Pancrase.Checked && IsOneOnOne())
             {
                 isPancrase = true;
 
                 //Populate Illegal Attacks
-                String illegalString = MoreMatchTypes_Form.form.tb_illegal.Text.TrimStart().TrimEnd();
+                String illegalString = MoreMatchTypes_Form.moreMatchTypesForm.tb_illegal.Text.TrimStart().TrimEnd();
                 if (illegalString != "")
                 {
                     illegalMoves = CreateMoveList(illegalString);
@@ -142,7 +143,7 @@ namespace MoreMatchTypes
                 }
 
                 //Populate DQ Attacks
-                String dqMoves = MoreMatchTypes_Form.form.tb_dq.Text.TrimStart().TrimEnd();
+                String dqMoves = MoreMatchTypes_Form.moreMatchTypesForm.tb_dq.Text.TrimStart().TrimEnd();
                 if (dqMoves != "")
                 {
                     instantDQ = CreateMoveList(dqMoves);
@@ -407,30 +408,7 @@ namespace MoreMatchTypes
         //Ensure that the match is One vs One
         private static bool IsOneOnOne()
         {
-            bool isOneOnOne = true;
-            for (int i = 0; i < 8; i++)
-            {
-                //These spots should hold the fighters, therefore we do not need to check
-                if (i == 0 || i == 4)
-                {
-                    continue;
-                }
-                Player pl = PlayerMan.inst.GetPlObj(i);
-
-                //Ignore if this spot is empty.
-                if (!pl)
-                {
-                    continue;
-                }
-
-                //If the spot includes another fighter, this is not a One vs One match
-                if (!pl.isSecond)
-                {
-                    isOneOnOne = false;
-                    break;
-                }
-            }
-            return isOneOnOne;
+            return MatchConfiguration.GetPlayerCount() == 2;
         }
 
         private static void TriggerLoss(int team, string reason)
@@ -499,7 +477,7 @@ namespace MoreMatchTypes
         public static void SetTeamNames()
         {
             PlayerMan p = PlayerMan.inst;
-            int playerCount = p.GetPlayerNum();
+            int playerCount = MatchConfiguration.GetPlayerCount();
 
             //Set-up if only two wrestlers exist
             if (playerCount == 2)
@@ -523,7 +501,7 @@ namespace MoreMatchTypes
                     {
                         continue;
                     }
-                    if (!plObj.isSecond && !plObj.isSleep)
+                    if (!plObj.isSecond && !plObj.isSleep && !plObj.isIntruder)
                     {
                         wrestlers.Add(DataBase.GetWrestlerFullName(plObj.WresParam));
                     }
@@ -549,7 +527,7 @@ namespace MoreMatchTypes
                     {
                         continue;
                     }
-                    if (!plObj.isSecond && !plObj.isSleep)
+                    if (!plObj.isSecond && !plObj.isSleep && !plObj.isIntruder)
                     {
                         wrestlers.Add(DataBase.GetWrestlerFullName(plObj.WresParam));
                     }

@@ -28,7 +28,7 @@ namespace MoreMatchTypes
         [Hook(TargetClass = "MatchMain", TargetMethod = "InitMatch", InjectionLocation = int.MaxValue, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.None, Group = "MoreMatchTypes")]
         public static void SetMatchRules()
         {
-            if (MoreMatchTypes_Form.form.cb_IronManMatch.Checked && GlobalWork.inst.MatchSetting.BattleRoyalKind == BattleRoyalKindEnum.Off)
+            if (MoreMatchTypes_Form.moreMatchTypesForm.cb_IronManMatch.Checked && GlobalWork.inst.MatchSetting.BattleRoyalKind == BattleRoyalKindEnum.Off)
             {
                 isIronMan = true;
             }
@@ -47,7 +47,7 @@ namespace MoreMatchTypes
             currMatchTime = null;
 
             SetTeamNames();
-            MoreMatchTypes_Form.form.Enabled = false;
+            MoreMatchTypes_Form.moreMatchTypesForm.Enabled = false;
         }
 
         [Hook(TargetClass = "Referee", TargetMethod = "CheckMatchEnd", InjectionLocation = 0, InjectFlags = HookInjectFlags.ModifyReturn, Group = "MoreMatchTypes")]
@@ -179,7 +179,7 @@ namespace MoreMatchTypes
         {
             if (isIronMan)
             {
-                MoreMatchTypes_Form.form.Enabled = true;
+                MoreMatchTypes_Form.moreMatchTypesForm.Enabled = true;
                 currMatchTime = null;
             }
         }
@@ -202,7 +202,7 @@ namespace MoreMatchTypes
                         {
                             continue;
                         }
-                        if (!plObj.isSecond && !plObj.isSleep)
+                        if (!plObj.isSecond && !plObj.isSleep && !plObj.isIntruder)
                         {
                             float hp = plObj.HP;
                             float sp = plObj.SP;
@@ -228,18 +228,6 @@ namespace MoreMatchTypes
             catch
             {
                 return;
-            }
-        }
-
-        [ControlPanel(Group = "MoreMatchTypes")]
-        public static Form MSForm()
-        {
-            if (MoreMatchTypes_Form.form == null)
-            {
-                return new MoreMatchTypes_Form();
-            }
-            {
-                return null;
             }
         }
         #endregion
@@ -272,7 +260,7 @@ namespace MoreMatchTypes
                     {
                         continue;
                     }
-                    if (!plObj.isSecond && !plObj.isSleep)
+                    if (!plObj.isSecond && !plObj.isSleep && !plObj.isIntruder)
                     {
                         wrestlers.Add(DataBase.GetWrestlerFullName(plObj.WresParam));
                     }
@@ -298,7 +286,7 @@ namespace MoreMatchTypes
                     {
                         continue;
                     }
-                    if (!plObj.isSecond && !plObj.isSleep)
+                    if (!plObj.isSecond && !plObj.isSleep && !plObj.isIntruder)
                     {
                         wrestlers.Add(DataBase.GetWrestlerFullName(plObj.WresParam));
                     }

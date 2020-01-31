@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 using DG;
+using MatchConfig;
 using UnityEngine;
 
 namespace MoreMatchTypes
@@ -44,7 +45,7 @@ namespace MoreMatchTypes
             }
 
 
-            isElimination = MoreMatchTypes_Form.form.cb_elimination.Checked;
+            isElimination = MoreMatchTypes_Form.moreMatchTypesForm.cb_elimination.Checked;
             if (!isElimination)
             {
                 return;
@@ -412,19 +413,19 @@ namespace MoreMatchTypes
                 }
 
                 //Ensure losers are forced to leave ringside if applicable
-                if (MoreMatchTypes_Form.form.cb_losersLeave.Checked && i < 4 && i < memberTrack[0])
+                if (MoreMatchTypes_Form.moreMatchTypesForm.cb_losersLeave.Checked && i < 4 && i < memberTrack[0])
                 {
                     plObj.Start_ForceControl(ForceCtrlEnum.LoseAndExit);
                     continue;
                 }
 
-                if (MoreMatchTypes_Form.form.cb_losersLeave.Checked && i > 3 && i < memberTrack[1] + 4)
+                if (MoreMatchTypes_Form.moreMatchTypesForm.cb_losersLeave.Checked && i > 3 && i < memberTrack[1] + 4)
                 {
                     plObj.Start_ForceControl(ForceCtrlEnum.LoseAndExit);
                     continue;
                 }
 
-                if (MoreMatchTypes_Form.form.cb_membersWait.Checked)
+                if (MoreMatchTypes_Form.moreMatchTypesForm.cb_membersWait.Checked)
                 {
                     plObj.isSecond = true;
                     plObj.Start_ForceControl(ForceCtrlEnum.SecondStanbdby);
@@ -444,7 +445,7 @@ namespace MoreMatchTypes
         public static void SetTeamNames()
         {
             PlayerMan p = PlayerMan.inst;
-            int playerCount = p.GetPlayerNum();
+            int playerCount = MatchConfiguration.GetPlayerCount();
 
             //Set-up if only two wrestlers exist
             if (playerCount == 2)
@@ -468,7 +469,7 @@ namespace MoreMatchTypes
                     {
                         continue;
                     }
-                    if (!plObj.isSecond && !plObj.isSleep)
+                    if (!plObj.isSecond && !plObj.isSleep && !plObj.isIntruder)
                     {
                         wrestlers.Add(DataBase.GetWrestlerFullName(plObj.WresParam));
                     }
@@ -494,7 +495,7 @@ namespace MoreMatchTypes
                     {
                         continue;
                     }
-                    if (!plObj.isSecond && !plObj.isSleep)
+                    if (!plObj.isSecond && !plObj.isSleep && !plObj.isIntruder)
                     {
                         wrestlers.Add(DataBase.GetWrestlerFullName(plObj.WresParam));
                     }

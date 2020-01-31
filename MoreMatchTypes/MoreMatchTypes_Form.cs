@@ -6,19 +6,22 @@ using System.Diagnostics;
 using System.IO;
 using MatchConfig;
 using System.Linq;
+using MoreMatchTypes.DataClasses;
 
 namespace MoreMatchTypes
 {
     public partial class MoreMatchTypes_Form : Form
     {
         #region Variables
-        public static MoreMatchTypes_Form form = null;
-        public static List<String> promotionList = new List<string>();
-        public static List<uint> gameSpeed = new List<uint>();
+        public static MoreMatchTypes_Form moreMatchTypesForm = null;
+        private static List<String> promotionList = new List<string>();
+        //public static List<uint> gameSpeed = new List<uint>();
         public static List<WresIDGroup> wrestlerList = new List<WresIDGroup>();
         private static String[] saveFileNames = new String[] { "SumoMoves.dat", "UWFIMoves.dat", "PancraseMoves.dat", "BoxingMoves.dat", "KickBoxingMoves.dat" };
         private static String[] saveFolderNames = new String[] { "./MatchTypeData/" };
         private static String sectionDivider = "|-------------------|";
+        private static SurvivalRoadData survivalRoadData;
+        public static SurvivalRoadData SurvivalRoadData { get => survivalRoadData; set => survivalRoadData = value; }
 
         #region Move Listing
         private static List<String> legalSumoMoves = new List<String>();
@@ -28,32 +31,60 @@ namespace MoreMatchTypes
         private static List<String> dqUWFIMoves = new List<String>();
         private static List<String> dqBoxingMoves = new List<String>();
         private static List<String> dqKickboxingMoves = new List<String>();
-        #endregion
+
         #endregion
 
+        #endregion
+
+        #region Initialization Methods
         public MoreMatchTypes_Form()
         {
-            form = this;
+            moreMatchTypesForm = this;
             InitializeComponent();
             FormClosing += MoreMatchTypes_FormClosing;
             tb_basic.LostFocus += tb_basic_LostFocus;
             tb_illegal.LostFocus += tb_illegal_LostFocus;
             tb_dq.LostFocus += tb_dq_LostFocus;
         }
-
         public void MoreMatchTypes_Form_Load(object sender, EventArgs e)
         {
+            #region Tooltips
+            tt_normal.SetToolTip(cb_normalMatch, "Disables the More Match Types Mod.");
+            #endregion
+
             #region Move Load
             LoadMoves();
             UpdateMoves();
             #endregion
         }
 
+        #endregion
+
         #region Data Save
         private void SaveMoves()
         {
+            //Sumo Moves
+            String filePath = CheckSaveFile("Sumo");
+
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
+
+            using (StreamWriter sw = File.AppendText(filePath))
+            {
+                foreach (String move in legalSumoMoves)
+                {
+                    if (move.Equals("\n") || move.Equals(""))
+                    {
+                        continue;
+                    }
+                    sw.WriteLine(move);
+                }
+            }
+
             //Pancrase Moves
-            String filePath = CheckSaveFile("Pancrase");
+            filePath = CheckSaveFile("Pancrase");
 
             if (File.Exists(filePath))
             {
@@ -64,20 +95,22 @@ namespace MoreMatchTypes
             {
                 foreach (String move in illegalPancraseMoves)
                 {
-                    if (!move.Equals("\n") && !move.Equals(""))
+                    if (move.Equals("\n") || move.Equals(""))
                     {
-                        sw.WriteLine(move);
+                        continue;
                     }
+                    sw.WriteLine(move);
                 }
 
                 sw.WriteLine(sectionDivider);
 
                 foreach (String move in dqPancraseMoves)
                 {
-                    if (!move.Equals("\n") && !move.Equals(""))
+                    if (move.Equals("\n") || move.Equals(""))
                     {
-                        sw.WriteLine(move);
+                        continue;
                     }
+                    sw.WriteLine(move);
                 }
             }
 
@@ -104,10 +137,11 @@ namespace MoreMatchTypes
 
                 foreach (String move in dqUWFIMoves)
                 {
-                    if (!move.Equals("\n") && !move.Equals(""))
+                    if (move.Equals("\n") || move.Equals(""))
                     {
-                        sw.WriteLine(move);
+                        continue;
                     }
+                    sw.WriteLine(move);
                 }
             }
 
@@ -123,10 +157,11 @@ namespace MoreMatchTypes
             {
                 foreach (String move in dqBoxingMoves)
                 {
-                    if (!move.Equals("\n") && !move.Equals(""))
+                    if (move.Equals("\n") || move.Equals(""))
                     {
-                        sw.WriteLine(move);
+                        continue;
                     }
+                    sw.WriteLine(move);
                 }
             }
 
@@ -304,15 +339,18 @@ namespace MoreMatchTypes
             }
 
         }
+
         #endregion
 
         #region General Window Methods
-
+        private void MoreMatchTypes_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            SaveMoves();
+        }
         private void tb_basic_LostFocus(object sender, EventArgs e)
         {
             UpdateMoveList("Sumo");
         }
-
         private void tb_illegal_LostFocus(object sender, EventArgs e)
         {
             if (cb_uwfi.Checked)
@@ -324,7 +362,6 @@ namespace MoreMatchTypes
                 UpdateMoveList("Pancrase");
             }
         }
-
         private void tb_dq_LostFocus(object sender, EventArgs e)
         {
             if (cb_uwfi.Checked)
@@ -345,14 +382,6 @@ namespace MoreMatchTypes
             }
 
         }
-
-
-
-        private void MoreMatchTypes_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            SaveMoves();
-        }
-
         private void matchHelp_Click(object sender, EventArgs e)
         {
             if (cb_normalMatch.Checked)
@@ -371,6 +400,14 @@ namespace MoreMatchTypes
             {
                 MessageBox.Show("Two teams participate in a gauntlet of 1v1 battles.\nThe first team to run out of members is the loser.", "Elimination Match", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
+            if (cb_exElim.Checked)
+            {
+                MessageBox.Show("Two teams participate in a gauntlet of 1v1 battles.\nThe first team to run out of members is the loser.\nThis version allows an unlimited number of members per team.", "Elimination Match", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            if (cb_sumo.Checked)
+            {
+                MessageBox.Show("Two teams battle in a traditional sumo match.\nA team loses when any member falls to the mat.\nBasic Attacks determine which moves can be attempted, otherwise the clinch animation will be used.", "Sumo Match", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
             if (cb_uwfi.Checked)
             {
                 MessageBox.Show("Take part in a classic UWFI style match.\nTeams have a certain number of points that are reduced over the course of a match.\nThe first team to run out of points, or submit to the opponent is the loser.\nIllegal Attacks determine which moves will cost points based on legality.\nDQ Attacks determine which moves will cause a team to lose immediately.", "UWFI Match", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -379,22 +416,83 @@ namespace MoreMatchTypes
             {
                 MessageBox.Show("Take part in a classic Pancrase style match.\nThis match type only works with two fighters (no partners, no seconds).\nEach fighter has a certain number of points that are reduced over the course of a match.\nThe first fighter to run out of points, or submit to the opponent is the loser.\nIllegal Attacks determine which moves will cost points based on legality.\nDQ Attacks determine which moves will cause a team to lose immediately.", "Pancrase Match", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
+            if (cb_survival.Checked)
+            {
+                MessageBox.Show("Take part in a gauntlet of matches.\nThe game will proceed until all matches are completed, or the player runs out of continues.\nEvery continue resets a player team's health and spirit.", "Survival Road", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            }
+            if (cb_ttt.Checked)
+            {
+                MessageBox.Show("Take place in a timed tornado tag battle, where players join over the course of a match.\nThe first player joins after five minutes, then the next joins every two minutes afterwards.\nWhen all players have joined the match, pinfall or submission victories are possible.\nThe first team to score a victory wins the match.", "Timed Tornado Tag", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+        private void isPost_CheckedChanged(object sender, EventArgs e)
+        {
+            if (removePosts.Checked)
+            {
+                removeRopes.Checked = true;
+            }
+        }
+        private void matchConfig_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (cb_exElim.Checked)
+                {
+                    if (EliminationForm.eliminationForm == null)
+                    {
+                        EliminationForm popUp = new EliminationForm();
+                        popUp.Show();
+                    }
+                    else
+                    {
+                        EliminationForm.eliminationForm.Show();
+                        EliminationForm.eliminationForm.Focus();
+                    }
+                }
+                else if (cb_survival.Checked)
+                {
+                    if (SurvivalRoadForm.survivalForm == null)
+                    {
+                        SurvivalRoadForm popUp = new SurvivalRoadForm();
+                        popUp.Show();
+                    }
+                    else
+                    {
+                        SurvivalRoadForm.survivalForm.Show();
+                        SurvivalRoadForm.survivalForm.Focus();
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
+                L.D("MatchConfigError: " + exception);
+            }
+          
+        }
+        private void tb_illegal_TextChanged(object sender, EventArgs e)
+        {
 
         }
 
+        #region Check Boxes
         private void cb_FirstBlood_CheckedChanged(object sender, EventArgs e)
         {
             Clear();
+            UncheckNormal();
+            UncheckShoot();
         }
-
         private void cb_IronManMatch_CheckedChanged(object sender, EventArgs e)
         {
             Clear();
+            UncheckNormal();
+            UncheckShoot();
         }
-
         private void cb_sumo_CheckedChanged(object sender, EventArgs e)
         {
             Clear();
+            UncheckNormal();
+            UncheckWrestling();
             lbl_Basic.Visible = true;
             tb_basic.Visible = true;
             tb_basic.Clear();
@@ -405,12 +503,16 @@ namespace MoreMatchTypes
                 moveList += move + "\n";
             }
             tb_basic.Text = moveList;
-            rulesTabControl.SelectedIndex = 0;
-        }
+            rulesTabControl.TabPages[0].Text = "Attack Rules (Sumo)";
 
+            removePosts.Checked = true;
+            removeRopes.Checked = true;
+        }
         private void cb_uwfi_CheckedChanged(object sender, EventArgs e)
         {
             Clear();
+            UncheckNormal();
+            UncheckWrestling();
             lbl_illegal.Visible = true;
             lbl_dq.Visible = true;
             tb_illegal.Visible = true;
@@ -431,13 +533,15 @@ namespace MoreMatchTypes
                 tb_dq.Text += move + "\n";
             }
 
-            rulesTabControl.SelectedIndex = 0;
+            rulesTabControl.TabPages[0].Text = "Attack Rules (UWFI)";
 
+            isAutoKo.Checked = true;
         }
-
         private void cb_Pancrase_CheckedChanged(object sender, EventArgs e)
         {
             Clear();
+            UncheckNormal();
+            UncheckWrestling();
             lbl_illegal.Visible = true;
             lbl_dq.Visible = true;
             tb_illegal.Visible = true;
@@ -457,38 +561,27 @@ namespace MoreMatchTypes
                 tb_dq.Text += move + "\n";
             }
 
-            rulesTabControl.SelectedIndex = 0;
+            rulesTabControl.TabPages[0].Text = "Attack Rules (Pancrase)";
 
+            isAutoKo.Checked = true;
         }
-
-        private void tb_illegal_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void cb_normalMatch_CheckedChanged(object sender, EventArgs e)
         {
             Clear();
+            UncheckShoot();
+            UncheckWrestling();
         }
-
         private void cb_elimination_CheckedChanged(object sender, EventArgs e)
         {
             Clear();
+            UncheckNormal();
+            UncheckShoot();
         }
-
-        private void cb_exElim_CheckedChanged(object sender, EventArgs e)
-        {
-            rulesTabControl.SelectedIndex = 1;
-        }
-
-        private void cb_survival_CheckedChanged(object sender, EventArgs e)
-        {
-            rulesTabControl.SelectedIndex = 2;
-        }
-
         private void cb_boxing_CheckedChanged(object sender, EventArgs e)
         {
             Clear();
+            UncheckNormal();
+            UncheckWrestling();
             lbl_dq.Visible = true;
             tb_dq.Visible = true;
 
@@ -497,12 +590,15 @@ namespace MoreMatchTypes
                 tb_dq.Text += move + "\n";
             }
 
-            rulesTabControl.SelectedIndex = 0;
-        }
+            rulesTabControl.TabPages[0].Text = "Attack Rules (Boxing)";
 
+            isAutoKo.Checked = true;
+        }
         private void cb_kickboxing_CheckedChanged(object sender, EventArgs e)
         {
             Clear();
+            UncheckNormal();
+            UncheckWrestling();
             lbl_dq.Visible = true;
             tb_dq.Visible = true;
 
@@ -511,22 +607,39 @@ namespace MoreMatchTypes
                 tb_dq.Text += move + "\n";
             }
 
-            rulesTabControl.SelectedIndex = 0;
+            rulesTabControl.TabPages[0].Text = "Attack Rules (Kick Boxing)";
+
+            isAutoKo.Checked = true;
+        }
+        private void cb_ttt_CheckedChanged(object sender, EventArgs e)
+        {
+            Clear();
+            UncheckNormal();
+            UncheckShoot();
+        }
+        private void cb_luchaTag_CheckedChanged(object sender, EventArgs e)
+        {
+            Clear();
+            UncheckNormal();
+            UncheckShoot();
+            //matchConfig.Visible = true;
+        }
+        private void cb_exElim_CheckedChanged(object sender, EventArgs e)
+        {
+            Clear();
+            UncheckNormal();
+            UncheckShoot();
+            matchConfig.Visible = true;
+        }
+        private void cb_survival_CheckedChanged(object sender, EventArgs e)
+        {
+            Clear();
+            UncheckNormal();
+            UncheckShoot();
+            matchConfig.Visible = true;
         }
 
-        public void Clear()
-        {
-            //Hiding all customization items
-            lbl_Basic.Visible = false;
-            lbl_dq.Visible = false;
-            lbl_illegal.Visible = false;
-            tb_basic.Visible = false;
-            tb_basic.Text = "";
-            tb_illegal.Visible = false;
-            tb_illegal.Text = "";
-            tb_dq.Visible = false;
-            tb_dq.Text = "";
-        }
+        #endregion
 
         #endregion
 
@@ -624,29 +737,10 @@ namespace MoreMatchTypes
 
             }
         }
-        #endregion
-
-        #region Shared Execution Methods
-
-        private void StartMatch(String matchType)
-        {
-            UnityEngine.SceneManagement.SceneManager.LoadScene("Match");
-        }
-
 
         #endregion
 
         #region Helper Methods
-        private void ShowError(String message)
-        {
-            MessageBox.Show(message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
-
-        private int FindGroup(String groupName)
-        {
-            return promotionList.IndexOf(groupName);
-        }
-
         private void UpdateMoveList(String matchType)
         {
             switch (matchType)
@@ -670,23 +764,76 @@ namespace MoreMatchTypes
                     break;
                 default:
                     break;
-
             }
         }
-
-        #endregion
-
-        #region Boxing Methods
-
-
-        #endregion
-
-        private void removePosts_CheckedChanged(object sender, EventArgs e)
+        private void Clear()
         {
-            if (removePosts.Checked)
+            //Hiding all customization items
+            rulesTabControl.TabPages[0].Text = "Attack Rules (Not Available)";
+            lbl_Basic.Visible = false;
+            lbl_dq.Visible = false;
+            lbl_illegal.Visible = false;
+            tb_basic.Visible = false;
+            tb_basic.Text = "";
+            tb_illegal.Visible = false;
+            tb_illegal.Text = "";
+            tb_dq.Visible = false;
+            tb_dq.Text = "";
+            matchConfig.Visible = false;
+            isAutoKo.Checked = false;
+            removeRopes.Checked = false;
+            removePosts.Checked = false;
+            HideAllOptions();
+            ShowOptions();
+        }
+        private void HideAllOptions()
+        {
+            cb_luchaFalls.Visible = false;
+            cb_membersWait.Visible = false;
+            cb_losersLeave.Visible = false;
+        }
+        private void ShowOptions()
+        {
+            if (cb_elimination.Checked)
             {
-                removeRopes.Checked = true;
+                cb_losersLeave.Visible = true;
+            }
+
+            if (cb_elimination.Checked || cb_exElim.Checked)
+            {
+                cb_membersWait.Visible = true;
+            }
+
+            if (cb_luchaTag.Checked)
+            {
+                cb_luchaFalls.Visible = true;
             }
         }
+        private void UncheckNormal()
+        {
+            cb_normalMatch.Checked = false;
+        }
+        private void UncheckShoot()
+        {
+            cb_boxing.Checked = false;
+            cb_kickboxing.Checked = false;
+            cb_Pancrase.Checked = false;
+            cb_uwfi.Checked = false;
+            cb_sumo.Checked = false;
+            isk1mma.Checked = false;
+        }
+        private void UncheckWrestling()
+        {
+            cb_IronManMatch.Checked = false;
+            cb_FirstBlood.Checked = false;
+            cb_ttt.Checked = false;
+            cb_luchaTag.Checked = false;
+            cb_elimination.Checked = false;
+            cb_exElim.Checked = false;
+            cb_survival.Checked = false;
+
+        }
+        #endregion
+        
     }
 }

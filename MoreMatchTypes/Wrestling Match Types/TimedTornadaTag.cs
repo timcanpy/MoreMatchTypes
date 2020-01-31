@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using DG;
+using MatchConfig;
 using UnityEngine;
 
 
@@ -32,7 +33,7 @@ namespace MoreMatchTypes
                 return;
             }
 
-            if (MoreMatchTypes_Form.form.cb_ttt.Checked)
+            if (MoreMatchTypes_Form.moreMatchTypesForm.cb_ttt.Checked)
             {
                 isTTT = true;
                 changeFlag = "blue";
@@ -133,30 +134,7 @@ namespace MoreMatchTypes
         //Ensure that the match is One vs One
         private static bool IsOneOnOne()
         {
-            bool isOneOnOne = true;
-            for (int i = 0; i < 8; i++)
-            {
-                //These spots should hold the fighters, therefore we do not need to check
-                if (i == 0 || i == 4)
-                {
-                    continue;
-                }
-                Player pl = PlayerMan.inst.GetPlObj(i);
-
-                //Ignore if this spot is empty.
-                if (!pl)
-                {
-                    continue;
-                }
-
-                //If the spot includes another fighter, this is not a One vs One match
-                if (!pl.isSecond)
-                {
-                    isOneOnOne = false;
-                    break;
-                }
-            }
-            return isOneOnOne;
+            return MatchConfiguration.GetPlayerCount() == 2;
         }
         private static void InitTeams()
         {

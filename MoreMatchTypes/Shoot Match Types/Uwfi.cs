@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using DG;
+using MatchConfig;
 using UnityEngine;
 
 namespace MoreMatchTypes
@@ -43,7 +44,7 @@ namespace MoreMatchTypes
                 return;
             }
             isUwfi = false;
-            if (MoreMatchTypes_Form.form.cb_uwfi.Checked)
+            if (MoreMatchTypes_Form.moreMatchTypesForm.cb_uwfi.Checked)
             {
                 isUwfi = true;
             }
@@ -53,7 +54,7 @@ namespace MoreMatchTypes
             }
 
             //Populate Illegal Attacks
-            String illegalString = MoreMatchTypes_Form.form.tb_illegal.Text.TrimStart().TrimEnd();
+            String illegalString = MoreMatchTypes_Form.moreMatchTypesForm.tb_illegal.Text.TrimStart().TrimEnd();
             if (illegalString != "")
             {
                 illegalMoves = CreateMoveList(illegalString);
@@ -98,7 +99,7 @@ namespace MoreMatchTypes
             }
 
             //Populate DQ Attacks
-            String dqMoves = MoreMatchTypes_Form.form.tb_dq.Text.TrimStart().TrimEnd();
+            String dqMoves = MoreMatchTypes_Form.moreMatchTypesForm.tb_dq.Text.TrimStart().TrimEnd();
             if (dqMoves != "")
             {
                 instantDQ = CreateMoveList(dqMoves);
@@ -146,12 +147,12 @@ namespace MoreMatchTypes
             points[0] = 15;
             points[1] = 15;
 
-            if (settings.matchWrestlerInfo[1].entry && !settings.matchWrestlerInfo[1].isSecond)
+            if (settings.matchWrestlerInfo[1].entry && !settings.matchWrestlerInfo[1].isSecond && !settings.matchWrestlerInfo[1].isSecond)
             {
                 points[0] = 21;
             }
 
-            if (settings.matchWrestlerInfo[5].entry && !settings.matchWrestlerInfo[5].isSecond)
+            if (settings.matchWrestlerInfo[5].entry && !settings.matchWrestlerInfo[5].isSecond && !settings.matchWrestlerInfo[5].isIntruder)
             {
                 points[0] = 21;
             }
@@ -474,7 +475,7 @@ namespace MoreMatchTypes
         public static void SetTeamNames()
         {
             PlayerMan p = PlayerMan.inst;
-            int playerCount = p.GetPlayerNum();
+            int playerCount = MatchConfiguration.GetPlayerCount();
 
             //Set-up if only two wrestlers exist
             if (playerCount == 2)
@@ -498,7 +499,7 @@ namespace MoreMatchTypes
                     {
                         continue;
                     }
-                    if (!plObj.isSecond && !plObj.isSleep)
+                    if (!plObj.isSecond && !plObj.isSleep && !plObj.isIntruder)
                     {
                         wrestlers.Add(DataBase.GetWrestlerFullName(plObj.WresParam));
                     }
@@ -524,7 +525,7 @@ namespace MoreMatchTypes
                     {
                         continue;
                     }
-                    if (!plObj.isSecond && !plObj.isSleep)
+                    if (!plObj.isSecond && !plObj.isSleep && !plObj.isIntruder)
                     {
                         wrestlers.Add(DataBase.GetWrestlerFullName(plObj.WresParam));
                     }

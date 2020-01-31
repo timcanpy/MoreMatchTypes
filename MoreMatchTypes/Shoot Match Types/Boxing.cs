@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using DG;
+using MatchConfig;
 using UnityEngine;
 
 //when you modify a return on a method that returns something other than void you always need to out XXX that thing
@@ -30,7 +31,7 @@ namespace MoreMatchTypes.Shoot_Match_Types
             MatchSetting settings = GlobalWork.inst.MatchSetting;
             isBoxing = false;
 
-            if (MoreMatchTypes_Form.form.cb_boxing.Checked || MoreMatchTypes_Form.form.cb_kickboxing.Checked && IsOneOnOne())
+            if (MoreMatchTypes_Form.moreMatchTypesForm.cb_boxing.Checked || MoreMatchTypes_Form.moreMatchTypesForm.cb_kickboxing.Checked && IsOneOnOne())
             {
                 isBoxing = true;
                 isDown = false;
@@ -39,7 +40,7 @@ namespace MoreMatchTypes.Shoot_Match_Types
                 settings.isExchangeOfStriking = false;
                 settings.isPowerCompetitionOff = true;
 
-                String dqMoves = MoreMatchTypes_Form.form.tb_dq.Text.TrimStart().TrimEnd();
+                String dqMoves = MoreMatchTypes_Form.moreMatchTypesForm.tb_dq.Text.TrimStart().TrimEnd();
                 if (dqMoves.Trim() != "")
                 {
                     dqAttacks = CreateMoveList(dqMoves);
@@ -118,7 +119,7 @@ namespace MoreMatchTypes.Shoot_Match_Types
             if (sd.filteringType != SkillFilteringType.Punch && sd.filteringType != SkillFilteringType.Chop && sd.filteringType != SkillFilteringType.Performance && sd.filteringType != SkillFilteringType.Thrust)
             {
                 //Allow kicks if this is a kickboxing match
-                if (MoreMatchTypes_Form.form.cb_kickboxing.Checked)
+                if (MoreMatchTypes_Form.moreMatchTypesForm.cb_kickboxing.Checked)
                 {
                     if (sd.filteringType == SkillFilteringType.Kick)
                     {
@@ -290,30 +291,7 @@ namespace MoreMatchTypes.Shoot_Match_Types
         #region Helper Methods
         private static bool IsOneOnOne()
         {
-            bool isOneOnOne = true;
-            for (int i = 0; i < 8; i++)
-            {
-                //These spots should hold the fighters, therefore we do not need to check
-                if (i == 0 || i == 4)
-                {
-                    continue;
-                }
-                Player pl = PlayerMan.inst.GetPlObj(i);
-
-                //Ignore if this spot is empty.
-                if (!pl)
-                {
-                    continue;
-                }
-
-                //If the spot includes another fighter, this is not a One vs One match
-                if (!pl.isSecond)
-                {
-                    isOneOnOne = false;
-                    break;
-                }
-            }
-            return isOneOnOne;
+            return MatchConfiguration.GetPlayerCount() == 2;
         }
 
         private static void CallFoul(int plIdx, String move)

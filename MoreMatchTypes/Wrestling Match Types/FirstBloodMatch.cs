@@ -21,7 +21,7 @@ namespace MoreMatchTypes
         {
             
 
-            if (MoreMatchTypes_Form.form.cb_FirstBlood.Checked && GlobalWork.inst.MatchSetting.BattleRoyalKind == BattleRoyalKindEnum.Off)
+            if (MoreMatchTypes_Form.moreMatchTypesForm.cb_FirstBlood.Checked && GlobalWork.inst.MatchSetting.BattleRoyalKind == BattleRoyalKindEnum.Off)
             {
                 isFirstBlood = true;
             }
@@ -45,7 +45,7 @@ namespace MoreMatchTypes
             setting.isTornadoBattle = true;
             setting.MatchTime = 0;
             setting.CriticalRate = CriticalRateEnum.Off;
-            MoreMatchTypes_Form.form.Enabled = false;
+            MoreMatchTypes_Form.moreMatchTypesForm.Enabled = false;
 
             bloodMeter = new int[8];
             endMatch = false;
@@ -121,7 +121,7 @@ namespace MoreMatchTypes
             if (!isFirstBlood)
             { return; }
 
-            if (matchPlayer.isBleeding && MoreMatchTypes_Form.form.cb_FirstBlood.Checked)
+            if (matchPlayer.isBleeding && MoreMatchTypes_Form.moreMatchTypesForm.cb_FirstBlood.Checked)
             {
                 endMatch = true;
                 GlobalWork.inst.MatchSetting.VictoryCondition = VictoryConditionEnum.Count3;
@@ -141,7 +141,7 @@ namespace MoreMatchTypes
         public static void ResetBloodMeter()
         {
             Array.Clear(bloodMeter, 0, bloodMeter.Length);
-            MoreMatchTypes_Form.form.Enabled = true;
+            MoreMatchTypes_Form.moreMatchTypesForm.Enabled = true;
         }
 
 
