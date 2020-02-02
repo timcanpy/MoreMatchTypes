@@ -13,6 +13,12 @@ namespace MoreMatchTypes.Match_Rules
         [Hook(TargetClass = "MatchMain", TargetMethod = "InitMatch", InjectionLocation = int.MaxValue, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.None, Group = "MoreMatchTypes")]
         public static void RingSetup()
         {
+            if (MoreMatchTypes_Form.moreMatchTypesForm.cb_sumo.Checked)
+            {
+                MoreMatchTypes_Form.moreMatchTypesForm.removeRopes.Checked = true;
+                MoreMatchTypes_Form.moreMatchTypesForm.removePosts.Checked = true;
+            }
+
             List<string> unwantedComponents = new List<string>();
             MatchSetting settings = GlobalWork.inst.MatchSetting;
             if (MoreMatchTypes_Form.moreMatchTypesForm.removePosts.Checked)
@@ -69,7 +75,6 @@ namespace MoreMatchTypes.Match_Rules
             }
         }
 
-       
         [Hook(TargetClass = "Player", TargetMethod = "ProcessRunningCollision_InRing_Diagonal", InjectionLocation = 0,
             InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.ModifyReturn | HookInjectFlags.PassInvokingInstance,
             Group = "MoreMatchTypes")]

@@ -99,6 +99,7 @@
     <Compile Include="Shoot Match Types\Boxing.cs" />
     <Compile Include="Shoot Match Types\K1MMA.cs" />
     <Compile Include="Shoot Match Types\Pancrase.cs" />
+    <Compile Include="Shoot Match Types\Sumo.cs" />
     <Compile Include="Shoot Match Types\Uwfi.cs" />
     <Compile Include="SurvivalRoadForm.cs">
       <SubType>Form</SubType>
@@ -118,6 +119,7 @@
     <Compile Include="Wrestling Match Types\FirstBloodMatch.cs" />
     <Compile Include="Wrestling Match Types\IronManMatch.cs" />
     <Compile Include="Wrestling Match Types\Lucha Rules.cs" />
+    <Compile Include="Wrestling Match Types\SurvivalRoad.cs" />
     <Compile Include="Wrestling Match Types\TimedTornadaTag.cs" />
   </ItemGroup>
   <ItemGroup>

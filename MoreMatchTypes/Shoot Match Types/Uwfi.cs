@@ -34,6 +34,7 @@ namespace MoreMatchTypes
         public static void SetMatchRules()
         {
             MatchSetting settings = GlobalWork.inst.MatchSetting;
+            isUwfi = false;
 
             if (settings.arena == VenueEnum.BarbedWire || settings.arena == VenueEnum.Cage || settings.arena == VenueEnum.Dodecagon || settings.arena == VenueEnum.LandMine_BarbedWire || settings.arena == VenueEnum.LandMine_FluorescentLamp)
             {
@@ -43,7 +44,6 @@ namespace MoreMatchTypes
             {
                 return;
             }
-            isUwfi = false;
             if (MoreMatchTypes_Form.moreMatchTypesForm.cb_uwfi.Checked)
             {
                 isUwfi = true;

@@ -78,12 +78,17 @@ namespace MoreMatchTypes.DataClasses
         
         private bool inProgress;
         public bool InProgress { get => inProgress; set => inProgress = value; }
-
+        
+        //Required for tracking purposes after the first match begins
+        private WresIDGroup[] initialOpponents;
+        public WresIDGroup[] InitialOpponents { get => initialOpponents; set => initialOpponents = value; }
         #endregion
 
         public SurvivalRoadData()
         {
             inProgress = false;
+            initialOpponents = new WresIDGroup[2];
+            matchProgress = "";
         }
 
         public static int UpdateSurvivalData(String Wrestler, int matches, int losses, int continues, int wins, int maxRating, int avgRating)

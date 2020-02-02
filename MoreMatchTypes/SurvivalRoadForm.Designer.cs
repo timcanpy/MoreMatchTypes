@@ -148,18 +148,19 @@
             // 
             this.sr_randomSecond.BackColor = System.Drawing.Color.ForestGreen;
             this.sr_randomSecond.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.sr_randomSecond.Location = new System.Drawing.Point(404, 87);
+            this.sr_randomSecond.Location = new System.Drawing.Point(404, 85);
             this.sr_randomSecond.Name = "sr_randomSecond";
             this.sr_randomSecond.Size = new System.Drawing.Size(29, 27);
             this.sr_randomSecond.TabIndex = 70;
             this.sr_randomSecond.Text = "?";
             this.sr_randomSecond.UseVisualStyleBackColor = false;
+            this.sr_randomSecond.Click += new System.EventHandler(this.sr_randomSecond_Click);
             // 
             // sr_randomWrestler
             // 
             this.sr_randomWrestler.BackColor = System.Drawing.Color.ForestGreen;
             this.sr_randomWrestler.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.sr_randomWrestler.Location = new System.Drawing.Point(404, 40);
+            this.sr_randomWrestler.Location = new System.Drawing.Point(404, 39);
             this.sr_randomWrestler.Name = "sr_randomWrestler";
             this.sr_randomWrestler.Size = new System.Drawing.Size(29, 27);
             this.sr_randomWrestler.TabIndex = 69;
@@ -214,6 +215,8 @@
             // sr_simulate
             // 
             this.sr_simulate.AutoSize = true;
+            this.sr_simulate.Checked = true;
+            this.sr_simulate.CheckState = System.Windows.Forms.CheckState.Checked;
             this.sr_simulate.Font = new System.Drawing.Font("NCAA Utah St Aggies Bold", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.sr_simulate.ForeColor = System.Drawing.Color.Red;
             this.sr_simulate.Location = new System.Drawing.Point(324, 167);
@@ -222,6 +225,7 @@
             this.sr_simulate.TabIndex = 64;
             this.sr_simulate.Text = "Simulate";
             this.sr_simulate.UseVisualStyleBackColor = true;
+            this.sr_simulate.CheckedChanged += new System.EventHandler(this.sr_simulate_CheckedChanged);
             // 
             // sr_resetContinues
             // 
@@ -232,6 +236,7 @@
             this.sr_resetContinues.TabIndex = 63;
             this.sr_resetContinues.TabStop = true;
             this.sr_resetContinues.Text = "Reset";
+            this.sr_resetContinues.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.sr_resetContinues_LinkClicked);
             // 
             // sr_resetMatches
             // 
@@ -242,6 +247,7 @@
             this.sr_resetMatches.TabIndex = 17;
             this.sr_resetMatches.TabStop = true;
             this.sr_resetMatches.Text = "Reset";
+            this.sr_resetMatches.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.sr_resetMatches_LinkClicked);
             // 
             // sr_matchType
             // 
@@ -359,6 +365,7 @@
             this.sr_secondClear.TabIndex = 48;
             this.sr_secondClear.Text = "X";
             this.sr_secondClear.UseVisualStyleBackColor = false;
+            this.sr_secondClear.Click += new System.EventHandler(this.sr_secondClear_Click);
             // 
             // sr_wrestlerClear
             // 
@@ -370,6 +377,7 @@
             this.sr_wrestlerClear.TabIndex = 47;
             this.sr_wrestlerClear.Text = "X";
             this.sr_wrestlerClear.UseVisualStyleBackColor = false;
+            this.sr_wrestlerClear.Click += new System.EventHandler(this.sr_wrestlerClear_Click);
             // 
             // label20
             // 
@@ -413,7 +421,6 @@
             this.sr_random.TabIndex = 5;
             this.sr_random.Text = "Random Select";
             this.sr_random.UseVisualStyleBackColor = true;
-            this.sr_random.Visible = false;
             // 
             // sr_teamName
             // 
@@ -440,6 +447,7 @@
             this.sr_removeAll.TabIndex = 2;
             this.sr_removeAll.Text = "Remove All";
             this.sr_removeAll.UseVisualStyleBackColor = true;
+            this.sr_removeAll.Click += new System.EventHandler(this.sr_removeAll_Click);
             // 
             // sr_RemoveOne
             // 
@@ -449,6 +457,7 @@
             this.sr_RemoveOne.TabIndex = 1;
             this.sr_RemoveOne.Text = "Remove Selected";
             this.sr_RemoveOne.UseVisualStyleBackColor = true;
+            this.sr_RemoveOne.Click += new System.EventHandler(this.sr_RemoveOne_Click);
             // 
             // sr_teamList
             // 
@@ -498,11 +507,12 @@
             this.sr_start.TabIndex = 7;
             this.sr_start.Text = "Start match!";
             this.sr_start.UseVisualStyleBackColor = true;
+            this.sr_start.Click += new System.EventHandler(this.sr_start_Click);
             // 
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(806, 0);
+            this.label12.Location = new System.Drawing.Point(806, 2);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(56, 15);
             this.label12.TabIndex = 18;
@@ -521,7 +531,7 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(3, 0);
+            this.label13.Location = new System.Drawing.Point(8, 2);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(46, 15);
             this.label13.TabIndex = 11;
@@ -540,7 +550,7 @@
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(540, 0);
+            this.label14.Location = new System.Drawing.Point(540, 2);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(64, 15);
             this.label14.TabIndex = 17;
@@ -549,7 +559,7 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(178, 0);
+            this.label15.Location = new System.Drawing.Point(178, 3);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(37, 15);
             this.label15.TabIndex = 12;
@@ -588,7 +598,7 @@
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(472, 0);
+            this.label16.Location = new System.Drawing.Point(472, 3);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(39, 15);
             this.label16.TabIndex = 15;
@@ -597,7 +607,7 @@
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(299, 0);
+            this.label17.Location = new System.Drawing.Point(299, 3);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(29, 15);
             this.label17.TabIndex = 13;
@@ -643,6 +653,7 @@
             this.sr_Add.Text = "Add";
             this.sr_Add.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.sr_Add.UseVisualStyleBackColor = true;
+            this.sr_Add.Click += new System.EventHandler(this.sr_Add_Click);
             // 
             // sr_Refresh
             // 
@@ -652,6 +663,7 @@
             this.sr_Refresh.TabIndex = 11;
             this.sr_Refresh.Text = "Refresh";
             this.sr_Refresh.UseVisualStyleBackColor = true;
+            this.sr_Refresh.Click += new System.EventHandler(this.sr_Refresh_Click);
             // 
             // sr_addSingle
             // 
@@ -721,7 +733,7 @@
             // label22
             // 
             this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(418, 13);
+            this.label22.Location = new System.Drawing.Point(418, 9);
             this.label22.Name = "label22";
             this.label22.Size = new System.Drawing.Size(78, 15);
             this.label22.TabIndex = 3;
@@ -744,6 +756,7 @@
             this.sr_Search.TabIndex = 1;
             this.sr_Search.Text = "Search";
             this.sr_Search.UseVisualStyleBackColor = true;
+            this.sr_Search.Click += new System.EventHandler(this.sr_Search_Click);
             // 
             // sr_searchInput
             // 

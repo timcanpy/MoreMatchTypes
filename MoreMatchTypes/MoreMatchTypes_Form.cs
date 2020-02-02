@@ -386,7 +386,7 @@ namespace MoreMatchTypes
         {
             if (cb_normalMatch.Checked)
             {
-                MessageBox.Show("Disables the More Match Types mod.", "Normal Match", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Run a normal match, without special rules.", "Normal Match", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             if (cb_IronManMatch.Checked)
             {
@@ -406,7 +406,7 @@ namespace MoreMatchTypes
             }
             if (cb_sumo.Checked)
             {
-                MessageBox.Show("Two teams battle in a traditional sumo match.\nA team loses when any member falls to the mat.\nBasic Attacks determine which moves can be attempted, otherwise the clinch animation will be used.", "Sumo Match", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Two teams battle in a traditional sumo match.\nThis match type only works with two fighters (no partners, no seconds).\nThe first fighter to fall to the mat loses.\nBasic Attacks determine which moves can be attempted, otherwise the clinch animation will be used.", "Sumo Match", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             if (cb_uwfi.Checked)
             {
@@ -424,6 +424,22 @@ namespace MoreMatchTypes
             if (cb_ttt.Checked)
             {
                 MessageBox.Show("Take place in a timed tornado tag battle, where players join over the course of a match.\nThe first player joins after five minutes, then the next joins every two minutes afterwards.\nWhen all players have joined the match, pinfall or submission victories are possible.\nThe first team to score a victory wins the match.", "Timed Tornado Tag", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+
+            //Boxing
+            if (cb_boxing.Checked)
+            {
+                MessageBox.Show("Boxing rules, with additional features for the referee and participants.", "Boxing Match", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            //Kick Boxing
+            if (cb_kickboxing.Checked)
+            {
+                MessageBox.Show("Kick-Boxing rules, with additional features for the referee and participants.", "Kick-Boxing Match", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            //Lucha Tag
+            if (cb_luchaTag.Checked)
+            {
+                MessageBox.Show("Lucha tag match, where players can enter the ring without tags (under certain conditions).", "Lucha Tag Match", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
         private void isPost_CheckedChanged(object sender, EventArgs e)

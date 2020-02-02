@@ -170,21 +170,33 @@ namespace MoreMatchTypes
             }
             else
             {
-                if (survivalRoadData.Referee == null)
-                {
-                    sr_refereeList.SelectedIndex = 0;
-                }
-                else
-                {
-                    sr_refereeList.SelectedIndex = sr_refereeList.FindString(survivalRoadData.Referee.Name);
-                }
-                sr_venueList.SelectedItem = survivalRoadData.Venue;
-                sr_ringList.SelectedItem = survivalRoadData.Ring;
+                
+                sr_refereeList.SelectedIndex = survivalRoadData.Referee == null
+                    ? 0
+                    : sr_refereeList.FindString(survivalRoadData.Referee.Name);
+
+                sr_venueList.SelectedIndex =
+                    survivalRoadData.Venue == null ? 0 : sr_venueList.FindString(survivalRoadData.Venue);
+
+                sr_ringList.SelectedIndex = survivalRoadData.Ring == null
+                    ? 0
+                    : sr_ringList.FindString(survivalRoadData.Ring.Name);
+
                 sr_speedList.SelectedItem = survivalRoadData.Speed;
                 sr_bgmList.SelectedItem = survivalRoadData.MatchBGM;
                 sr_difficultyList.SelectedItem = survivalRoadData.Difficulty;
-                sr_wrestler.Items.Add(survivalRoadData.Wrestler);
-                sr_second.Items.Add(survivalRoadData.Second);
+
+                if (survivalRoadData.Wrestler != null)
+                {
+                    sr_wrestler.Items.Add(survivalRoadData.Wrestler);
+                    sr_wrestler.SelectedIndex = 0;
+                }
+                if (survivalRoadData.Second != null)
+                {
+                    sr_second.Items.Add(survivalRoadData.Second);
+                    sr_second.SelectedIndex = 0;
+                }
+
                 sr_continues.SelectedItem = survivalRoadData.Continues;
                 sr_matches.SelectedItem = survivalRoadData.Matches;
                 sr_regenHP.Checked = survivalRoadData.RegainHP;
@@ -210,36 +222,44 @@ namespace MoreMatchTypes
         #region Team Management
         private void sr_Add_Click(object sender, EventArgs e)
         {
-            if (sr_addWrestler.Checked)
+            try
             {
-                sr_wrestler.Items.Clear();
-                sr_wrestler.Items.Add(sr_searchResult.SelectedItem);
-                sr_wrestler.SelectedIndex = 0;
-            }
-            if (sr_addSecond.Checked)
-            {
-                sr_second.Items.Clear();
-                sr_second.Items.Add(sr_searchResult.SelectedItem);
-                sr_second.SelectedIndex = 0;
-            }
-            if (sr_addSingle.Checked)
-            {
-                sr_teamList.Items.Add(sr_searchResult.SelectedItem);
-            }
-            if (sr_addAll.Checked)
-            {
-                foreach (WresIDGroup wrestler in sr_searchResult.Items)
+                if (sr_addWrestler.Checked)
                 {
-                    if (sr_wrestler.Items.Count > 0)
+                    sr_wrestler.Items.Clear();
+                    sr_wrestler.Items.Add(sr_searchResult.SelectedItem);
+                    sr_wrestler.SelectedIndex = 0;
+                }
+                if (sr_addSecond.Checked)
+                {
+                    sr_second.Items.Clear();
+                    sr_second.Items.Add(sr_searchResult.SelectedItem);
+                    sr_second.SelectedIndex = 0;
+                }
+                if (sr_addSingle.Checked)
+                {
+                    sr_teamList.Items.Add(sr_searchResult.SelectedItem);
+                }
+                if (sr_addAll.Checked)
+                {
+                    foreach (WresIDGroup wrestler in sr_searchResult.Items)
                     {
-                        if (((WresIDGroup)sr_wrestler.SelectedItem).Name.Equals(wrestler.Name))
+                        if (sr_wrestler.Items.Count > 0)
                         {
-                            continue;
+                            if (((WresIDGroup)sr_wrestler.SelectedItem).Name.Equals(wrestler.Name))
+                            {
+                                continue;
+                            }
                         }
+                        sr_teamList.Items.Add(wrestler);
                     }
-                    sr_teamList.Items.Add(wrestler);
                 }
             }
+            catch (Exception exception)
+            {
+                L.D(exception.ToString());
+            }
+         
         }
         private void sr_Refresh_Click(object sender, EventArgs e)
         {
@@ -247,7 +267,14 @@ namespace MoreMatchTypes
         }
         private void sr_RemoveOne_Click(object sender, EventArgs e)
         {
-            sr_teamList.Items.Remove(sr_teamList.SelectedItem);
+            try
+            {
+                sr_teamList.Items.Remove(sr_teamList.SelectedItem);
+            }
+            catch (Exception exception)
+            {
+                L.D(exception.ToString());
+            }
         }
         private void sr_removeAll_Click(object sender, EventArgs e)
         {
@@ -256,7 +283,10 @@ namespace MoreMatchTypes
         private void sr_Search_Click(object sender, EventArgs e)
         {
             LoadEditsFromPromotion();
-            sr_searchResult.SelectedIndex = 0;
+            if (sr_searchResult.Items.Count > 0)
+            {
+                sr_searchResult.SelectedIndex = 0;
+            }
         }
         private void sr_wrestlerClear_Click(object sender, EventArgs e)
         {
@@ -374,6 +404,11 @@ namespace MoreMatchTypes
                 sr_simSecond.Checked = false;
             }
         }
+        private void formClose_Click(object sender, EventArgs e)
+        {
+            SaveSurvivalRoadData();
+            this.Hide();
+        }
         #endregion
 
         #region Begin Match
@@ -390,7 +425,7 @@ namespace MoreMatchTypes
             WresIDGroup second = (WresIDGroup)sr_second.SelectedItem;
             String selectedType = sr_matchType.SelectedItem.ToString();
             WrestlerID wrestlerNo = WrestlerID.AbbieJones;
-            bool isSecond = false;
+            bool isSecond = true;
             bool controlBoth = false;
             bool validEntry = false;
             int control = 0;
@@ -478,33 +513,44 @@ namespace MoreMatchTypes
                     else
                     {
                         validEntry = true;
-
+                        int searchIndex;
                         //Get Random opponent
-                        int rngValue = UnityEngine.Random.Range(0, opponentCount);
+                        if (sr_random.Checked)
+                        {
+                           searchIndex = UnityEngine.Random.Range(0, opponentCount);
+                        }
+                        else
+                        {
+                            searchIndex = 0;
+                        }
 
                         //Determine if we're creating a tag team or single competitor
                         if (opponentCount == 1)
                         {
-                            wrestlerNo = MatchConfiguration.GetWrestlerNo((WresIDGroup)sr_teamList.Items[rngValue]);
-                            MatchConfiguration.singleOpponent = wrestlerNo.ToString();
+                            opponent = (WresIDGroup) sr_teamList.Items[searchIndex];
+                            wrestlerNo = MatchConfiguration.GetWrestlerNo(opponent);
+                            MoreMatchTypes_Form.SurvivalRoadData.InitialOpponents[0] = opponent;
                         }
                         else if (i == 4)
                         {
-                            wrestlerNo = MatchConfiguration.GetWrestlerNo((WresIDGroup)sr_teamList.Items[rngValue]);
-                            MatchConfiguration.singleOpponent = wrestlerNo.ToString();
+                            opponent = (WresIDGroup)sr_teamList.Items[searchIndex];
+                            wrestlerNo = MatchConfiguration.GetWrestlerNo(opponent);
+                            MoreMatchTypes_Form.SurvivalRoadData.InitialOpponents[0] = opponent;
                         }
                         else if (i == 5)
                         {
-                            wrestlerNo = MatchConfiguration.GetWrestlerNo((WresIDGroup)sr_teamList.Items[rngValue]);
+                            opponent = (WresIDGroup)sr_teamList.Items[searchIndex];
+                            wrestlerNo = MatchConfiguration.GetWrestlerNo(opponent);
 
                             //Ensure that we aren't fielding duplicate wrestlers
-                            while (MatchConfiguration.singleOpponent.Equals(wrestlerNo.ToString()))
+                            while (MoreMatchTypes_Form.SurvivalRoadData.InitialOpponents[0].ID == (int)wrestlerNo)
                             {
-                                rngValue = UnityEngine.Random.Range(0, opponentCount);
-                                wrestlerNo = MatchConfiguration.GetWrestlerNo((WresIDGroup)sr_teamList.Items[rngValue]);
+                                searchIndex = UnityEngine.Random.Range(0, opponentCount);
+                                opponent = (WresIDGroup)sr_teamList.Items[searchIndex];
+                                wrestlerNo = MatchConfiguration.GetWrestlerNo(opponent);
                             }
 
-                            MatchConfiguration.tagOpponent = wrestlerNo.ToString();
+                            MoreMatchTypes_Form.SurvivalRoadData.InitialOpponents[1] = opponent;
                         }
 
                         if (sr_tag.Checked && i == 5)
@@ -521,7 +567,6 @@ namespace MoreMatchTypes
                 }
 
                 StartMatch();
-                sr_start.Enabled = false;
             }
             catch (Exception ex)
             {
@@ -549,6 +594,11 @@ namespace MoreMatchTypes
         {
             bool isValid = true;
 
+            if (MoreMatchTypes_Form.SurvivalRoadData.InProgress)
+            {
+                ShowError("Survival Road is currently in progress.");
+                isValid = false;
+            }
             if (!MoreMatchTypes_Form.moreMatchTypesForm.cb_survival.Checked)
             {
                 ShowError("The Survival Road option must be selected.");
@@ -650,9 +700,14 @@ namespace MoreMatchTypes
             bgmList = this.sr_bgmList;
 
             #region Match Setting Config
+            GlobalParam.Erase_WrestlerResource();
             GlobalParam.Delete_BattleConfig();
+            GlobalParam.Intalize_BattleMode();
+            GlobalParam.Intalize_BattleConfig();
             GlobalParam.Load_ConfigData();
+            GlobalParam.Set_BattleConfig_Value((GlobalParam.CFG_VAL)26, 0);
             GlobalParam.Set_MatchSetting_DefaultParam();
+
             GlobalParam.TitleMatch_BeltData = null;
             GlobalParam.m_BattleMode = GlobalParam.BattleMode.OneNightMatch;
             GlobalParam.flg_TitleMatch_Ready = false;
@@ -687,10 +742,17 @@ namespace MoreMatchTypes
             try
             {
                 RefereeInfo referee = (RefereeInfo)refereeList.SelectedItem;
-                settings.RefereeID = (RefereeID)referee.SaveID;
-                if (settings.RefereeID == RefereeID.Invalid)
+                if (referee.SaveID == -1)
                 {
                     settings.RefereeID = RefereeID.MrJudgement;
+                }
+                else if (referee.SaveID == -2)
+                {
+                    settings.RefereeID = RefereeID.RedShoesUnno;
+                }
+                else
+                {
+                    settings.RefereeID = (RefereeID)referee.SaveID;
                 }
             }
             catch
@@ -754,22 +816,11 @@ namespace MoreMatchTypes
                 settings.GameSpeed = 100;
             }
 
-
-            //Set Game Speed
-            try
-            {
-                settings.GameSpeed = (uint)speedList.SelectedItem;
-            }
-            catch
-            {
-                settings.GameSpeed = 100;
-            }
-
             settings.BattleRoyalKind = BattleRoyalKindEnum.Off;
             settings.VictoryCondition = VictoryConditionEnum.Count3;
             settings.isOverTheTopRopeOn = false;
             settings.MatchTime = 0;
-            settings.is3GameMatch = false;
+            settings.is3GameMatch = true;
             settings.isRopeCheck = true;
             settings.isElimination = false;
             settings.isLumberjack = false;
@@ -777,6 +828,7 @@ namespace MoreMatchTypes
             settings.isCutPlay = false;
             settings.isDisableTimeCount = false;
             settings.isOutOfRingCount = true;
+            settings.entranceSceneMode = EntranceSceneMode.EachCorner;
 
             settings.ComLevel = difficultyList.SelectedIndex;
 
@@ -840,10 +892,7 @@ namespace MoreMatchTypes
             {
                 settings.matchBGM = (MatchBGM)sr_bgmList.SelectedIndex;
             }
-
-            settings.isSkipEntranceScene = true;
-            settings.entranceSceneMode = EntranceSceneMode.EachCorner;
-            settings.isPlayDemo = false;
+            
             GlobalParam.flg_CallDebugMenu = false;
             GlobalParam.befor_scene = "Scene_BattleSetting";
             GlobalParam.keep_scene = "Scene_BattleSetting";
@@ -854,11 +903,10 @@ namespace MoreMatchTypes
         }
         private void StartMatch()
         {
+            SaveSurvivalRoadData();
             UnityEngine.SceneManagement.SceneManager.LoadScene("Match");
         }
-        #endregion
-
-        private void formClose_Click(object sender, EventArgs e)
+        private void SaveSurvivalRoadData()
         {
             //Save current data
             if (!MoreMatchTypes_Form.SurvivalRoadData.InProgress)
@@ -867,7 +915,6 @@ namespace MoreMatchTypes
                 {
                     SurvivalRoadData survivalRoadData = new SurvivalRoadData
                     {
-
                         //Settings
                         Referee = (RefereeInfo)sr_refereeList.SelectedItem,
                         Venue = (String)sr_venueList.SelectedItem,
@@ -877,8 +924,8 @@ namespace MoreMatchTypes
                         Difficulty = (String)sr_difficultyList.SelectedItem,
 
                         //Player Options
-                        Wrestler = (WresIDGroup)sr_wrestler.SelectedItem,
-                        Second = (WresIDGroup)sr_second.SelectedItem,
+                        Wrestler = sr_wrestler.Items.Count > 0 ? (WresIDGroup)sr_wrestler.Items[0] : null,
+                        Second = sr_second.Items.Count > 0 ? (WresIDGroup)sr_second.Items[0] : null,
                         Continues = (int)sr_continues.SelectedItem,
                         Matches = (int)sr_matches.SelectedItem,
                         RegainHP = (bool)sr_regenHP.Checked,
@@ -897,6 +944,7 @@ namespace MoreMatchTypes
                         Opponents = new List<WresIDGroup>()
                     };
 
+                    survivalRoadData.InProgress = true;
                     foreach (WresIDGroup wrestler in sr_teamList.Items)
                     {
                         survivalRoadData.Opponents.Add(wrestler);
@@ -909,8 +957,7 @@ namespace MoreMatchTypes
                     L.D("SaveSurvivalDataException: " + exception);
                 }
             }
-             
-            this.Hide();
         }
+        #endregion
     }
 }

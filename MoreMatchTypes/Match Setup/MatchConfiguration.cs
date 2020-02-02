@@ -13,7 +13,7 @@ namespace MatchConfig
         //Ensure we aren't fielding duplicates
         public static String singleOpponent = "";
         public static String tagOpponent = "";
-
+        
         public static MatchSetting AddPlayers(bool entry, WrestlerID wrestlerNo, int slot, int control, bool isSecond, int costume, MatchSetting settings)
         {
             settings.matchWrestlerInfo[slot].entry = entry;
@@ -165,6 +165,23 @@ namespace MatchConfig
         public static List<RefereeInfo> LoadReferees()
         {
             List<RefereeInfo> referees = new List<RefereeInfo>();
+
+            referees.Add(new RefereeInfo
+            {
+                SaveID = -1,
+                Name = "Mr. Judgement"
+            });
+
+            //Ensure that new referees only show up for users that own DLC
+            if (SaveData.inst.IsDLCInstalled(DLCEnum.StoryMode_NJPW1_Assets))
+            {
+                referees.Add(new RefereeInfo
+                {
+                    SaveID = -2,
+                    Name = "Red Shoes Unno"
+                });
+            }
+
             foreach (RefereeData referee in SaveData.GetInst().editRefereeData)
             {
                 RefereeInfo refereeInfo = new RefereeInfo
@@ -174,16 +191,7 @@ namespace MatchConfig
                 };
                 referees.Add(refereeInfo);
             }
-
-            //Ensure that referee list is never empty
-            if (referees.Count == 0)
-            {
-                referees.Add(new RefereeInfo
-                {
-                    SaveID = -1,
-                    Name = "Mr. Judgement"
-                });
-            }
+            
             return referees;
         }
 

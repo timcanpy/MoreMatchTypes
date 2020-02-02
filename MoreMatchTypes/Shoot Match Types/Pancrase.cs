@@ -40,6 +40,7 @@ namespace MoreMatchTypes
         public static void SetMatchRules()
         {
             MatchSetting settings = GlobalWork.inst.MatchSetting;
+            isPancrase = false;
 
             if (settings.arena == VenueEnum.BarbedWire || settings.arena == VenueEnum.Cage || settings.arena == VenueEnum.Dodecagon || settings.arena == VenueEnum.LandMine_BarbedWire || settings.arena == VenueEnum.LandMine_FluorescentLamp)
             {
@@ -50,7 +51,6 @@ namespace MoreMatchTypes
                 return;
             }
 
-            isPancrase = false;
             if (MoreMatchTypes_Form.moreMatchTypesForm.cb_Pancrase.Checked && IsOneOnOne())
             {
                 isPancrase = true;

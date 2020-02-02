@@ -54,8 +54,6 @@
             this.removeRopes = new System.Windows.Forms.CheckBox();
             this.isk1mma = new System.Windows.Forms.RadioButton();
             this.cb_luchaTag = new System.Windows.Forms.RadioButton();
-            this.sr_singleOpponent = new System.Windows.Forms.Label();
-            this.sr_tagOpponent = new System.Windows.Forms.Label();
             this.isAutoKo = new System.Windows.Forms.CheckBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
@@ -67,7 +65,6 @@
             this.cb_luchaFalls = new System.Windows.Forms.CheckBox();
             this.matchConfig = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             this.rulesTabControl.SuspendLayout();
             this.rulesTab.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -125,12 +122,10 @@
             // cb_Pancrase
             // 
             this.cb_Pancrase.AutoSize = true;
-            this.cb_Pancrase.Checked = true;
             this.cb_Pancrase.Location = new System.Drawing.Point(102, 10);
             this.cb_Pancrase.Name = "cb_Pancrase";
             this.cb_Pancrase.Size = new System.Drawing.Size(71, 19);
             this.cb_Pancrase.TabIndex = 5;
-            this.cb_Pancrase.TabStop = true;
             this.cb_Pancrase.Text = "Pancrase";
             this.cb_Pancrase.UseVisualStyleBackColor = true;
             this.cb_Pancrase.CheckedChanged += new System.EventHandler(this.cb_Pancrase_CheckedChanged);
@@ -342,7 +337,6 @@
             this.isk1mma.TabIndex = 28;
             this.isk1mma.Text = "K-1/MMA Mixed Rules";
             this.isk1mma.UseVisualStyleBackColor = true;
-            this.isk1mma.Visible = false;
             // 
             // cb_luchaTag
             // 
@@ -354,26 +348,6 @@
             this.cb_luchaTag.Text = "Lucha Tag Rules";
             this.cb_luchaTag.UseVisualStyleBackColor = true;
             this.cb_luchaTag.CheckedChanged += new System.EventHandler(this.cb_luchaTag_CheckedChanged);
-            // 
-            // sr_singleOpponent
-            // 
-            this.sr_singleOpponent.AutoSize = true;
-            this.sr_singleOpponent.Location = new System.Drawing.Point(861, 25);
-            this.sr_singleOpponent.Name = "sr_singleOpponent";
-            this.sr_singleOpponent.Size = new System.Drawing.Size(90, 15);
-            this.sr_singleOpponent.TabIndex = 17;
-            this.sr_singleOpponent.Text = "Single Opponent";
-            this.sr_singleOpponent.Visible = false;
-            // 
-            // sr_tagOpponent
-            // 
-            this.sr_tagOpponent.AutoSize = true;
-            this.sr_tagOpponent.Location = new System.Drawing.Point(861, 45);
-            this.sr_tagOpponent.Name = "sr_tagOpponent";
-            this.sr_tagOpponent.Size = new System.Drawing.Size(75, 15);
-            this.sr_tagOpponent.TabIndex = 18;
-            this.sr_tagOpponent.Text = "Tag Opponent";
-            this.sr_tagOpponent.Visible = false;
             // 
             // isAutoKo
             // 
@@ -422,7 +396,6 @@
             this.cb_survival.TabIndex = 31;
             this.cb_survival.Text = "Survival Road";
             this.cb_survival.UseVisualStyleBackColor = true;
-            this.cb_survival.Visible = false;
             this.cb_survival.CheckedChanged += new System.EventHandler(this.cb_survival_CheckedChanged);
             // 
             // cb_exElim
@@ -434,7 +407,6 @@
             this.cb_exElim.TabIndex = 30;
             this.cb_exElim.Text = "Extended Elimination";
             this.cb_exElim.UseVisualStyleBackColor = true;
-            this.cb_exElim.Visible = false;
             this.cb_exElim.CheckedChanged += new System.EventHandler(this.cb_exElim_CheckedChanged);
             // 
             // tabPage3
@@ -463,7 +435,6 @@
             this.cb_sumo.TabIndex = 29;
             this.cb_sumo.Text = "Sumo";
             this.cb_sumo.UseVisualStyleBackColor = true;
-            this.cb_sumo.Visible = false;
             this.cb_sumo.CheckedChanged += new System.EventHandler(this.cb_sumo_CheckedChanged);
             // 
             // panel1
@@ -514,29 +485,15 @@
             this.label1.TabIndex = 33;
             this.label1.Text = "Rules";
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("NEWSFLASH", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(859, 5);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(133, 15);
-            this.label2.TabIndex = 34;
-            this.label2.Text = "Survival Road Parameters";
-            this.label2.Visible = false;
-            // 
             // MoreMatchTypes_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Silver;
             this.ClientSize = new System.Drawing.Size(994, 778);
-            this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.tabControl1);
-            this.Controls.Add(this.sr_tagOpponent);
-            this.Controls.Add(this.sr_singleOpponent);
             this.Controls.Add(this.matchHelp);
             this.Controls.Add(this.rulesTabControl);
             this.Controls.Add(this.cb_normalMatch);
@@ -586,15 +543,12 @@
         public System.Windows.Forms.CheckBox removeRopes;
         public System.Windows.Forms.RadioButton isk1mma;
         public System.Windows.Forms.RadioButton cb_luchaTag;
-        public System.Windows.Forms.Label sr_singleOpponent;
-        public System.Windows.Forms.Label sr_tagOpponent;
         public System.Windows.Forms.CheckBox isAutoKo;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.Panel panel1;
         public System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button matchConfig;
         public System.Windows.Forms.RadioButton cb_survival;
         public System.Windows.Forms.RadioButton cb_exElim;
