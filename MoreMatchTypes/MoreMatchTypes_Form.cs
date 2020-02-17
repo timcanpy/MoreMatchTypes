@@ -7,6 +7,7 @@ using System.IO;
 using MatchConfig;
 using System.Linq;
 using MoreMatchTypes.DataClasses;
+using System.Reflection;
 
 namespace MoreMatchTypes
 {
@@ -22,6 +23,8 @@ namespace MoreMatchTypes
         private static String sectionDivider = "|-------------------|";
         private static SurvivalRoadData survivalRoadData;
         public static SurvivalRoadData SurvivalRoadData { get => survivalRoadData; set => survivalRoadData = value; }
+        private static String modPackName = "ModPack";
+        public static bool modPackExists;
 
         #region Move Listing
         private static List<String> legalSumoMoves = new List<String>();
@@ -45,6 +48,21 @@ namespace MoreMatchTypes
             tb_basic.LostFocus += tb_basic_LostFocus;
             tb_illegal.LostFocus += tb_illegal_LostFocus;
             tb_dq.LostFocus += tb_dq_LostFocus;
+
+            //Determine whether UWFI and Pancrase matches are enabled
+            //These rely on the ModPack.
+            modPackExists = CheckModPackLoaded();
+
+            cb_Pancrase.Visible = modPackExists;
+            cb_uwfi.Visible = modPackExists;
+            cb_Pancrase.Enabled = modPackExists;
+            cb_uwfi.Enabled = modPackExists;
+
+            //Remove Iron Man and First Blood, since the ModPack already has instances
+            cb_IronManMatch.Visible = !modPackExists;
+            cb_FirstBlood.Visible = !modPackExists;
+            cb_IronManMatch.Enabled = !modPackExists;
+            cb_FirstBlood.Enabled = !modPackExists;
         }
         public void MoreMatchTypes_Form_Load(object sender, EventArgs e)
         {
@@ -484,7 +502,7 @@ namespace MoreMatchTypes
             {
                 L.D("MatchConfigError: " + exception);
             }
-          
+
         }
         private void tb_illegal_TextChanged(object sender, EventArgs e)
         {
@@ -849,7 +867,35 @@ namespace MoreMatchTypes
             cb_survival.Checked = false;
 
         }
+
+        private bool CheckModPackLoaded()
+        {
+            bool exists = false;
+
+            try
+            {
+                Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
+                foreach (var assembly in assemblies)
+                {
+                    string name = assembly.GetName().Name;
+                    L.D("Assembly:" + name);
+                    if (name.Equals(modPackName))
+                    {
+                        exists = true;
+                        break;
+                    }
+                }
+
+            }
+            catch (Exception e)
+            {
+                L.D("CheckModPackLoadedError: " + e);
+            }
+
+            return exists;
+
+        }
         #endregion
-        
+
     }
 }

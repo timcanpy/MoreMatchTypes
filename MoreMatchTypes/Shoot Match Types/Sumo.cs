@@ -57,6 +57,7 @@ namespace MoreMatchTypes
                 String basicMoves = MoreMatchTypes_Form.moreMatchTypesForm.tb_basic.Text.TrimStart().TrimEnd();
                 if (basicMoves != "")
                 {
+                    L.D("Create Sumo Basic Moves");
                     basicAttacks = CreateMoveList(basicMoves);
                 }
                 else

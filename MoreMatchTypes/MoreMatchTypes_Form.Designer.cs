@@ -76,7 +76,7 @@
             // cb_FirstBlood
             // 
             this.cb_FirstBlood.AutoSize = true;
-            this.cb_FirstBlood.Location = new System.Drawing.Point(7, 33);
+            this.cb_FirstBlood.Location = new System.Drawing.Point(7, 56);
             this.cb_FirstBlood.Name = "cb_FirstBlood";
             this.cb_FirstBlood.Size = new System.Drawing.Size(80, 19);
             this.cb_FirstBlood.TabIndex = 0;
@@ -87,7 +87,7 @@
             // cb_IronManMatch
             // 
             this.cb_IronManMatch.AutoSize = true;
-            this.cb_IronManMatch.Location = new System.Drawing.Point(7, 7);
+            this.cb_IronManMatch.Location = new System.Drawing.Point(139, 56);
             this.cb_IronManMatch.Name = "cb_IronManMatch";
             this.cb_IronManMatch.Size = new System.Drawing.Size(67, 19);
             this.cb_IronManMatch.TabIndex = 1;
@@ -98,7 +98,7 @@
             // cb_uwfi
             // 
             this.cb_uwfi.AutoSize = true;
-            this.cb_uwfi.Location = new System.Drawing.Point(102, 35);
+            this.cb_uwfi.Location = new System.Drawing.Point(199, 10);
             this.cb_uwfi.Name = "cb_uwfi";
             this.cb_uwfi.Size = new System.Drawing.Size(55, 19);
             this.cb_uwfi.TabIndex = 2;
@@ -122,7 +122,7 @@
             // cb_Pancrase
             // 
             this.cb_Pancrase.AutoSize = true;
-            this.cb_Pancrase.Location = new System.Drawing.Point(102, 10);
+            this.cb_Pancrase.Location = new System.Drawing.Point(112, 35);
             this.cb_Pancrase.Name = "cb_Pancrase";
             this.cb_Pancrase.Size = new System.Drawing.Size(71, 19);
             this.cb_Pancrase.TabIndex = 5;
@@ -194,7 +194,7 @@
             // cb_elimination
             // 
             this.cb_elimination.AutoSize = true;
-            this.cb_elimination.Location = new System.Drawing.Point(229, 6);
+            this.cb_elimination.Location = new System.Drawing.Point(139, 6);
             this.cb_elimination.Name = "cb_elimination";
             this.cb_elimination.Size = new System.Drawing.Size(80, 19);
             this.cb_elimination.TabIndex = 12;
@@ -277,7 +277,7 @@
             // cb_ttt
             // 
             this.cb_ttt.AutoSize = true;
-            this.cb_ttt.Location = new System.Drawing.Point(97, 7);
+            this.cb_ttt.Location = new System.Drawing.Point(7, 7);
             this.cb_ttt.Name = "cb_ttt";
             this.cb_ttt.Size = new System.Drawing.Size(116, 19);
             this.cb_ttt.TabIndex = 19;
@@ -331,17 +331,19 @@
             // isk1mma
             // 
             this.isk1mma.AutoSize = true;
-            this.isk1mma.Location = new System.Drawing.Point(196, 35);
+            this.isk1mma.Enabled = false;
+            this.isk1mma.Location = new System.Drawing.Point(200, 36);
             this.isk1mma.Name = "isk1mma";
             this.isk1mma.Size = new System.Drawing.Size(132, 19);
             this.isk1mma.TabIndex = 28;
             this.isk1mma.Text = "K-1/MMA Mixed Rules";
             this.isk1mma.UseVisualStyleBackColor = true;
+            this.isk1mma.Visible = false;
             // 
             // cb_luchaTag
             // 
             this.cb_luchaTag.AutoSize = true;
-            this.cb_luchaTag.Location = new System.Drawing.Point(97, 31);
+            this.cb_luchaTag.Location = new System.Drawing.Point(7, 31);
             this.cb_luchaTag.Name = "cb_luchaTag";
             this.cb_luchaTag.Size = new System.Drawing.Size(104, 19);
             this.cb_luchaTag.TabIndex = 29;
@@ -390,7 +392,7 @@
             // cb_survival
             // 
             this.cb_survival.AutoSize = true;
-            this.cb_survival.Location = new System.Drawing.Point(368, 6);
+            this.cb_survival.Location = new System.Drawing.Point(278, 6);
             this.cb_survival.Name = "cb_survival";
             this.cb_survival.Size = new System.Drawing.Size(92, 19);
             this.cb_survival.TabIndex = 31;
@@ -401,7 +403,7 @@
             // cb_exElim
             // 
             this.cb_exElim.AutoSize = true;
-            this.cb_exElim.Location = new System.Drawing.Point(229, 31);
+            this.cb_exElim.Location = new System.Drawing.Point(139, 31);
             this.cb_exElim.Name = "cb_exElim";
             this.cb_exElim.Size = new System.Drawing.Size(130, 19);
             this.cb_exElim.TabIndex = 30;
@@ -429,7 +431,7 @@
             // cb_sumo
             // 
             this.cb_sumo.AutoSize = true;
-            this.cb_sumo.Location = new System.Drawing.Point(196, 10);
+            this.cb_sumo.Location = new System.Drawing.Point(112, 10);
             this.cb_sumo.Name = "cb_sumo";
             this.cb_sumo.Size = new System.Drawing.Size(54, 19);
             this.cb_sumo.TabIndex = 29;

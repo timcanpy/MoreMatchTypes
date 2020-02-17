@@ -43,6 +43,7 @@ namespace MoreMatchTypes.Shoot_Match_Types
                 String dqMoves = MoreMatchTypes_Form.moreMatchTypesForm.tb_dq.Text.TrimStart().TrimEnd();
                 if (dqMoves.Trim() != "")
                 {
+                    L.D("Create Boxing DQ Moves");
                     dqAttacks = CreateMoveList(dqMoves);
                 }
                 else
@@ -381,8 +382,19 @@ namespace MoreMatchTypes.Shoot_Match_Types
                 {
                     continue;
                 }
-                pl.Start_ForceControl(global::ForceCtrlEnum.WaitMatchStart);
 
+                pl.DownTime = 0;
+
+                //Force Submission Breaks
+                if (pl.isSubmissionAtk)
+                {
+                    pl.plCont_AI.padPush = PadBtnEnum.Atk_M;
+                };
+
+                if (!pl.State.ToString().Contains("Down") && !pl.isSubmissionAtk && !pl.isSubmissionDef)
+                {
+                    pl.Start_ForceControl(global::ForceCtrlEnum.WaitMatchStart);
+                }
             }
 
             //Do not perform at the start of a match.
@@ -393,17 +405,54 @@ namespace MoreMatchTypes.Shoot_Match_Types
             }
 
             MatchSetting settings = GlobalWork.inst.MatchSetting;
-            //Do not perform at the start of a round
-            if (main.matchTime.sec == 0 && main.matchTime.min % settings.MatchTime == 0)
-            {
-                return;
-            }
+            ////Do not perform at the start of a round
+            //if (main.matchTime.sec == 0 && main.matchTime.min % settings.MatchTime == 0)
+            //{
+            //    return;
+            //}
             Referee mRef = RefereeMan.inst.GetRefereeObj();
             global::MatchSEPlayer.inst.PlayRefereeVoice(global::RefeVoiceEnum.Break);
             mRef.State = global::RefeStateEnum.CallBeforeMatch_1;
             mRef.ReqRefereeAnm(global::BasicSkillEnum.ROUNDF);
             mRef.UpdateRefereeAnm();
         }
+        //private static void ForceCleanBreak()
+        //{
+        //    for (int i = 0; i < 8; i++)
+        //    {
+        //        Player pl = PlayerMan.inst.GetPlObj(i);
+        //        if (!pl)
+        //        {
+        //            continue;
+        //        }
+        //        //Force Submission Breaks
+        //        if (pl.isSubmissionAtk)
+        //        {
+        //            pl.plController.padPush = PadBtnEnum.Atk_M;
+        //        }
+        //        pl.Start_ForceControl(global::ForceCtrlEnum.WaitMatchStart);
+
+        //    }
+
+        //    //Do not perform at the start of a match.
+        //    MatchMain main = MatchMain.inst;
+        //    if (main.matchTime.min == 0 && main.matchTime.sec == 0)
+        //    {
+        //        return;
+        //    }
+
+        //    MatchSetting settings = GlobalWork.inst.MatchSetting;
+        //    //Do not perform at the start of a round
+        //    if (main.matchTime.sec == 0 && main.matchTime.min % settings.MatchTime == 0)
+        //    {
+        //        return;
+        //    }
+        //    Referee mRef = RefereeMan.inst.GetRefereeObj();
+        //    global::MatchSEPlayer.inst.PlayRefereeVoice(global::RefeVoiceEnum.Break);
+        //    mRef.State = global::RefeStateEnum.CallBeforeMatch_1;
+        //    mRef.ReqRefereeAnm(global::BasicSkillEnum.ROUNDF);
+        //    mRef.UpdateRefereeAnm();
+        //}
 
         private static void ExecuteTaunt(Player plObj)
         {

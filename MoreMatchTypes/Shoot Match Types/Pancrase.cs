@@ -59,6 +59,7 @@ namespace MoreMatchTypes
                 String illegalString = MoreMatchTypes_Form.moreMatchTypesForm.tb_illegal.Text.TrimStart().TrimEnd();
                 if (illegalString != "")
                 {
+                    L.D("Create Pancrase Illegal Moves");
                     illegalMoves = CreateMoveList(illegalString);
                 }
                 else
@@ -146,6 +147,7 @@ namespace MoreMatchTypes
                 String dqMoves = MoreMatchTypes_Form.moreMatchTypesForm.tb_dq.Text.TrimStart().TrimEnd();
                 if (dqMoves != "")
                 {
+                    L.D("Create Pancrase DQ Moves");
                     instantDQ = CreateMoveList(dqMoves);
                 }
                 else
@@ -346,12 +348,15 @@ namespace MoreMatchTypes
             {
                 if (!resultText.Equals(""))
                 {
+                    L.D(str);
                     string resultString = str.Replace("K.O.", resultText).Replace("DRAW", resultText);
                     finishText.text = resultString;
+                    L.D("Result Text: " + resultString);
                 }
                 endMatch = false;
             }
         }
+
         [Hook(TargetClass = "MatchMain", TargetMethod = "InitRound", InjectionLocation = int.MaxValue, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.PassInvokingInstance, Group = "MoreMatchTypes")]
         public static void StartRound(MatchMain m)
         {
@@ -376,7 +381,7 @@ namespace MoreMatchTypes
             MatchMain.inst.matchTime = new MatchTime();
         }
 
-        [Hook(TargetClass = "Referee", TargetMethod = "CheckStartRefereeing", InjectionLocation = 326,
+        [Hook(TargetClass = "Referee", TargetMethod = "CheckStartRefereeing", InjectionLocation = 335,
             InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.PassParametersVal, ParamTypes = new Type[]
             {
                 typeof(int)
@@ -427,6 +432,11 @@ namespace MoreMatchTypes
 
         private static void CheckMatchEnd(string reason)
         {
+            if (endMatch)
+            {
+                return;
+            }
+
             if (points[0] <= 0)
             {
                 TriggerLoss(0, reason);
@@ -438,6 +448,7 @@ namespace MoreMatchTypes
             else
             {
                 DispNotification.inst.Show(reason + " -\t" + teamNames[0] + ": " + points[0] + " points \t\t" + teamNames[1] + ": " + points[1] + " points", 300);
+                ForceCleanBreak(); //Allows the round to continue
                 EndRound();
             }
 
@@ -445,29 +456,24 @@ namespace MoreMatchTypes
 
         private static void EndRound()
         {
-            //Prepare the next round
-            //currentBP[0] = PlayerMan.inst.GetPlObj(0).BP;
-            //currentBP[1] = PlayerMan.inst.GetPlObj(4).BP;
+           
+            //PlayerMan.inst.GetPlObj(0).forceControl = ForceCtrlEnum.WaitMatchStart;
+            //PlayerMan.inst.GetPlObj(4).forceControl = ForceCtrlEnum.WaitMatchStart;
+            //MatchMain main = MatchMain.inst;
 
-            //PlayerMan.inst.GetPlObj(0).BP = 0;
-            //PlayerMan.inst.GetPlObj(4).BP = 0;
-            PlayerMan.inst.GetPlObj(0).forceControl = ForceCtrlEnum.WaitMatchStart;
-            PlayerMan.inst.GetPlObj(4).forceControl = ForceCtrlEnum.WaitMatchStart;
-            MatchMain main = MatchMain.inst;
+            //Referee matchRef = RefereeMan.inst.GetRefereeObj();
+            //matchRef.PlDir = PlDirEnum.Left;
+            //matchRef.ReqRefereeAnm(BasicSkillEnum.Refe_Stand_MatchEnd_Front_Left);
 
-            Referee matchRef = RefereeMan.inst.GetRefereeObj();
-            matchRef.PlDir = PlDirEnum.Left;
-            matchRef.ReqRefereeAnm(BasicSkillEnum.Refe_Stand_MatchEnd_Front_Left);
+            //main.isMatchEnd = false;
+            //main.isRoundEnd = true;
 
-            main.isMatchEnd = false;
-            main.isRoundEnd = true;
-
-            currMatchTime = new MatchTime
-            {
-                min = main.matchTime.min,
-                sec = main.matchTime.sec
-            };
-            main.isTimeCounting = false;
+            //currMatchTime = new MatchTime
+            //{
+            //    min = main.matchTime.min,
+            //    sec = main.matchTime.sec
+            //};
+            //main.isTimeCounting = false;
             foulChecked = false;
             ropeBreak = false;
             checkKo = false;
@@ -551,8 +557,6 @@ namespace MoreMatchTypes
 
         }
 
-    
-
         public static bool Contains(List<string> thisTeam, List<string> tMembers)
         {
             foreach (string w in thisTeam)
@@ -577,6 +581,50 @@ namespace MoreMatchTypes
                 move.TrimStart().TrimEnd();
             }
             return modifiedList;
+        }
+
+        private static void ForceCleanBreak()
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                Player pl = PlayerMan.inst.GetPlObj(i);
+                if (!pl)
+                {
+                    continue;
+                }
+
+                pl.DownTime = 0;
+
+                //Force Submission Breaks
+                if (pl.isSubmissionAtk)
+                {
+                   pl.plCont_AI.padPush = PadBtnEnum.Atk_M;
+                };
+
+                if (!pl.State.ToString().Contains("Down") && !pl.isSubmissionAtk && !pl.isSubmissionDef)
+                {
+                    pl.Start_ForceControl(global::ForceCtrlEnum.WaitMatchStart);
+                }
+            }
+
+            //Do not perform at the start of a match.
+            MatchMain main = MatchMain.inst;
+            if (main.matchTime.min == 0 && main.matchTime.sec == 0)
+            {
+                return;
+            }
+
+            MatchSetting settings = GlobalWork.inst.MatchSetting;
+            //Do not perform at the start of a round
+            //if (main.matchTime.sec == 0 && main.matchTime.min % settings.MatchTime == 0)
+            //{
+            //    return;
+            //}
+            Referee mRef = RefereeMan.inst.GetRefereeObj();
+            global::MatchSEPlayer.inst.PlayRefereeVoice(global::RefeVoiceEnum.Break);
+            mRef.State = global::RefeStateEnum.CallBeforeMatch_1;
+            mRef.ReqRefereeAnm(global::BasicSkillEnum.ROUNDF);
+            mRef.UpdateRefereeAnm();
         }
 
         #endregion
