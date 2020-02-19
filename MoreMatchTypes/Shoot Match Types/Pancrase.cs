@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using DG;
 using MatchConfig;
+using ModPack;
 using UnityEngine;
 
 namespace MoreMatchTypes
@@ -18,7 +20,7 @@ namespace MoreMatchTypes
     class Pancrase
     {
 
-        #region variables
+        #region Variables
         public static List<String> illegalMoves = new List<String>();
         public static List<String> instantDQ;
         public static bool isPancrase;
@@ -31,10 +33,7 @@ namespace MoreMatchTypes
         public static int[] points;
         public static string resultText;
         public static string[] teamNames;
-        public static MatchTime currMatchTime = null;
-        public static float[] currentBP;
         #endregion
-
 
         [Hook(TargetClass = "MatchMain", TargetMethod = "InitMatch", InjectionLocation = int.MaxValue, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.None, Group = "MoreMatchTypes")]
         public static void SetMatchRules()
@@ -179,27 +178,26 @@ namespace MoreMatchTypes
             {
                 return;
             }
-      
-            foulChecked = false;
-            checkKo = false;
-            ropeBreak = false;
-            dqChecked = false;
-            points = new int[2];
-            points[0] = 5;
-            points[1] = 5;
-            teamNames = new string[2];
-            SetTeamNames();
+
             settings.VictoryCondition = VictoryConditionEnum.OnlyGiveUp;
-            settings.is10CountKO = true;
             settings.isLumberjack = true;
             settings.isFoulCount = false;
             settings.isOutOfRingCount = false;
             settings.is10CountKO = true;
             settings.MatchTime = 0;
+
             resultText = "";
-            currMatchTime = null;
-            currentBP = new float[2];
+            foulChecked = false;
+            checkKo = false;
+            ropeBreak = false;
+            dqChecked = false;
             endMatch = false;
+            points = new int[2];
+            teamNames = new string[2];
+            points[0] = 5;
+            points[1] = 5;
+
+            SetTeamNames();
         }
 
         [Hook(TargetClass = "MatchMain", TargetMethod = "Update_Match", InjectionLocation = 0, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.None, Group = "MoreMatchTypes")]
@@ -266,12 +264,6 @@ namespace MoreMatchTypes
                     }
                 }
 
-                //Get fighters back into the ring, if anyone falls out of it.
-                if (plObj.Zone == ZoneEnum.OutOfRing || plObj.Zone == ZoneEnum.SlopeRunway || plObj.Zone == ZoneEnum.Stage || plObj.Zone == ZoneEnum.StageEntrance || plObj.Zone == ZoneEnum.HorizontalRunway || plObj.Zone == ZoneEnum.OutsideCage)
-                {
-                    EndRound();
-                }
-
                 //Disqualify wrestlers for climbing the turnbuckles.
                 if (plObj.Zone == ZoneEnum.OnCornerPost)
                 {
@@ -286,6 +278,7 @@ namespace MoreMatchTypes
                         checkKo = true;
                     }
 
+                    HandleFoul();
                     CheckMatchEnd("Disqualification");
                 }
 
@@ -298,21 +291,6 @@ namespace MoreMatchTypes
         {
             if (isPancrase)
             {
-
-                if (illegalMoves.Contains(sd.skillName[1]))
-                {
-                    if (plIDx < 4)
-                    {
-                        points[0]--;
-                        foulChecked = true;
-                    }
-                    else
-                    {
-                        points[1]--;
-                        foulChecked = true;
-                    }
-
-                }
 
                 if (instantDQ.Contains(sd.skillName[1]))
                 {
@@ -328,7 +306,21 @@ namespace MoreMatchTypes
                         dqChecked = true;
                     }
                 }
+                else if (illegalMoves.Contains(sd.skillName[1]))
+                {
+                    if (plIDx < 4)
+                    {
+                        points[0]--;
+                        foulChecked = true;
+                    }
+                    else
+                    {
+                        points[1]--;
+                        foulChecked = true;
+                    }
 
+                }
+                
                 if (foulChecked)
                 {
                     PlayerMan.inst.GetPlObj(plIDx).animator.isReqAnmLoopEnd = true;
@@ -341,30 +333,30 @@ namespace MoreMatchTypes
             }
         }
 
-        [Hook(TargetClass = "Menu_Result", TargetMethod = "Set_FinishSkill", InjectionLocation = 8, InjectDirection = HookInjectDirection.After, InjectFlags = HookInjectFlags.PassParametersVal | HookInjectFlags.PassLocals, LocalVarIds = new int[] { 1 }, Group = "MoreMatchTypes")]
-        public static void SetResultScreenDisplay(ref UILabel finishText, string str)
+        [Hook(TargetClass = "Menu_Result", TargetMethod = "Set_FinishSkill", InjectionLocation = 0, InjectDirection = HookInjectDirection.After, InjectFlags = HookInjectFlags.PassParametersRef, Group = "MoreMatchTypes")]
+        public static void SetResultScreenDisplay(ref string str)
         {
-            if (endMatch && isPancrase)
+            try
             {
-                if (!resultText.Equals(""))
+                if (endMatch && isPancrase)
                 {
-                    L.D(str);
-                    string resultString = str.Replace("K.O.", resultText).Replace("DRAW", resultText);
-                    finishText.text = resultString;
-                    L.D("Result Text: " + resultString);
+                    if (!resultText.Equals(String.Empty))
+                    {
+                        //Get match time
+                        string time = Regex.Split(str, Environment.NewLine)[0];
+                        str = time + Environment.NewLine + resultText;
+                    }
                 }
-                endMatch = false;
             }
-        }
-
-        [Hook(TargetClass = "MatchMain", TargetMethod = "InitRound", InjectionLocation = int.MaxValue, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.PassInvokingInstance, Group = "MoreMatchTypes")]
-        public static void StartRound(MatchMain m)
-        {
-            if (isPancrase && currMatchTime != null)
+            catch (IndexOutOfRangeException)
+            { }
+            catch (Exception ex)
             {
-                m.matchTime.Set(currMatchTime);
-                //PlayerMan.inst.GetPlObj(0).BP = currentBP[0];
-                //PlayerMan.inst.GetPlObj(4).BP = currentBP[1];
+                L.D("PancraseSetResultException: " + ex);
+            }
+            finally
+            {
+                endMatch = false;
             }
         }
 
@@ -376,9 +368,6 @@ namespace MoreMatchTypes
             {
                 return;
             }
-
-            currMatchTime = null;
-            MatchMain.inst.matchTime = new MatchTime();
         }
 
         [Hook(TargetClass = "Referee", TargetMethod = "CheckStartRefereeing", InjectionLocation = 335,
@@ -408,14 +397,13 @@ namespace MoreMatchTypes
                 }
             }
         }
-        
+
         #region Helper Methods
         //Ensure that the match is One vs One
         private static bool IsOneOnOne()
         {
             return MatchConfiguration.GetPlayerCount() == 2;
         }
-
         private static void TriggerLoss(int team, string reason)
         {
             DispNotification.inst.Show(reason + " -\t" + teamNames[0] + ": " + points[0] + " points \t\t" + teamNames[1] + ": " + points[1] + " points", 300);
@@ -429,7 +417,6 @@ namespace MoreMatchTypes
             endMatch = true;
             mref.SentenceLose(team);
         }
-
         private static void CheckMatchEnd(string reason)
         {
             if (endMatch)
@@ -449,37 +436,17 @@ namespace MoreMatchTypes
             {
                 DispNotification.inst.Show(reason + " -\t" + teamNames[0] + ": " + points[0] + " points \t\t" + teamNames[1] + ": " + points[1] + " points", 300);
                 ForceCleanBreak(); //Allows the round to continue
-                EndRound();
+                ResumeAfterBreak();
             }
 
         }
-
-        private static void EndRound()
+        private static void ResumeAfterBreak()
         {
-           
-            //PlayerMan.inst.GetPlObj(0).forceControl = ForceCtrlEnum.WaitMatchStart;
-            //PlayerMan.inst.GetPlObj(4).forceControl = ForceCtrlEnum.WaitMatchStart;
-            //MatchMain main = MatchMain.inst;
-
-            //Referee matchRef = RefereeMan.inst.GetRefereeObj();
-            //matchRef.PlDir = PlDirEnum.Left;
-            //matchRef.ReqRefereeAnm(BasicSkillEnum.Refe_Stand_MatchEnd_Front_Left);
-
-            //main.isMatchEnd = false;
-            //main.isRoundEnd = true;
-
-            //currMatchTime = new MatchTime
-            //{
-            //    min = main.matchTime.min,
-            //    sec = main.matchTime.sec
-            //};
-            //main.isTimeCounting = false;
             foulChecked = false;
             ropeBreak = false;
             checkKo = false;
             dqChecked = false;
         }
-
         public static void SetTeamNames()
         {
             PlayerMan p = PlayerMan.inst;
@@ -520,7 +487,7 @@ namespace MoreMatchTypes
                 }
                 else
                 {
-                        teamNames[0] = "Blue Team";
+                    teamNames[0] = GetTeamName(wrestlers);
                 }
 
                 //Get Team Two Members
@@ -546,7 +513,7 @@ namespace MoreMatchTypes
                 }
                 else
                 {
-                        teamNames[1] = "Red Team";
+                    teamNames[1] = GetTeamName(wrestlers);
                 }
             }
             catch
@@ -556,19 +523,79 @@ namespace MoreMatchTypes
             }
 
         }
-
-        public static bool Contains(List<string> thisTeam, List<string> tMembers)
+        public static String GetTeamName(List<String> wrestlers)
         {
-            foreach (string w in thisTeam)
+            List<string> list = new List<string>(wrestlers);
+            foreach (Team current in ModPack.ModPack.Teams)
             {
-                if (!tMembers.Contains(w))
+                bool flag = list.Count == 1;
+                if (flag)
                 {
-                    return false;
+                    break;
+                }
+                bool flag2 = Contains(list, current.Members);
+                if (flag2)
+                {
+                    list.Add(current.Name);
+                    foreach (string current2 in current.Members)
+                    {
+                        list.Remove(current2);
+                    }
                 }
             }
-            return true;
+            int count = list.Count;
+            int num = count;
+            string result;
+            if (num != 1)
+            {
+                if (num != 2)
+                {
+                    string text = string.Join(", ", list.ToArray());
+                    text = text.Insert(text.LastIndexOf(",") + 2, "& ");
+                    result = text;
+                }
+                else
+                {
+                    result = list[0] + " & " + list[1];
+                }
+            }
+            else
+            {
+                result = list[0];
+            }
+            return result;
         }
-
+        public static bool Contains(List<string> champs, List<string> members)
+        {
+            bool flag = champs.Count <= members.Count;
+            bool result;
+            if (flag)
+            {
+                foreach (string current in champs)
+                {
+                    bool flag2 = !members.Contains(current);
+                    if (flag2)
+                    {
+                        result = false;
+                        return result;
+                    }
+                }
+            }
+            else
+            {
+                foreach (string current2 in members)
+                {
+                    bool flag3 = !champs.Contains(current2);
+                    if (flag3)
+                    {
+                        result = false;
+                        return result;
+                    }
+                }
+            }
+            result = true;
+            return result;
+        }
         private static List<String> CreateMoveList(String moveList)
         {
             char[] separators = new char[4] { ',', '|', ';', '\n' };
@@ -582,7 +609,10 @@ namespace MoreMatchTypes
             }
             return modifiedList;
         }
-
+        public static void HandleFoul()
+        {
+            Audience.inst.TensionDown();
+        }
         private static void ForceCleanBreak()
         {
             for (int i = 0; i < 8; i++)
@@ -598,7 +628,8 @@ namespace MoreMatchTypes
                 //Force Submission Breaks
                 if (pl.isSubmissionAtk)
                 {
-                   pl.plCont_AI.padPush = PadBtnEnum.Atk_M;
+                    L.D("Player releases submission");
+                    pl.plCont_AI.padPush = PadBtnEnum.Atk_M;
                 };
 
                 if (!pl.State.ToString().Contains("Down") && !pl.isSubmissionAtk && !pl.isSubmissionDef)
@@ -614,12 +645,6 @@ namespace MoreMatchTypes
                 return;
             }
 
-            MatchSetting settings = GlobalWork.inst.MatchSetting;
-            //Do not perform at the start of a round
-            //if (main.matchTime.sec == 0 && main.matchTime.min % settings.MatchTime == 0)
-            //{
-            //    return;
-            //}
             Referee mRef = RefereeMan.inst.GetRefereeObj();
             global::MatchSEPlayer.inst.PlayRefereeVoice(global::RefeVoiceEnum.Break);
             mRef.State = global::RefeStateEnum.CallBeforeMatch_1;

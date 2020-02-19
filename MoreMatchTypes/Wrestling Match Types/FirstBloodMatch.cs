@@ -103,13 +103,13 @@ namespace MoreMatchTypes
             }
         }
 
-        [Hook(TargetClass = "Menu_Result", TargetMethod = "Set_FinishSkill", InjectionLocation = 8, InjectDirection = HookInjectDirection.After, InjectFlags = HookInjectFlags.PassParametersVal | HookInjectFlags.PassLocals, LocalVarIds = new int[] { 1 }, Group = "MoreMatchTypes")]
-        public static void SetResultScreenDisplay(ref UILabel finishText, string str)
+        [Hook(TargetClass = "Menu_Result", TargetMethod = "Set_FinishSkill", InjectionLocation = 0, InjectDirection = HookInjectDirection.After, InjectFlags = HookInjectFlags.PassParametersRef, Group = "MoreMatchTypes")]
+        public static void SetResultScreenDisplay(ref string str)
         {
             if (isFirstBlood)
             {
                 string resultString = str.Replace("K.O.", "First Blood");
-                finishText.text = resultString;
+                str = resultString;
                 endMatch = false;
             }
         }

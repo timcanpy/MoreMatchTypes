@@ -115,14 +115,14 @@ namespace MoreMatchTypes
             }
         }
 
-        [Hook(TargetClass = "Menu_Result", TargetMethod = "Set_FinishSkill", InjectionLocation = 8, InjectDirection = HookInjectDirection.After, InjectFlags = HookInjectFlags.PassParametersVal | HookInjectFlags.PassLocals, LocalVarIds = new int[] { 1 }, Group = "MoreMatchTypes")]
-        public static void SetResultScreenDisplay(ref UILabel finishText, string str)
+        [Hook(TargetClass = "Menu_Result", TargetMethod = "Set_FinishSkill", InjectionLocation = 0, InjectDirection = HookInjectDirection.After, InjectFlags = HookInjectFlags.PassParametersRef, Group = "MoreMatchTypes")]
+        public static void SetResultScreenDisplay(ref string str)
         {
             if (isIronMan && endMatch)
             {
                 string winResult = teamNames[0] + " : " + wins[0] + " win(s)\n" + teamNames[1] + " - " + wins[1] + " win(s)\n\n" + "Winner - " + (wins[0] > wins[1] ? teamNames[0] : teamNames[1]);
-                string resultString = str.Replace("K.O.", "Iron Man Match\n\n" + winResult);
-                finishText.text = resultString;
+                string resultString = str.Replace("K.O.", "Iron Man Match\n" + winResult);
+                str = resultString;
                 endMatch = false;
                 Array.Clear(wins, 0, wins.Length);
                 Array.Clear(teamNames, 0, teamNames.Length);

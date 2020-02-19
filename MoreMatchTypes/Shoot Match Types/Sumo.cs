@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using DG;
 using MatchConfig;
 using UnityEngine;
@@ -177,7 +178,7 @@ namespace MoreMatchTypes
                 mRef.ReqRefereeAnm(BasicSkillEnum.Refe_Stand_MatchEnd_Front_Left);
                 mRef.matchResult = MatchResultEnum.KO;
                 attacker.isLoseAndStop = true;
-                resultText = "D.Q.";
+                resultText = "Disqualification";
                 mRef.SentenceLose(attacker.PlIdx);
                 endMatch = true;
                 return;
@@ -203,6 +204,7 @@ namespace MoreMatchTypes
                 mRef.ReqRefereeAnm(BasicSkillEnum.Refe_Stand_MatchEnd_Front_Left);
                 mRef.matchResult = MatchResultEnum.KO;
                 p.isLoseAndStop = true;
+                resultText = "Knock Down Victory";
                 mRef.SentenceLose(p.PlIdx);
                 endMatch = true;
                 return;
@@ -224,18 +226,30 @@ namespace MoreMatchTypes
 
         }
 
-        [Hook(TargetClass = "Menu_Result", TargetMethod = "Set_FinishSkill", InjectionLocation = 8, InjectDirection = HookInjectDirection.After, InjectFlags = HookInjectFlags.PassParametersVal | HookInjectFlags.PassLocals, LocalVarIds = new int[] { 1 }, Group = "MoreMatchTypes")]
-        public static void SetResultScreenDisplay(ref UILabel finishText, string str)
+        [Hook(TargetClass = "Menu_Result", TargetMethod = "Set_FinishSkill", InjectionLocation = 0, InjectDirection = HookInjectDirection.After, InjectFlags = HookInjectFlags.PassParametersRef, Group = "MoreMatchTypes")]
+        public static void SetResultScreenDisplay(ref string str)
         {
             if (isSumo)
             {
-                if (resultText.Equals(""))
+                try
                 {
-                    resultText = "Knock Down Victory";
+                    if (!resultText.Equals(String.Empty))
+                    {
+                        //Get match time
+                        string time = Regex.Split(str, Environment.NewLine)[0];
+                        str = time + Environment.NewLine + resultText;
+                    }
                 }
-                string resultString = str.Replace("K.O.", resultText).Replace("DRAW", resultText);
-                finishText.text = resultString;
-                endMatch = false;
+                catch (IndexOutOfRangeException e)
+                {}
+                catch (Exception ex)
+                {
+                    L.D("SumoSetResultException: " + ex);
+                }
+                finally
+                {
+                    endMatch = false;
+                }
             }
         }
 

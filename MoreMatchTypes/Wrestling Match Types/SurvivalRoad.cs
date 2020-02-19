@@ -180,8 +180,8 @@ namespace MoreMatchTypes.Wrestling_Match_Types
             }
         }
 
-        [Hook(TargetClass = "Menu_Result", TargetMethod = "Set_FinishSkill", InjectionLocation = 8, InjectDirection = HookInjectDirection.After, InjectFlags = HookInjectFlags.PassParametersVal | HookInjectFlags.PassLocals, LocalVarIds = new int[] { 1 }, Group = "MoreMatchTypes")]
-        public static void SetResultScreenDisplay(ref UILabel finishText, string str)
+        [Hook(TargetClass = "Menu_Result", TargetMethod = "Set_FinishSkill", InjectionLocation = 0, InjectDirection = HookInjectDirection.After, InjectFlags = HookInjectFlags.PassParametersRef, Group = "MoreMatchTypes")]
+        public static void SetResultScreenDisplay(ref string str)
         {
             if (!isSurvival)
             {
@@ -189,7 +189,7 @@ namespace MoreMatchTypes.Wrestling_Match_Types
             }
 
             String result = CreateResult();
-            finishText.text = result;
+            str = result;
             UpdateProgress(result);
         }
 

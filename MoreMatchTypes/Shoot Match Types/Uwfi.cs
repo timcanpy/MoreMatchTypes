@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using DG;
 using MatchConfig;
+using ModPack;
 using UnityEngine;
 
 namespace MoreMatchTypes
@@ -34,7 +36,6 @@ namespace MoreMatchTypes
         public static void SetMatchRules()
         {
             MatchSetting settings = GlobalWork.inst.MatchSetting;
-            isUwfi = false;
 
             if (settings.arena == VenueEnum.BarbedWire || settings.arena == VenueEnum.Cage || settings.arena == VenueEnum.Dodecagon || settings.arena == VenueEnum.LandMine_BarbedWire || settings.arena == VenueEnum.LandMine_FluorescentLamp)
             {
@@ -44,10 +45,8 @@ namespace MoreMatchTypes
             {
                 return;
             }
-            if (MoreMatchTypes_Form.moreMatchTypesForm.cb_uwfi.Checked)
-            {
-                isUwfi = true;
-            }
+
+            isUwfi = MoreMatchTypes_Form.moreMatchTypesForm.cb_uwfi.Checked;
             if (!isUwfi)
             {
                 return;
@@ -130,25 +129,24 @@ namespace MoreMatchTypes
             };
 
             }
-            ptEndMatch = false;
-            fiveCount = false;
-           
-            //settings.VictoryCondition = VictoryConditionEnum.OnlyGiveUp;
-            settings.is10CountKO = true;
+
             settings.isLumberjack = true;
             settings.isFoulCount = false;
             settings.isOutOfRingCount = false;
             settings.isCutPlay = false;
             settings.MatchTime = 0;
             settings.is10CountKO = true;
+
             tdRecorded = new bool[8] { false, false, false, false, false, false, false, false };
             koRecorded = new bool[8] { false, false, false, false, false, false, false, false };
             foulCount = new int[2];
             resultText = "";
-
+            ptEndMatch = false;
+            fiveCount = false;
             points[0] = 15;
             points[1] = 15;
 
+            //Check for multi-man teams
             if (settings.matchWrestlerInfo[1].entry && !settings.matchWrestlerInfo[1].isSecond && !settings.matchWrestlerInfo[1].isSecond)
             {
                 points[0] = 21;
@@ -160,7 +158,6 @@ namespace MoreMatchTypes
             }
 
             SetTeamNames();
-
         }
 
         [Hook(TargetClass = "Player", TargetMethod = "UpdatePlayer", InjectionLocation = 0, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.PassInvokingInstance, Group = "MoreMatchTypes")]
@@ -189,22 +186,13 @@ namespace MoreMatchTypes
                     }
                 }
 
-                DispNotification.inst.Show(teamNames[0] + ": " + points[0] + " points \t\t" + teamNames[1] + ": " + points[1] + " points");
+                DisplayScore("Down");
+
                 koRecorded[plObj.PlIdx] = true;
                 tdRecorded[plObj.PlIdx] = true;
 
-                if (points[0] <= 0 && points[1] <= 0)
-                {
-                    TriggerLoss(0);
-                }
-                if (points[0] <= 0)
-                {
-                    TriggerLoss(1);
-                }
-                if (points[1] <= 0)
-                {
-                    TriggerLoss(2);
-                }
+                CheckForLoss();
+
             }
             else if (plObj.State == PlStateEnum.Down_FaceDown || plObj.State == PlStateEnum.Down_FaceUp)
             {
@@ -232,7 +220,7 @@ namespace MoreMatchTypes
                         }
 
 
-                        DispNotification.inst.Show(teamNames[0] + ": " + points[0] + " points \t\t" + teamNames[1] + ": " + points[1] + " points");
+                        DisplayScore("Down");
                         tdRecorded[plObj.PlIdx] = true;
 
                         if (points[0] <= 0 && points[1] <= 0)
@@ -275,66 +263,16 @@ namespace MoreMatchTypes
             { return; }
 
             bool ptChange = false;
+
+            if (sd.filteringType == SkillFilteringType.Performance)
+            {
+                return;
+            }
+
             Player attacker = PlayerMan.inst.GetPlObj(plIDx);
             Player defender = PlayerMan.inst.GetPlObj(attacker.TargetPlIdx);
 
-            if (sd.filteringType == SkillFilteringType.Suplex)
-            {
-                if (plIDx < 4)
-                {
-                    points[1]--;
-                    points[1] = CheckPoints(points[1]);
-                }
-                else
-                {
-                    points[0]--;
-                    points[0] = CheckPoints(points[0]);
-                }
-
-                ptChange = true;
-            }
-
-            if (sd.filteringType == SkillFilteringType.Headbutt)
-            {
-
-                if (plIDx < 4)
-                {
-                    foulCount[0]++;
-                    points[0] -= foulCount[0];
-                    points[0] = CheckPoints(points[0]);
-                }
-                else
-                {
-                    foulCount[1]++;
-                    points[1] -= foulCount[1];
-                    points[1] = CheckPoints(points[1]);
-                }
-
-                ptChange = true;
-            }
-
-            if (illegalMoves.Contains(sd.skillName[1]))
-            {
-
-                if (plIDx < 4)
-                {
-                    foulCount[0]++;
-                    points[0] -= foulCount[0];
-                    points[0] = CheckPoints(points[0]);
-                }
-                else
-                {
-                    foulCount[1]++;
-                    points[1] -= foulCount[1];
-                    points[1] = CheckPoints(points[1]);
-                }
-
-                ptChange = true;
-                defender.animator.isReqAnmLoopEnd = true;
-                //defender.SetDownTime(0);
-            }
-
-            if (instantDQ.Contains(sd.skillName[1]))
+            if (instantDQ.Contains(sd.skillName[(int)global::SaveData.inst.optionSettings.language]))
             {
 
                 if (plIDx < 4)
@@ -349,32 +287,76 @@ namespace MoreMatchTypes
                 }
 
                 ptChange = true;
-                defender.animator.isReqAnmLoopEnd = true;
-                Audience.inst.PlayCheerVoice(CheerVoiceEnum.BOOING, 1);
-                //defender.SetDownTime(0);
+                DisplayScore("Disqualification");
+                HandleFoul();
+            }
+            else if (illegalMoves.Contains(sd.skillName[(int)global::SaveData.inst.optionSettings.language]))
+            {
+
+                if (plIDx < 4)
+                {
+                    foulCount[0]++;
+                    points[0] -= foulCount[0];
+                    points[0] = CheckPoints(points[0]);
+                }
+                else
+                {
+                    foulCount[1]++;
+                    points[1] -= foulCount[1];
+                    points[1] = CheckPoints(points[1]);
+                }
+
+                ptChange = true;
+                DisplayScore("Illegal " + sd.skillName[(int)global::SaveData.inst.optionSettings.language]);
+                HandleFoul();
+            }
+            else if (sd.filteringType == SkillFilteringType.Headbutt)
+            {
+
+                if (plIDx < 4)
+                {
+                    foulCount[0]++;
+                    points[0] -= foulCount[0];
+                    points[0] = CheckPoints(points[0]);
+                }
+                else
+                {
+                    foulCount[1]++;
+                    points[1] -= foulCount[1];
+                    points[1] = CheckPoints(points[1]);
+                }
+
+                ptChange = true;
+                DisplayScore("Foul");
+                HandleFoul();
+            }
+            else if (sd.filteringType == SkillFilteringType.Suplex)
+            {
+                if (plIDx < 4)
+                {
+                    points[1]--;
+                    points[1] = CheckPoints(points[1]);
+                }
+                else
+                {
+                    points[0]--;
+                    points[0] = CheckPoints(points[0]);
+                }
+
+                ptChange = true;
+                if (sd.filteringType == SkillFilteringType.Suplex)
+                {
+                    DisplayScore("Suplex");
+                }
             }
 
-            if (ptChange)
+            if (!CheckForLoss())
             {
-                DispNotification.inst.Show(teamNames[0] + ": " + points[0] + " points \t\t" + teamNames[1] + ": " + points[1] + " points");
-            }
-
-            if (points[0] <= 0 && points[1] <= 0)
-            {
-                TriggerLoss(0);
-            }
-            if (points[0] <= 0)
-            {
-                TriggerLoss(1);
-            }
-            if (points[1] <= 0)
-            {
-                TriggerLoss(2);
-            }
-            //Suplexes are legal, and the match should continue
-            else if(sd.filteringType != SkillFilteringType.Suplex && ptChange)
-            {
-                ForceCleanBreak();
+                //Suplexes are legal, and the match should continue
+                if (sd.filteringType != SkillFilteringType.Suplex && ptChange)
+                {
+                    ForceCleanBreak();
+                }
             }
         }
 
@@ -395,39 +377,42 @@ namespace MoreMatchTypes
                 CheckPoints(points[1]);
             }
 
-            DispNotification.inst.Show(teamNames[0] + ": " + points[0] + " points \t\t" + teamNames[1] + ": " + points[1] + " points");
+            DisplayScore("Rope Break");
 
-            if (points[0] <= 0 && points[1] <= 0)
-            {
-                TriggerLoss(0);
-            }
-            if (points[0] <= 0)
-            {
-                TriggerLoss(1);
-            }
-            if (points[1] <= 0)
-            {
-                TriggerLoss(2);
-            }
+            CheckForLoss();
         }
-        
-        [Hook(TargetClass = "Menu_Result", TargetMethod = "Set_FinishSkill", InjectionLocation = 8, InjectDirection = HookInjectDirection.After, InjectFlags = HookInjectFlags.PassParametersVal | HookInjectFlags.PassLocals, LocalVarIds = new int[] { 1 }, Group = "MoreMatchTypes")]
-        public static void SetResultScreenDisplay(ref UILabel finishText, string str)
+
+        [Hook(TargetClass = "Menu_Result", TargetMethod = "Set_FinishSkill", InjectionLocation = 0, InjectDirection = HookInjectDirection.After, InjectFlags = HookInjectFlags.PassParametersRef, Group = "MoreMatchTypes")]
+        public static void SetResultScreenDisplay(ref string str)
         {
             if (!isUwfi)
             {
                 return;
             }
-            if (ptEndMatch && isUwfi)
+
+            try
             {
-                if (resultText.Equals(""))
+                if (ptEndMatch && isUwfi)
                 {
-                    resultText = "T.K.O. By Point Loss";
+                    if (!resultText.Equals(String.Empty))
+                    {
+                        //Get match time
+                        string time = Regex.Split(str, Environment.NewLine)[0];
+                        str = time + Environment.NewLine + resultText;
+                    }
                 }
-                string resultString = str.Replace("K.O.", resultText);
-                finishText.text = resultString;
+            }
+            catch (IndexOutOfRangeException e)
+            { }
+            catch (Exception ex)
+            {
+                L.D("UwfiSetResultException: " + ex);
+            }
+            finally
+            {
                 ptEndMatch = false;
             }
+
         }
 
         [Hook(TargetClass = "Referee", TargetMethod = "CheckStartRefereeing", InjectionLocation = 336,
@@ -478,7 +463,7 @@ namespace MoreMatchTypes
             }
         }
 
-        #region helper methods
+        #region Helper methods
         public static void SetTeamNames()
         {
             PlayerMan p = PlayerMan.inst;
@@ -519,7 +504,7 @@ namespace MoreMatchTypes
                 }
                 else
                 {
-                        teamNames[0] = "Blue Team";
+                    teamNames[0] = GetTeamName(wrestlers);
                 }
 
                 //Get Team Two Members
@@ -545,7 +530,7 @@ namespace MoreMatchTypes
                 }
                 else
                 {
-                        teamNames[1] = "Red Team";
+                    teamNames[1] = GetTeamName(wrestlers);
                 }
             }
             catch
@@ -555,19 +540,79 @@ namespace MoreMatchTypes
             }
 
         }
-        
-        public static bool Contains(List<string> thisTeam, List<string> tMembers)
+        public static String GetTeamName(List<String> wrestlers)
         {
-            foreach (string w in thisTeam)
+            List<string> list = new List<string>(wrestlers);
+            foreach (Team current in ModPack.ModPack.Teams)
             {
-                if (!tMembers.Contains(w))
+                bool flag = list.Count == 1;
+                if (flag)
                 {
-                    return false;
+                    break;
+                }
+                bool flag2 = Contains(list, current.Members);
+                if (flag2)
+                {
+                    list.Add(current.Name);
+                    foreach (string current2 in current.Members)
+                    {
+                        list.Remove(current2);
+                    }
                 }
             }
-            return true;
+            int count = list.Count;
+            int num = count;
+            string result;
+            if (num != 1)
+            {
+                if (num != 2)
+                {
+                    string text = string.Join(", ", list.ToArray());
+                    text = text.Insert(text.LastIndexOf(",") + 2, "& ");
+                    result = text;
+                }
+                else
+                {
+                    result = list[0] + " & " + list[1];
+                }
+            }
+            else
+            {
+                result = list[0];
+            }
+            return result;
         }
-
+        public static bool Contains(List<string> champs, List<string> members)
+        {
+            bool flag = champs.Count <= members.Count;
+            bool result;
+            if (flag)
+            {
+                foreach (string current in champs)
+                {
+                    bool flag2 = !members.Contains(current);
+                    if (flag2)
+                    {
+                        result = false;
+                        return result;
+                    }
+                }
+            }
+            else
+            {
+                foreach (string current2 in members)
+                {
+                    bool flag3 = !champs.Contains(current2);
+                    if (flag3)
+                    {
+                        result = false;
+                        return result;
+                    }
+                }
+            }
+            result = true;
+            return result;
+        }
         public static void SetLosers(int startIndex, PlayerMan p)
         {
             try
@@ -586,7 +631,6 @@ namespace MoreMatchTypes
             }
 
         }
-
         private static void TriggerLoss(int team)
         {
             #region Basic Skill Enum
@@ -679,8 +723,9 @@ namespace MoreMatchTypes
                 default:
                     break;
             }
-        }
 
+            resultText = "T.K.O. By Point Loss";
+        }
         private static int CheckPoints(int points)
         {
             if (points < 0)
@@ -690,7 +735,27 @@ namespace MoreMatchTypes
 
             return points;
         }
+        private static bool CheckForLoss()
+        {
+            bool isLoss = false;
+            if (points[0] <= 0 && points[1] <= 0)
+            {
+                TriggerLoss(0);
+                isLoss = true;
+            }
+            if (points[0] <= 0)
+            {
+                TriggerLoss(1);
+                isLoss = true;
+            }
+            if (points[1] <= 0)
+            {
+                TriggerLoss(2);
+                isLoss = true;
+            }
 
+            return isLoss;
+        }
         private static void ForceCleanBreak()
         {
             for (int i = 0; i < 8; i++)
@@ -706,6 +771,7 @@ namespace MoreMatchTypes
                 //Force Submission Breaks
                 if (pl.isSubmissionAtk)
                 {
+                    L.D("Player releases submission");
                     pl.plCont_AI.padPush = PadBtnEnum.Atk_M;
                 };
 
@@ -722,19 +788,20 @@ namespace MoreMatchTypes
                 return;
             }
 
-            MatchSetting settings = GlobalWork.inst.MatchSetting;
-            //Do not perform at the start of a round
-            //if (main.matchTime.sec == 0 && main.matchTime.min % settings.MatchTime == 0)
-            //{
-            //    return;
-            //}
             Referee mRef = RefereeMan.inst.GetRefereeObj();
             global::MatchSEPlayer.inst.PlayRefereeVoice(global::RefeVoiceEnum.Break);
             mRef.State = global::RefeStateEnum.CallBeforeMatch_1;
             mRef.ReqRefereeAnm(global::BasicSkillEnum.ROUNDF);
             mRef.UpdateRefereeAnm();
         }
-
+        private static void HandleFoul()
+        {
+            Audience.inst.TensionDown();
+        }
+        private static void DisplayScore(String reason)
+        {
+            DispNotification.inst.Show(reason + " -\t  " + teamNames[0] + ": " + points[0] + " points \t\t" + teamNames[1] + ": " + points[1] + " points");
+        }
         private static List<String> CreateMoveList(String moveList)
         {
             char[] separators = new char[4] { ',', '|', ';', '\n' };

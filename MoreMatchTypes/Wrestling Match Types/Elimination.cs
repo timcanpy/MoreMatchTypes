@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using DG;
 using MatchConfig;
+using ModPack;
 using UnityEngine;
 
 namespace MoreMatchTypes
@@ -19,7 +20,6 @@ namespace MoreMatchTypes
         public static Queue<String> blueTeamMembers;
         public static Queue<String> redTeamMembers;
         public static int[] memberTrack;
-        public static MatchTime currMatchTime = null;
         public static bool endRound;
         public static int loserTrack;
         public static bool isElimination;
@@ -52,7 +52,6 @@ namespace MoreMatchTypes
             }
 
             //Set variables for the match type
-            currMatchTime = null;
             teamNames = new string[2];
             memberTrack = new int[2];
             endRound = false;
@@ -127,7 +126,6 @@ namespace MoreMatchTypes
 
                     ActivateMember(memberTrack[1] + 4);
                 }
-                m.matchTime.Set(currMatchTime);
             }
 
             SetSeconds();
@@ -272,7 +270,6 @@ namespace MoreMatchTypes
         }
 
         #region Helper Methods
-
         public static void EndMatch(int loserIndex)
         {
             Referee mref = RefereeMan.inst.GetRefereeObj();
@@ -288,7 +285,6 @@ namespace MoreMatchTypes
                 mref.matchResult = MatchResultEnum.RingOut;
             }
         }
-
         public static void EndRound()
         {
             MatchMain main = MatchMain.inst;
@@ -347,12 +343,10 @@ namespace MoreMatchTypes
 
             SetSeconds();
         }
-
         public static void DisplayElimination(String wrestlerName, int membersRemaining)
         {
             DispNotification.inst.Show(wrestlerName + " has been eliminated!\t" + teamNames[loserTrack] + " members remaining: " + membersRemaining, 300);
         }
-
         public static void ActivateMember(int playerIndex)
         {
             Player plObj = PlayerMan.inst.GetPlObj(playerIndex);
@@ -393,7 +387,6 @@ namespace MoreMatchTypes
             MatchWrestlerInfo wrestler = GlobalWork.inst.MatchSetting.matchWrestlerInfo[playerIndex];
             GlobalParam.Set_WrestlerData(playerIndex, padControls[playerIndex], wrestler.wrestlerID, false, wrestler.costume_no, 65535f, 65535f, 65535f, 65535f, 65535f, 65535f);
         }
-
         public static void SetSeconds()
         {
             Player plObj;
@@ -441,7 +434,6 @@ namespace MoreMatchTypes
                 plObj.hasRight = false;
             }
         }
-
         public static void SetTeamNames()
         {
             PlayerMan p = PlayerMan.inst;
@@ -482,7 +474,7 @@ namespace MoreMatchTypes
                 }
                 else
                 {
-                    teamNames[0] = "Blue Team";
+                    teamNames[0] = GetTeamName(wrestlers);
                 }
 
                 //Get Team Two Members
@@ -508,7 +500,7 @@ namespace MoreMatchTypes
                 }
                 else
                 {
-                    teamNames[1] = "Red Team";
+                    teamNames[1] = GetTeamName(wrestlers);
                 }
             }
             catch
@@ -516,8 +508,81 @@ namespace MoreMatchTypes
                 teamNames[0] = "Blue Team";
                 teamNames[1] = "Red Team";
             }
-        }
 
+        }
+        public static String GetTeamName(List<String> wrestlers)
+        {
+            List<string> list = new List<string>(wrestlers);
+            foreach (Team current in ModPack.ModPack.Teams)
+            {
+                bool flag = list.Count == 1;
+                if (flag)
+                {
+                    break;
+                }
+                bool flag2 = Contains(list, current.Members);
+                if (flag2)
+                {
+                    list.Add(current.Name);
+                    foreach (string current2 in current.Members)
+                    {
+                        list.Remove(current2);
+                    }
+                }
+            }
+            int count = list.Count;
+            int num = count;
+            string result;
+            if (num != 1)
+            {
+                if (num != 2)
+                {
+                    string text = string.Join(", ", list.ToArray());
+                    text = text.Insert(text.LastIndexOf(",") + 2, "& ");
+                    result = text;
+                }
+                else
+                {
+                    result = list[0] + " & " + list[1];
+                }
+            }
+            else
+            {
+                result = list[0];
+            }
+            return result;
+        }
+        public static bool Contains(List<string> champs, List<string> members)
+        {
+            bool flag = champs.Count <= members.Count;
+            bool result;
+            if (flag)
+            {
+                foreach (string current in champs)
+                {
+                    bool flag2 = !members.Contains(current);
+                    if (flag2)
+                    {
+                        result = false;
+                        return result;
+                    }
+                }
+            }
+            else
+            {
+                foreach (string current2 in members)
+                {
+                    bool flag3 = !champs.Contains(current2);
+                    if (flag3)
+                    {
+                        result = false;
+                        return result;
+                    }
+                }
+            }
+            result = true;
+            return result;
+        }
         public static void SetTeamMembers()
         {
             blueTeamMembers = new Queue<string>();
@@ -533,7 +598,12 @@ namespace MoreMatchTypes
                     continue;
                 }
 
-                if (i < 4)
+                if (plObj.isSecond || plObj.isIntruder)
+                {
+                    continue;
+                }
+
+                if (i < 4 )
                 {
                     blueTeamMembers.Enqueue(DataBase.GetWrestlerFullName(plObj.WresParam));
                 }
@@ -543,7 +613,6 @@ namespace MoreMatchTypes
                 }
             }
         }
-
         public static void SetPadControls()
         {
             for (int i = 0; i < 8; i++)
@@ -604,7 +673,6 @@ namespace MoreMatchTypes
 
             }
         }
-
         public static void SetLoserState(int playerIndex)
         {
             Player plObj = PlayerMan.inst.GetPlObj(playerIndex);
@@ -612,18 +680,6 @@ namespace MoreMatchTypes
             //Ensure that the loser leaves the ring.
             plObj.Start_ForceControl(ForceCtrlEnum.LoseAndExit);
             plObj.AddBP(1000f);
-        }
-
-        public static bool Contains(List<string> thisTeam, List<string> tMembers)
-        {
-            foreach (string w in thisTeam)
-            {
-                if (!tMembers.Contains(w))
-                {
-                    return false;
-                }
-            }
-            return true;
         }
         #endregion
     }

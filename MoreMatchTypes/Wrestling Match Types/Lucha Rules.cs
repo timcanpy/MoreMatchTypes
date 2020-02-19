@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using MatchConfig;
 using UnityEngine;
+using ModPack;
 
 namespace MoreMatchTypes.Wrestling_Match_Types
 {
@@ -18,13 +19,13 @@ namespace MoreMatchTypes.Wrestling_Match_Types
     {
 
         #region Variables
-
         public static bool isLuchaTag;
         public static int[] points;
         public static int playerCount;
         public static int countLimit;
         public static int modifier;
         public static bool is2Falls;
+        public static String[] teamNames;
         #endregion
 
         [Hook(TargetClass = "MatchMain", TargetMethod = "InitMatch", InjectionLocation = int.MaxValue,
@@ -61,6 +62,9 @@ namespace MoreMatchTypes.Wrestling_Match_Types
                     points[0] = 1;
                     points[1] = 1;
                 }
+
+                teamNames = new String[2];
+                SetTeamNames();
             }
 
         }
@@ -110,7 +114,6 @@ namespace MoreMatchTypes.Wrestling_Match_Types
                 L.D("Lucha Error: " + e);
             }
         }
-
 
         [Hook(TargetClass = "Referee", TargetMethod = "Process_FallCount", InjectionLocation = 42,
             InjectFlags = HookInjectFlags.ModifyReturn | HookInjectFlags.PassInvokingInstance, Group = "MoreMatchTypes")]
@@ -169,29 +172,178 @@ namespace MoreMatchTypes.Wrestling_Match_Types
             }
         }
 
-        [Hook(TargetClass = "Menu_Result", TargetMethod = "Set_FinishSkill", InjectionLocation = 8, InjectDirection = HookInjectDirection.After, InjectFlags = HookInjectFlags.PassParametersVal | HookInjectFlags.PassLocals, LocalVarIds = new int[] { 1 }, Group = "MoreMatchTypes")]
-        public static void SetResultScreenDisplay(ref UILabel finishText, string str)
+        [Hook(TargetClass = "Menu_Result", TargetMethod = "Set_FinishSkill", InjectionLocation = 0, InjectDirection = HookInjectDirection.After, InjectFlags = HookInjectFlags.PassParametersRef, Group = "MoreMatchTypes")]
+        public static void SetResultScreenDisplay(ref string str)
         {
-            if (!isLuchaTag || !MatchMain.inst.isMatchEnd || finishText.text.Contains("K.O.") || !is2Falls)
+            if (!isLuchaTag || !MatchMain.inst.isMatchEnd || str.Contains("K.O.") || !is2Falls)
             {
                 return;
             }
 
-            string result = "Blue Team: " + points[0] + " points\nRed Team: " + points[1] + " points\n\n";
+            string result = teamNames[0] + ": " + points[0] + " points\n" +teamNames[1] +": " + points[1] + " points\n\n";
             if (points[0] == points[1])
             {
                 result += "Draw";
             }
             else
             {
-                result += "Winner - " + (points[0] > points[1] ? "Blue Team" : "Red Team");
+                result += "Winner - " + (points[0] > points[1] ? teamNames[0] : teamNames[1]);
             }
 
             string resultString = "Lucha Tag Match\n\n" + result;
-            finishText.text = resultString;
+            str = resultString;
         }
 
         #region Helper Methods
+        public static void SetTeamNames()
+        {
+            PlayerMan p = PlayerMan.inst;
+            int playerCount = MatchConfiguration.GetPlayerCount();
+
+            //Set-up if only two wrestlers exist
+            if (playerCount == 2)
+            {
+                teamNames[0] = DataBase.GetWrestlerFullName(PlayerMan.inst.GetPlObj(0).WresParam);
+                teamNames[1] = DataBase.GetWrestlerFullName(PlayerMan.inst.GetPlObj(4).WresParam);
+                return;
+            }
+
+            //Set-up for if multi-man teams exist
+            try
+            {
+                //Get Team One Members
+                List<String> wrestlers = new List<String>();
+                wrestlers.Clear();
+
+                for (int i = 0; i < 4; i++)
+                {
+                    Player plObj = PlayerMan.inst.GetPlObj(i);
+                    if (!plObj)
+                    {
+                        continue;
+                    }
+                    if (!plObj.isSecond && !plObj.isSleep && !plObj.isIntruder)
+                    {
+                        wrestlers.Add(DataBase.GetWrestlerFullName(plObj.WresParam));
+                    }
+                }
+
+                //Determine if a team is necessary
+                if (wrestlers.Count == 1)
+                {
+                    teamNames[0] = wrestlers[0];
+                }
+                else
+                {
+                    teamNames[0] = GetTeamName(wrestlers);
+                }
+
+                //Get Team Two Members
+                wrestlers.Clear();
+
+                for (int i = 4; i < 8; i++)
+                {
+                    Player plObj = PlayerMan.inst.GetPlObj(i);
+                    if (!plObj)
+                    {
+                        continue;
+                    }
+                    if (!plObj.isSecond && !plObj.isSleep && !plObj.isIntruder)
+                    {
+                        wrestlers.Add(DataBase.GetWrestlerFullName(plObj.WresParam));
+                    }
+                }
+
+                //Determine if a team is necessary
+                if (wrestlers.Count == 1)
+                {
+                    teamNames[1] = wrestlers[0];
+                }
+                else
+                {
+                    teamNames[1] = GetTeamName(wrestlers);
+                }
+            }
+            catch
+            {
+                teamNames[0] = "Blue Team";
+                teamNames[1] = "Red Team";
+            }
+
+        }
+        public static String GetTeamName(List<String> wrestlers)
+        {
+            List<string> list = new List<string>(wrestlers);
+            foreach (Team current in ModPack.ModPack.Teams)
+            {
+                bool flag = list.Count == 1;
+                if (flag)
+                {
+                    break;
+                }
+                bool flag2 = Contains(list, current.Members);
+                if (flag2)
+                {
+                    list.Add(current.Name);
+                    foreach (string current2 in current.Members)
+                    {
+                        list.Remove(current2);
+                    }
+                }
+            }
+            int count = list.Count;
+            int num = count;
+            string result;
+            if (num != 1)
+            {
+                if (num != 2)
+                {
+                    string text = string.Join(", ", list.ToArray());
+                    text = text.Insert(text.LastIndexOf(",") + 2, "& ");
+                    result = text;
+                }
+                else
+                {
+                    result = list[0] + " & " + list[1];
+                }
+            }
+            else
+            {
+                result = list[0];
+            }
+            return result;
+        }
+        public static bool Contains(List<string> champs, List<string> members)
+        {
+            bool flag = champs.Count <= members.Count;
+            bool result;
+            if (flag)
+            {
+                foreach (string current in champs)
+                {
+                    bool flag2 = !members.Contains(current);
+                    if (flag2)
+                    {
+                        result = false;
+                        return result;
+                    }
+                }
+            }
+            else
+            {
+                foreach (string current2 in members)
+                {
+                    bool flag3 = !champs.Contains(current2);
+                    if (flag3)
+                    {
+                        result = false;
+                        return result;
+                    }
+                }
+            }
+            result = true;
+            return result;
+        }
         public static bool CheckMatchEnd(Referee r)
         {
             if (!isLuchaTag)
@@ -255,16 +407,10 @@ namespace MoreMatchTypes.Wrestling_Match_Types
 
             PlayerMan.inst.GetPlObj(loser).isLoseAndStop = false;
 
-            //if (loser < 4)
-            //{
             SetLegalMen("blue");
-            //}
-            //else
-            //{
             SetLegalMen("red");
-            //}
 
-            DispNotification.inst.Show("Score-\t Blue Team: " + points[0] + "\t\tRed Team: " + points[1], 300);
+            DispNotification.inst.Show("Score -\t" + teamNames[0] + ": " + points[0] + "\t\t" + teamNames[1] + ": " + points[1], 300);
             return true;
         }
         public static void SetLosers(int startIndex, PlayerMan p)
