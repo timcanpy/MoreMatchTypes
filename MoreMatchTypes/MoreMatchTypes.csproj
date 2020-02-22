@@ -69,8 +69,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\SteamApps\common\Fire Prowrestling World\FireProWrestlingW_Data\Managed\Assembly-CSharp.dll</HintPath>
     </Reference>
-    <Reference Include="ModPack">
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\SteamApps\common\Fire Prowrestling World\FireProWrestlingW_Data\Managed\ModPack.dll</HintPath>
+    <Reference Include="ModPack, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DLL Files\ModPack.dll</HintPath>
     </Reference>
     <Reference Include="PWGR Framework">
       <HintPath>..\DLL Files\PWGR Framework.dll</HintPath>
@@ -85,6 +86,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data Classes\GeneralData.cs" />
     <Compile Include="Data Classes\RefereeInfo.cs" />
     <Compile Include="Data Classes\RingInfo.cs" />
     <Compile Include="Data Classes\SurvivalRoadData.cs" />
@@ -136,7 +138,9 @@
       <DependentUpon>SurvivalRoadForm.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="ButtonFramework.txt" />
+  </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
       <Visible>False</Visible>

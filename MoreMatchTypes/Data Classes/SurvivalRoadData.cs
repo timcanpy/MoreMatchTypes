@@ -4,30 +4,31 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using MatchConfig;
+using System.IO;
 
 namespace MoreMatchTypes.DataClasses
 {
-    public class SurvivalRoadData
+    public class SurvivalRoadData : GeneralData
     {
         #region Variables
-        private RefereeInfo referee;
-        public RefereeInfo Referee { get => referee; set => referee = value; }
-       
-        private String venue;
-        public String Venue { get => venue; set => venue = value; }
-        
-        private RingInfo ring;
-        public RingInfo Ring { get => ring; set => ring = value; }
-        
-        private uint speed;
-        public uint Speed { get => speed; set => speed = value; }
-        
-        private String matchBGM;
-        public String MatchBGM { get => matchBGM; set => matchBGM = value; }
-        
-        private String difficulty;
-        public String Difficulty { get => difficulty; set => difficulty = value; }
-        
+        //private RefereeInfo referee;
+        //public RefereeInfo Referee { get => referee; set => referee = value; }
+
+        //private String venue;
+        //public String Venue { get => venue; set => venue = value; }
+
+        //private RingInfo ring;
+        //public RingInfo Ring { get => ring; set => ring = value; }
+
+        //private uint speed;
+        //public uint Speed { get => speed; set => speed = value; }
+
+        //private String matchBGM;
+        //public String MatchBGM { get => matchBGM; set => matchBGM = value; }
+
+        //private String difficulty;
+        //public String Difficulty { get => difficulty; set => difficulty = value; }
+
         private WresIDGroup wrestler;
         public WresIDGroup Wrestler { get => wrestler; set => wrestler = value; }
 
@@ -64,21 +65,21 @@ namespace MoreMatchTypes.DataClasses
         private bool controlSecond;
         public bool ControlSecond { get => controlSecond; set => controlSecond = value; }
 
-        private String matchProgress;
-        public string MatchProgress { get => matchProgress; set => matchProgress = value; }
+        private List<String> matchProgress;
+        public List<String> MatchProgress { get => matchProgress; set => matchProgress = value; }
 
         private String opponentName;
         public String OpponentName { get => opponentName; set => opponentName = value; }
 
         private bool randomSelect;
         public bool RandomSelect { get => randomSelect; set => randomSelect = value; }
-        
+
         private List<WresIDGroup> opponents;
         public List<WresIDGroup> Opponents { get => opponents; set => opponents = value; }
-        
+
         private bool inProgress;
         public bool InProgress { get => inProgress; set => inProgress = value; }
-        
+
         //Required for tracking purposes after the first match begins
         private WresIDGroup[] initialOpponents;
         public WresIDGroup[] InitialOpponents { get => initialOpponents; set => initialOpponents = value; }
@@ -87,19 +88,44 @@ namespace MoreMatchTypes.DataClasses
         public SurvivalRoadData()
         {
             inProgress = false;
+            matchProgress = new List<String>();
             initialOpponents = new WresIDGroup[2];
-            matchProgress = "";
         }
 
-        public static int UpdateSurvivalData(String Wrestler, int matches, int losses, int continues, int wins, int maxRating, int avgRating)
+        public bool UpdateSurvivalData(String info)
         {
             try
             {
-                return 0;
+                matchProgress.Add(info);
+                return true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                return -1;
+                return false;
+            }
+        }
+
+        public bool SaveSurvivalData()
+        {
+            try
+            {
+                //Create file name
+                string fileName = wrestler.Name;
+                if (second != null)
+                {
+                    fileName += "_" + second.Name;
+                }
+
+                fileName += "_" + DateTime.Today.ToString("dd-MM-yyyy") + ".txt";
+
+                Directory.CreateDirectory(reportFolder);
+                File.WriteAllLines(Path.Combine(reportFolder, fileName), matchProgress.ToArray());
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
             }
         }
     }

@@ -75,7 +75,6 @@ namespace MoreMatchTypes.Wrestling_Match_Types
 
             if (!endRound)
             {
-                L.D("Setting up match");
                 SetupMatch();
             }
         }
@@ -191,6 +190,10 @@ namespace MoreMatchTypes.Wrestling_Match_Types
             String result = CreateResult();
             str = result;
             UpdateProgress(result);
+            if (endMatch)
+            {
+                MoreMatchTypes_Form.SurvivalRoadData.SaveSurvivalData();
+            }
         }
 
         #region Helper Methods
@@ -445,6 +448,7 @@ namespace MoreMatchTypes.Wrestling_Match_Types
         }
         private static void InitializeLists()
         {
+            L.D("Initializing lists");
             waitingOpponents.Clear();
             usedOpponents.Clear();
 
@@ -471,7 +475,7 @@ namespace MoreMatchTypes.Wrestling_Match_Types
             isTag = MoreMatchTypes_Form.SurvivalRoadData.Tag;
             isRandom = MoreMatchTypes_Form.SurvivalRoadData.RandomSelect;
             playerEdit = MoreMatchTypes_Form.SurvivalRoadData.Wrestler;
-            secondEdit = MoreMatchTypes_Form.SurvivalRoadData.Wrestler;
+            secondEdit = MoreMatchTypes_Form.SurvivalRoadData.Second;
             opponentTeam = MoreMatchTypes_Form.SurvivalRoadData.OpponentName;
             isRegen = MoreMatchTypes_Form.SurvivalRoadData.RegainHP;
 
@@ -488,6 +492,15 @@ namespace MoreMatchTypes.Wrestling_Match_Types
             if (isTag)
             {
                 currOpponents[1] = MoreMatchTypes_Form.SurvivalRoadData.InitialOpponents[1];
+            }
+
+            try
+            {
+                L.D("First opponent: " + currOpponents[0].Name);
+            }
+            catch (Exception e)
+            {
+                L.D("First opponent is a null reference");
             }
 
             endRound = false;
@@ -554,7 +567,7 @@ namespace MoreMatchTypes.Wrestling_Match_Types
             {
                 if (endMatch)
                 {
-                    result += "Game Over\nMatches Played: " + gameDetails[8] + "\nContinues Used: " + gameDetails[5] + "\nHighest Win Streak: " + gameDetails[3];
+                    result += "\nGame Over\nMatches Played: " + gameDetails[8] + "\nContinues Used: " + gameDetails[5] + "\nHighest Win Streak: " + gameDetails[3];
                     result += "\nTotal Losses: " + gameDetails[4] + "\nHighest Match Rating: " + gameDetails[6] + "%";
 
                 }
@@ -576,6 +589,7 @@ namespace MoreMatchTypes.Wrestling_Match_Types
         {
             try
             {
+                L.D("Updating progress");
                 string info = "\nMatch #" + gameDetails[8] + "\n";
                 string playerTeam = teamNames[0];
                 String opponent = "";
@@ -600,14 +614,19 @@ namespace MoreMatchTypes.Wrestling_Match_Types
                 }
 
                 info += result;
-                L.D(result);
-                MoreMatchTypes_Form.SurvivalRoadData.MatchProgress += info + "\n\n";
+                MoreMatchTypes_Form.SurvivalRoadData.UpdateSurvivalData(info);
+
+                //Try to update the Survival Form
+                if (SurvivalRoadForm.survivalForm != null)
+                {
+                    SurvivalRoadForm.survivalForm.sr_progress.Text = info;
+                }
             }
             catch (Exception ex)
             {
                 L.D("UpdateProgressError: " + ex);
             }
-           
+
         }
 
         #endregion

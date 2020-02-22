@@ -1,0 +1,55 @@
+AddButton(string name, string jName, string helpText, string jHelpText, int buttonID, Menu_SceneManager.MainMenuBtnType btnType, Menu_SceneManager.SELECT_SCENE nextScene, int idx, ButtonList menu, Type clickClass, string click, object[] args, bool returnValue, Menu_SceneManager msm = null, string reset = "", int defMatchType = 0)
+
+	Adds a button to the game menus.
+
+	Params:
+		string name: Text that will appear on the button when the game is set to English.
+		string jName: Text that will appear on the button when the game is set to Japanese.
+		string helpText: Text taht will appear in the tool tip when the game is set to English.
+		string jHelpText: Text taht will appear in the tool tip when the game is set to Japanese.
+		int buttonID: A unique button ID. If two buttons share the same ID, both buttons will execute the click method of the button that was added first.
+		Menu_SceneManager.MainMenuBtnType btnType: What sort of button you are adding. Only important if loading another screen. Otherwise should be set to Invalid.
+		Menu_SceneManager.SELECT_SCENE nextScene: What scene you want to load next. Only important if you want to switch scenes, otherwise should be set to Invalid.
+		int idx: The position in the button list that you'd like to insert your button at. 0 Indexed.
+		ModPack.ModButtonManager.ButtonList menu: The menu you're going to add a button to.
+		Type clickClass: The object type of the class that contains your click method.
+		string click: The name of the method to run when your button is clicked.
+		object[] args: The params to pass to your method. Not currently implemented.
+		bool returnValue: Whether the mod should terminate execution of the default button click handling after running your custom method. Should be set to false if you need to switch scenes.
+		Menu_SceneManager msm: (OPTIONAL) The instance of Menu_SceneManager we will be adding buttons to. While this is optional, and the mod will attempt to find an appropriate Menu_SceneManager, its success in doing so depends on where you're calling AddButton from, so it's recommended that you provide this.
+		string reset: (OPTIONAL)The method that will be called to reset any mod changes made by clicking buttons. Used when the menu is loaded.
+		int defMatchType: (OPTIONAL) The match type that will be used when the button is clicked. This should be left at 0 (Normal) in most cases, but becomes important to set when adding buttons to the Battle Royal menu.
+
+	Example Method:
+        [Hook(TargetClass = "Menu_SceneManager", TargetMethod = ".ctor", InjectionLocation = int.MaxValue, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.PassInvokingInstance, Group = "MotWFramework")]
+        public static void AddMotWButton(Menu_SceneManager msm)
+        {
+            ModPack.ModButtonManager.AddButton("MotW", "MotW", "Opens the MotW Main Menu.", "Opens the MotW Main Menu.", 80, Menu_SceneManager.MainMenuBtnType.Invalid, Menu_SceneManager.SELECT_SCENE.Invalid, 3, ModPack.ModButtonManager.ButtonList.MainMenu, typeof(MotW.Hook), "MenuHook", null, true, msm, string.Empty, 0);            
+        }
+		
+		
+AddEditModeButton(string name, string jName, string helpText, string jHelpText, int buttonID, Menu_SceneManager.MainMenuBtnType btnType, int idx, CreateButtonList menu, Type clickClass, string click, object[] args, bool returnValue, CreateMenu_SceneManager cmsm = null)
+
+	Adds a button to the Edit Mode menus.
+
+	Params:
+		string name: Text that will appear on the button when the game is set to English.
+		string jName: Text that will appear on the button when the game is set to Japanese.
+		string helpText: Text taht will appear in the tool tip when the game is set to English.
+		string jHelpText: Text taht will appear in the tool tip when the game is set to Japanese.
+		int buttonID: A unique button ID. If two buttons share the same ID, both buttons will execute the click method of the button that was added first.
+		Menu_SceneManager.MainMenuBtnType btnType: What sort of button you are adding. Only important if loading another screen. Otherwise should be set to Invalid.
+		int idx: The position in the button list that you'd like to insert your button at. 0 Indexed. Please not that inserting anywhere but the end in these menus can have unexpected results, so it's suggested that you always set this to int.MaxValue.
+		CreateButtonList menu: The menu you're going to add the button to.
+		Type clickClass: The object type of the class that contains your click method.
+		string click: The name of the method to run when your button is clicked.
+		object[] args: The params to pass to your method. Not currently implemented.
+		bool returnValue: Whether the mod should terminate execution of the default button click handling after running your custom method. Should always be set to true when adding an Edit Menu button.
+		CreateMenu_SceneManager cmsm: (OPTIONAL) The instance of CreateMenu_SceneManager we will be adding buttons to. While this is optional, and the mod will attempt to find an appropriate CreateMenu_SceneManager, its success in doing so depends on where you're calling AddButton from, so it's recommended that you provide this.
+		
+	Example Method:
+		public static void AddTemplateDumpButton(CreateMenu_SceneManager cmsm)
+		{
+			ModButtonManager.AddEditModeButton("Create Wrestler Template", "テンプレートにレスラーデータを転送", "Sends a single wrestler edit to a template file.", "テンプレートにレスラーデータを転送", 88, Menu_SceneManager.MainMenuBtnType.Invalid, int.MaxValue, ModButtonManager.CreateButtonList.MainMenu, typeof(ModPack), "DumpSingleTemplate", null, true, cmsm);
+			ModButtonManager.AddEditModeButton("Create Wrestler Templates", "テンプレートにレスラーデータを転送", "Sends all wrestler edit to a template file.", "テンプレートにレスラーデータを転送", 89, Menu_SceneManager.MainMenuBtnType.Invalid, int.MaxValue, ModButtonManager.CreateButtonList.MainMenu, typeof(ModPack), "DumpAllTemplates", null, true, cmsm);
+		}

@@ -429,7 +429,7 @@
             this.btn_matchStart.Name = "btn_matchStart";
             this.btn_matchStart.Size = new System.Drawing.Size(75, 23);
             this.btn_matchStart.TabIndex = 7;
-            this.btn_matchStart.Text = "Start match!";
+            this.btn_matchStart.Text = "Play";
             this.btn_matchStart.UseVisualStyleBackColor = true;
             this.btn_matchStart.Click += new System.EventHandler(this.btn_matchStart_Click);
             // 

@@ -180,7 +180,7 @@ namespace MoreMatchTypes.Wrestling_Match_Types
                 return;
             }
 
-            string result = teamNames[0] + ": " + points[0] + " points\n" +teamNames[1] +": " + points[1] + " points\n\n";
+            string result = teamNames[0] + ": " + points[0] + " points\n" + teamNames[1] + ": " + points[1] + " points\n\n";
             if (points[0] == points[1])
             {
                 result += "Draw";
@@ -193,6 +193,17 @@ namespace MoreMatchTypes.Wrestling_Match_Types
             string resultString = "Lucha Tag Match\n\n" + result;
             str = resultString;
         }
+
+        #region UI Methods
+
+        [Hook(TargetClass = "Menu_SceneManager", TargetMethod = ".ctor", InjectionLocation = int.MaxValue,
+            InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.PassInvokingInstance,
+            Group = "MoreMatchTypes")]
+        public static void AddLuchaButton(Menu_SceneManager manager)
+        {
+            //ModButtonManager.AddButton("Lucha Tag", "ラッチャー・タグ", "Take part in a Lucha Libre Tag match.", "Lucha Libreの試合に参加する", 200, Menu_SceneManager.MainMenuBtnType.BTN_TYPE_CHANGE_SCENE, Menu_SceneManager.SELECT_SCENE.BATTLE_ONENIGHT_NORMAL);
+        }
+        #endregion
 
         #region Helper Methods
         public static void SetTeamNames()

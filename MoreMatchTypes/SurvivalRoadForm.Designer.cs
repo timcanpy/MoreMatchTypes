@@ -90,6 +90,7 @@
             this.sr_Search = new System.Windows.Forms.Button();
             this.sr_searchInput = new System.Windows.Forms.TextBox();
             this.formClose = new System.Windows.Forms.Button();
+            this.sr_progressRefresh = new System.Windows.Forms.LinkLabel();
             this.groupBox4.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.panel4.SuspendLayout();
@@ -98,6 +99,7 @@
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.sr_progressRefresh);
             this.groupBox4.Controls.Add(this.sr_regenHP);
             this.groupBox4.Controls.Add(this.sr_randomSecond);
             this.groupBox4.Controls.Add(this.sr_randomWrestler);
@@ -505,14 +507,14 @@
             this.sr_start.Name = "sr_start";
             this.sr_start.Size = new System.Drawing.Size(87, 27);
             this.sr_start.TabIndex = 7;
-            this.sr_start.Text = "Start match!";
+            this.sr_start.Text = "Play";
             this.sr_start.UseVisualStyleBackColor = true;
             this.sr_start.Click += new System.EventHandler(this.sr_start_Click);
             // 
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(806, 2);
+            this.label12.Location = new System.Drawing.Point(806, 0);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(56, 15);
             this.label12.TabIndex = 18;
@@ -531,7 +533,7 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(8, 2);
+            this.label13.Location = new System.Drawing.Point(8, 1);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(46, 15);
             this.label13.TabIndex = 11;
@@ -550,7 +552,7 @@
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(540, 2);
+            this.label14.Location = new System.Drawing.Point(540, 1);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(64, 15);
             this.label14.TabIndex = 17;
@@ -559,7 +561,7 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(178, 3);
+            this.label15.Location = new System.Drawing.Point(178, 1);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(37, 15);
             this.label15.TabIndex = 12;
@@ -598,7 +600,7 @@
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(472, 3);
+            this.label16.Location = new System.Drawing.Point(472, 1);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(39, 15);
             this.label16.TabIndex = 15;
@@ -607,7 +609,7 @@
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(299, 3);
+            this.label17.Location = new System.Drawing.Point(299, 1);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(29, 15);
             this.label17.TabIndex = 13;
@@ -729,6 +731,7 @@
             this.sr_promotionList.Size = new System.Drawing.Size(436, 21);
             this.sr_promotionList.Sorted = true;
             this.sr_promotionList.TabIndex = 4;
+            this.sr_promotionList.SelectedIndexChanged += new System.EventHandler(this.sr_promotionList_SelectedIndexChanged_1);
             // 
             // label22
             // 
@@ -760,9 +763,10 @@
             // 
             // sr_searchInput
             // 
+            this.sr_searchInput.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.sr_searchInput.Location = new System.Drawing.Point(7, 31);
             this.sr_searchInput.Name = "sr_searchInput";
-            this.sr_searchInput.Size = new System.Drawing.Size(391, 22);
+            this.sr_searchInput.Size = new System.Drawing.Size(391, 20);
             this.sr_searchInput.TabIndex = 0;
             // 
             // formClose
@@ -774,6 +778,17 @@
             this.formClose.Text = "Close";
             this.formClose.UseVisualStyleBackColor = true;
             this.formClose.Click += new System.EventHandler(this.formClose_Click);
+            // 
+            // sr_progressRefresh
+            // 
+            this.sr_progressRefresh.AutoSize = true;
+            this.sr_progressRefresh.Location = new System.Drawing.Point(99, 207);
+            this.sr_progressRefresh.Name = "sr_progressRefresh";
+            this.sr_progressRefresh.Size = new System.Drawing.Size(46, 15);
+            this.sr_progressRefresh.TabIndex = 72;
+            this.sr_progressRefresh.TabStop = true;
+            this.sr_progressRefresh.Text = "Refresh";
+            this.sr_progressRefresh.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.sr_progressRefresh_LinkClicked);
             // 
             // SurvivalRoadForm
             // 
@@ -866,5 +881,6 @@
         public System.Windows.Forms.Button sr_Search;
         public System.Windows.Forms.TextBox sr_searchInput;
         private System.Windows.Forms.Button formClose;
+        private System.Windows.Forms.LinkLabel sr_progressRefresh;
     }
 }
