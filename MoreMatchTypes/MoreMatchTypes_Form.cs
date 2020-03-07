@@ -8,6 +8,7 @@ using MatchConfig;
 using System.Linq;
 using MoreMatchTypes.DataClasses;
 using System.Reflection;
+using MoreMatchTypes.Data_Classes;
 
 namespace MoreMatchTypes
 {
@@ -21,8 +22,13 @@ namespace MoreMatchTypes
         private static String[] saveFileNames = new String[] { "SumoMoves.dat", "UWFIMoves.dat", "PancraseMoves.dat", "BoxingMoves.dat", "KickBoxingMoves.dat" };
         private static String[] saveFolderNames = new String[] { "./MatchTypeData/" };
         private static String sectionDivider = "|-------------------|";
+
         private static SurvivalRoadData survivalRoadData;
         public static SurvivalRoadData SurvivalRoadData { get => survivalRoadData; set => survivalRoadData = value; }
+
+        private static ExEliminationData exEliminationData;
+        public static ExEliminationData ExEliminationData { get => exEliminationData; set => exEliminationData = value; }
+
         private static String modPackName = "ModPack";
         public static bool modPackExists;
 
@@ -473,6 +479,14 @@ namespace MoreMatchTypes
             {
                 if (cb_exElim.Checked)
                 {
+                    if (SurvivalRoadData != null)
+                    {
+                        if (SurvivalRoadData.InProgress)
+                        {
+                            MessageBox.Show("Cannot set-up an Extended Elimination Match when a Survival Road session is in progress.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+                    }
                     if (EliminationForm.eliminationForm == null)
                     {
                         EliminationForm popUp = new EliminationForm();
@@ -656,7 +670,6 @@ namespace MoreMatchTypes
             Clear();
             UncheckNormal();
             UncheckShoot();
-            //matchConfig.Visible = true;
         }
         private void cb_exElim_CheckedChanged(object sender, EventArgs e)
         {
@@ -867,7 +880,6 @@ namespace MoreMatchTypes
             cb_survival.Checked = false;
 
         }
-
         private bool CheckModPackLoaded()
         {
             bool exists = false;
@@ -894,6 +906,14 @@ namespace MoreMatchTypes
 
             return exists;
 
+        }
+
+        public void ResetModOptions()
+        {
+            if (cb_luchaTag.Checked || cb_elimination.Checked || cb_ttt.Checked)
+            {
+                cb_normalMatch.Checked = true;
+            }
         }
         #endregion
 

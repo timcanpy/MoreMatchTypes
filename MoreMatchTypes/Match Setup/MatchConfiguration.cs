@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using DG;
+using ModPack;
 using MoreMatchTypes.Data_Classes;
 
 namespace MatchConfig
@@ -11,9 +12,9 @@ namespace MatchConfig
     public static class MatchConfiguration
     {
         //Ensure we aren't fielding duplicates
-        public static String singleOpponent = "";
-        public static String tagOpponent = "";
-        
+        //public static String singleOpponent = "";
+        //public static String tagOpponent = "";
+
         public static MatchSetting AddPlayers(bool entry, WrestlerID wrestlerNo, int slot, int control, bool isSecond, int costume, MatchSetting settings)
         {
             settings.matchWrestlerInfo[slot].entry = entry;
@@ -152,6 +153,43 @@ namespace MatchConfig
                     Name = "SWA"
                 }
             };
+
+            if (SaveData.inst.IsDLCInstalled(DLCEnum.StoryMode_NJPW1_Assets) || SaveData.inst.IsDLCInstalled(DLCEnum.StoryMode_NJPW2_Assets))
+            {
+                rings.Add(
+                    new RingInfo
+                    {
+                        SaveID = -2,
+                        Name = "NJPW"
+                    });
+
+            }
+
+            if (SaveData.inst.IsDLCInstalled(DLCEnum.Stardom) || SaveData.inst.IsDLCInstalled(DLCEnum.Stardom2))
+            {
+                rings.Add(
+                    new RingInfo
+                    {
+                        SaveID = -3,
+                        Name = "Stardom"
+                    });
+            }
+            if (SaveData.inst.IsDLCInstalled(DLCEnum.TakayamaAssets2))
+            {
+                rings.Add(
+                    new RingInfo
+                    {
+                        SaveID = -4,
+                        Name = "Takayamania"
+                    });
+                rings.Add(
+                    new RingInfo
+                    {
+                        SaveID = -5,
+                        Name = "Takayamania Empire"
+                    });
+            }
+
             foreach (RingData ring in SaveData.GetInst().editRingData)
             {
                 RingInfo ringInfo = new RingInfo();
@@ -173,12 +211,21 @@ namespace MatchConfig
             });
 
             //Ensure that new referees only show up for users that own DLC
-            if (SaveData.inst.IsDLCInstalled(DLCEnum.StoryMode_NJPW1_Assets))
+            if (SaveData.inst.IsDLCInstalled(DLCEnum.StoryMode_NJPW1_Assets) || SaveData.inst.IsDLCInstalled(DLCEnum.StoryMode_NJPW2_Assets))
             {
                 referees.Add(new RefereeInfo
                 {
                     SaveID = -2,
                     Name = "Red Shoes Unno"
+                });
+            }
+
+            if (SaveData.inst.IsDLCInstalled(DLCEnum.Stardom2))
+            {
+                referees.Add(new RefereeInfo
+                {
+                    SaveID = -3,
+                    Name = "Daichi Murayama"
                 });
             }
 
@@ -191,7 +238,7 @@ namespace MatchConfig
                 };
                 referees.Add(refereeInfo);
             }
-            
+
             return referees;
         }
 
@@ -271,6 +318,100 @@ namespace MatchConfig
             }
 
             return players;
+        }
+
+        public static String GetTeamName(List<String> wrestlers, SideCornerPostEnum side)
+        {
+            List<String> teams = new List<String>();
+            foreach (Team currentTeam in ModPack.ModPack.Teams)
+            {
+                if (wrestlers.Count == 1)
+                {
+                    break;
+                }
+                if (Contains(wrestlers, currentTeam.Members))
+                {
+                    //wrestlers.Add(currentTeam.Name);
+                    //foreach (string currentMember in currentTeam.Members)
+                    //{
+                    //    wrestlers.Remove(currentMember);
+                    //}
+                    teams.Add(currentTeam.Name);
+                }
+            }
+
+            //No teams found
+            if (teams.Count > 0)
+            {
+                return teams[UnityEngine.Random.Range(0, teams.Count)];
+            }
+            else
+            {
+                if (wrestlers.Count == 1)
+                {
+                    return wrestlers[0];
+                }
+                else
+                {
+                    if (side == SideCornerPostEnum.Left)
+                    {
+                        return "Blue Team";
+                    }
+                    else
+                    {
+                        return "Red Team";
+                    }
+                }
+            }
+            //int count = wrestlers.Count;
+            //string result;
+            //if (count != 1)
+            //{
+            //    if (count != 2)
+            //    {
+            //        string text = string.Join(", ", wrestlers.ToArray());
+            //        text = text.Insert(text.LastIndexOf(",") + 2, "& ");
+            //        result = text;
+            //    }
+            //    else
+            //    {
+            //        result = wrestlers[0] + " & " + wrestlers[1];
+            //    }
+            //}
+            //else
+            //{
+            //    result = wrestlers[0];
+            //}
+            //return result;
+        }
+
+        public static bool Contains(List<string> champs, List<string> members)
+        {
+            bool result;
+            if (champs.Count <= members.Count)
+            {
+                foreach (string current in champs)
+                {
+                    if (!members.Contains(current))
+                    {
+                        result = false;
+                        return result;
+                    }
+                }
+            }
+            else
+            {
+                foreach (string current2 in members)
+                {
+                    if (!champs.Contains(current2))
+                    {
+                        result = false;
+                        return result;
+                    }
+                }
+            }
+            result = true;
+            return result;
         }
 
     }

@@ -37,6 +37,7 @@ namespace MoreMatchTypes
                 LoadDifficulty();
                 LoadGameSpeed();
                 LoadVenues();
+                LoadSettings();
             }
             catch (Exception ex)
             {
@@ -54,7 +55,10 @@ namespace MoreMatchTypes
                 promotionList.Add(promotion);
             }
 
-            el_promotionList.SelectedIndex = 0;
+            if (el_promotionList.Items.Count > 0)
+            {
+                el_promotionList.SelectedIndex = 0;
+            }
         }
         private void LoadEdits()
         {
@@ -68,8 +72,10 @@ namespace MoreMatchTypes
                 el_resultList.Items.Add(wrestler);
             }
 
-            el_promotionList.SelectedIndex = 0;
-            el_resultList.SelectedIndex = 0;
+            if (el_resultList.Items.Count > 0)
+            {
+                el_resultList.SelectedIndex = 0;
+            }
         }
         private void LoadRings()
         {
@@ -78,7 +84,10 @@ namespace MoreMatchTypes
                 el_ringList.Items.Add(ring);
             }
 
-            el_ringList.SelectedIndex = 0;
+            if (el_ringList.Items.Count > 0)
+            {
+                el_ringList.SelectedIndex = 0;
+            }
         }
         private void LoadReferees()
         {
@@ -87,7 +96,10 @@ namespace MoreMatchTypes
                 el_refereeList.Items.Add(referee);
             }
 
-            el_refereeList.SelectedIndex = 0;
+            if (el_refereeList.Items.Count > 0)
+            {
+                el_refereeList.SelectedIndex = 0;
+            }
         }
         private void LoadThemes()
         {
@@ -96,7 +108,10 @@ namespace MoreMatchTypes
                 el_bgm.Items.Add(theme);
             }
 
-            el_bgm.SelectedIndex = 0;
+            if (el_bgm.Items.Count > 0)
+            {
+                el_bgm.SelectedIndex = 0;
+            }
         }
         private void LoadDifficulty()
         {
@@ -105,7 +120,10 @@ namespace MoreMatchTypes
                 el_difficulty.Items.Add(i);
             }
 
-            el_difficulty.SelectedIndex = 0;
+            if (el_difficulty.Items.Count > 0)
+            {
+                el_difficulty.SelectedIndex = 0;
+            }
         }
         private void LoadGameSpeed()
         {
@@ -113,7 +131,11 @@ namespace MoreMatchTypes
             {
                 el_gameSpeed.Items.Add(speed);
             }
-            el_gameSpeed.SelectedIndex = 0;
+
+            if (el_gameSpeed.Items.Count > 0)
+            {
+                el_gameSpeed.SelectedIndex = 0;
+            }
         }
         private void LoadVenues()
         {
@@ -123,7 +145,10 @@ namespace MoreMatchTypes
                 el_venueList.Items.Add(venue);
             }
 
-            el_venueList.SelectedIndex = 0;
+            if (el_venueList.Items.Count > 0)
+            {
+                el_venueList.SelectedIndex = 0;
+            }
         }
 
         #endregion
@@ -133,26 +158,68 @@ namespace MoreMatchTypes
         {
             if (rb_singleBlue.Checked)
             {
-                el_blueList.Items.Add(el_resultList.SelectedItem);
+                if (!CheckDuplicates((WresIDGroup)el_resultList.SelectedItem, SideCornerPostEnum.Left))
+                {
+                    el_blueList.Items.Add(el_resultList.SelectedItem);
+                }
             }
             else if (rb_singleRed.Checked)
             {
-                el_redList.Items.Add(el_resultList.SelectedItem);
+                if (!CheckDuplicates((WresIDGroup)el_resultList.SelectedItem, SideCornerPostEnum.Right))
+                {
+                    el_redList.Items.Add(el_resultList.SelectedItem);
+                }
             }
             else if (rb_allBlue.Checked)
             {
                 for (int i = 0; i < el_resultList.Items.Count; i++)
                 {
-                    el_blueList.Items.Add(el_resultList.Items[i]);
+                    if (!CheckDuplicates((WresIDGroup)el_resultList.Items[i], SideCornerPostEnum.Left))
+                    {
+                        el_blueList.Items.Add(el_resultList.Items[i]);
+                    }
                 }
             }
             else if (rb_allRed.Checked)
             {
                 for (int i = 0; i < el_resultList.Items.Count; i++)
                 {
-                    el_redList.Items.Add(el_resultList.Items[i]);
+                    if (!CheckDuplicates((WresIDGroup)el_resultList.Items[i], SideCornerPostEnum.Right))
+                    {
+                        el_redList.Items.Add(el_resultList.Items[i]);
+                    }
                 }
             }
+
+            //Generate default team name
+            List<String> wrestlers = new List<String>();
+
+            if (rb_singleBlue.Checked || rb_allBlue.Checked)
+            {
+                if (el_blueTeamName.Text.Trim().Equals(String.Empty))
+                {
+                    foreach (WresIDGroup item in el_blueList.Items)
+                    {
+                        wrestlers.Add(item.Name);
+                    }
+
+                    el_blueTeamName.Text = MatchConfiguration.GetTeamName(wrestlers, SideCornerPostEnum.Left);
+                }    
+            }
+
+            if (rb_singleRed.Checked || rb_allRed.Checked)
+            {
+                if (el_redTeamName.Text.Trim().Equals(String.Empty))
+                {
+                    foreach (WresIDGroup item in el_redList.Items)
+                    {
+                        wrestlers.Add(item.Name);
+                    }
+
+                    el_redTeamName.Text = MatchConfiguration.GetTeamName(wrestlers, SideCornerPostEnum.Right);
+                }
+            }
+
 
         }
         private void el_removeOneBlue_Click(object sender, EventArgs e)
@@ -174,7 +241,10 @@ namespace MoreMatchTypes
         private void el_searchBtn_Click(object sender, EventArgs e)
         {
             LoadEditsFromPromotion();
-            el_resultList.SelectedIndex = 0;
+            if (el_resultList.Items.Count > 0)
+            {
+                el_resultList.SelectedIndex = 0;
+            }
         }
         private void el_promotionList_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -195,6 +265,11 @@ namespace MoreMatchTypes
             if (!ValidateMatch())
             {
                 return;
+            }
+
+            if (MoreMatchTypes_Form.ExEliminationData.InProgress)
+            {
+                ShowError("Please end the current Extended Elimination Match first.");
             }
 
             #region Variables
@@ -310,7 +385,7 @@ namespace MoreMatchTypes
                 }
                 else
                 {
-                    settings.ringID = (RingID) ring.SaveID;
+                    settings.ringID = (RingID)ring.SaveID;
                 }
             }
 
@@ -379,7 +454,7 @@ namespace MoreMatchTypes
                 L.D("Error setting venue");
                 settings.arena = VenueEnum.BigGardenArena;
             }
-            
+
             //Set Game Speed
             try
             {
@@ -405,7 +480,7 @@ namespace MoreMatchTypes
             settings.isDisableTimeCount = false;
             settings.isOutOfRingCount = true;
             settings.isOverTheTopRopeOn = false;
-            settings.is3GameMatch = false;   
+            settings.is3GameMatch = false;
             settings.isFoulCount = true;
 
             //Need to set a valid MatchBGM type  here, then override it on match start if necessary.
@@ -445,7 +520,7 @@ namespace MoreMatchTypes
 
             if (el_blueList.Items.Count == 0 || el_redList.Items.Count == 0)
             {
-                MessageBox.Show("Both teams must contain at least one member.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ShowError("Both teams must contain at least one member.");
                 isValid = false;
             }
 
@@ -489,25 +564,18 @@ namespace MoreMatchTypes
             {
                 return;
             }
-            if (promotionField.SelectedItem.ToString().Contains("未登録"))
+            foreach (WresIDGroup current in wrestlerList)
             {
-                LoadEdits();
-            }
-            else
-            {
-                foreach (WresIDGroup current in wrestlerList)
+                try
                 {
-                    try
+                    if (current.Group == FindGroup(promotionField.SelectedItem.ToString()))
                     {
-                        if (current.Group == FindGroup(promotionField.SelectedItem.ToString()))
-                        {
-                            resultField.Items.Add(current);
-                        }
+                        resultField.Items.Add(current);
                     }
-                    catch (Exception ex)
-                    {
-                        L.D("Error: " + ex.Message);
-                    }
+                }
+                catch (Exception ex)
+                {
+                    L.D("Error: " + ex.Message);
                 }
             }
         }
@@ -519,7 +587,119 @@ namespace MoreMatchTypes
 
         private void formClose_Click(object sender, EventArgs e)
         {
+            SaveExEliminationData(MoreMatchTypes_Form.ExEliminationData.InProgress);
             this.Hide();
+        }
+
+        private void SaveExEliminationData(bool inProgress)
+        {
+            if (!MoreMatchTypes_Form.ExEliminationData.InProgress)
+            {
+                ExEliminationData data = new ExEliminationData
+                {
+                    //Settings
+                    Referee = (RefereeInfo)el_refereeList.SelectedItem,
+                    Venue = (String)el_venueList.SelectedItem,
+                    Ring = (RingInfo)el_ringList.SelectedItem,
+                    Speed = (uint)el_gameSpeed.SelectedItem,
+                    MatchBGM = (String)el_bgm.SelectedItem,
+                    Difficulty = (String)el_difficulty.SelectedItem,
+                    InProgress = inProgress,
+
+                    //Player Options
+                    ControlBlue = el_blueControl.Checked,
+                    ControlRed = el_redControl.Checked,
+                    TeamNames = new String[] { el_blueTeamName.Text, el_redTeamName.Text }
+                };
+
+                //Saving team members
+                List<WresIDGroup> members = new List<WresIDGroup>();
+                foreach (WresIDGroup wrestler in el_blueList.Items)
+                {
+                    members.Add(wrestler);
+                }
+                data.BlueTeamMembers = members;
+
+                members = new List<WresIDGroup>();
+
+                foreach (WresIDGroup wrestler in el_redList.Items)
+                {
+                    members.Add(wrestler);
+                }
+                data.RedTeamMembers = members;
+
+                MoreMatchTypes_Form.ExEliminationData = data;
+            }
+        }
+
+        private void LoadSettings()
+        {
+            ExEliminationData data = MoreMatchTypes_Form.ExEliminationData;
+            if (data == null)
+            {
+                MoreMatchTypes_Form.ExEliminationData = new ExEliminationData();
+            }
+            else
+            {
+                el_refereeList.SelectedIndex =
+                    data.Referee == null ? 0 : el_refereeList.FindString(data.Referee.Name);
+
+                el_venueList.SelectedIndex =
+                    data.Venue == null ? 0 : el_venueList.FindString(data.Venue);
+
+                el_ringList.SelectedIndex =
+                    data.Ring == null ? 0 : el_ringList.FindString(data.Ring.Name);
+
+                el_gameSpeed.SelectedItem = data.Speed;
+                el_bgm.SelectedItem = data.MatchBGM;
+                el_difficulty.SelectedItem = data.Difficulty;
+
+                el_blueControl.Checked = data.ControlBlue;
+                el_redControl.Checked = data.ControlRed;
+                el_blueTeamName.Text = data.TeamNames[0];
+                el_redTeamName.Text = data.TeamNames[1];
+
+
+                foreach (WresIDGroup wrestler in data.BlueTeamMembers)
+                {
+                    el_blueList.Items.Add(wrestler);
+                }
+
+                foreach (WresIDGroup wrestler in data.RedTeamMembers)
+                {
+                    el_redList.Items.Add(wrestler);
+                }
+            }
+        }
+
+        private bool CheckDuplicates(WresIDGroup wrestler, SideCornerPostEnum side)
+        {
+            bool isDuplicate = false;
+
+            if (side == SideCornerPostEnum.Left)
+            {
+                foreach (WresIDGroup item in el_blueList.Items)
+                {
+                    if (wrestler == item)
+                    {
+                        isDuplicate = true;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                foreach (WresIDGroup item in el_redList.Items)
+                {
+                    if (wrestler == item)
+                    {
+                        isDuplicate = true;
+                        break;
+                    }
+                }
+            }
+
+            return isDuplicate;
         }
     }
 }

@@ -11,24 +11,6 @@ namespace MoreMatchTypes.DataClasses
     public class SurvivalRoadData : GeneralData
     {
         #region Variables
-        //private RefereeInfo referee;
-        //public RefereeInfo Referee { get => referee; set => referee = value; }
-
-        //private String venue;
-        //public String Venue { get => venue; set => venue = value; }
-
-        //private RingInfo ring;
-        //public RingInfo Ring { get => ring; set => ring = value; }
-
-        //private uint speed;
-        //public uint Speed { get => speed; set => speed = value; }
-
-        //private String matchBGM;
-        //public String MatchBGM { get => matchBGM; set => matchBGM = value; }
-
-        //private String difficulty;
-        //public String Difficulty { get => difficulty; set => difficulty = value; }
-
         private WresIDGroup wrestler;
         public WresIDGroup Wrestler { get => wrestler; set => wrestler = value; }
 
@@ -76,10 +58,7 @@ namespace MoreMatchTypes.DataClasses
 
         private List<WresIDGroup> opponents;
         public List<WresIDGroup> Opponents { get => opponents; set => opponents = value; }
-
-        private bool inProgress;
-        public bool InProgress { get => inProgress; set => inProgress = value; }
-
+        
         //Required for tracking purposes after the first match begins
         private WresIDGroup[] initialOpponents;
         public WresIDGroup[] InitialOpponents { get => initialOpponents; set => initialOpponents = value; }
@@ -87,7 +66,7 @@ namespace MoreMatchTypes.DataClasses
 
         public SurvivalRoadData()
         {
-            inProgress = false;
+            InProgress = false;
             matchProgress = new List<String>();
             initialOpponents = new WresIDGroup[2];
         }

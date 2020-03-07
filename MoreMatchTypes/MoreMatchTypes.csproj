@@ -86,6 +86,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data Classes\ExEliminationData.cs" />
     <Compile Include="Data Classes\GeneralData.cs" />
     <Compile Include="Data Classes\RefereeInfo.cs" />
     <Compile Include="Data Classes\RingInfo.cs" />
@@ -101,6 +102,7 @@
     <Compile Include="Data Classes\IDObject.cs" />
     <Compile Include="Match Setup\MatchConfiguration.cs" />
     <Compile Include="Match Setup\MatchEndFunctions.cs" />
+    <Compile Include="Match Setup\MatchTypeHook.cs" />
     <Compile Include="Shoot Match Types\Boxing.cs" />
     <Compile Include="Shoot Match Types\K1MMA.cs" />
     <Compile Include="Shoot Match Types\Pancrase.cs" />

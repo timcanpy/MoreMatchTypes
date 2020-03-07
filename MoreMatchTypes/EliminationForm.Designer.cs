@@ -61,7 +61,6 @@
             this.btn_matchStart = new System.Windows.Forms.Button();
             this.label11 = new System.Windows.Forms.Label();
             this.el_difficulty = new System.Windows.Forms.ComboBox();
-            this.label6 = new System.Windows.Forms.Label();
             this.el_venueList = new System.Windows.Forms.ComboBox();
             this.label10 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
@@ -70,6 +69,7 @@
             this.el_gameSpeed = new System.Windows.Forms.ComboBox();
             this.label9 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
             this.formClose = new System.Windows.Forms.Button();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -103,13 +103,13 @@
             this.el_redControl.TabIndex = 5;
             this.el_redControl.Text = "Player Control?";
             this.el_redControl.UseVisualStyleBackColor = true;
-            this.el_redControl.Visible = false;
             // 
             // el_redTeamName
             // 
+            this.el_redTeamName.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             this.el_redTeamName.Location = new System.Drawing.Point(6, 36);
             this.el_redTeamName.Name = "el_redTeamName";
-            this.el_redTeamName.Size = new System.Drawing.Size(407, 22);
+            this.el_redTeamName.Size = new System.Drawing.Size(407, 20);
             this.el_redTeamName.TabIndex = 4;
             // 
             // label5
@@ -180,13 +180,13 @@
             this.el_blueControl.TabIndex = 15;
             this.el_blueControl.Text = "Player Control?";
             this.el_blueControl.UseVisualStyleBackColor = true;
-            this.el_blueControl.Visible = false;
             // 
             // el_blueTeamName
             // 
+            this.el_blueTeamName.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
             this.el_blueTeamName.Location = new System.Drawing.Point(11, 37);
             this.el_blueTeamName.Name = "el_blueTeamName";
-            this.el_blueTeamName.Size = new System.Drawing.Size(367, 22);
+            this.el_blueTeamName.Size = new System.Drawing.Size(367, 20);
             this.el_blueTeamName.TabIndex = 14;
             // 
             // label4
@@ -398,7 +398,6 @@
             this.panel3.Controls.Add(this.btn_matchStart);
             this.panel3.Controls.Add(this.label11);
             this.panel3.Controls.Add(this.el_difficulty);
-            this.panel3.Controls.Add(this.label6);
             this.panel3.Controls.Add(this.el_venueList);
             this.panel3.Controls.Add(this.label10);
             this.panel3.Controls.Add(this.label7);
@@ -419,7 +418,7 @@
             this.el_refereeList.FormattingEnabled = true;
             this.el_refereeList.Location = new System.Drawing.Point(4, 17);
             this.el_refereeList.Name = "el_refereeList";
-            this.el_refereeList.Size = new System.Drawing.Size(142, 21);
+            this.el_refereeList.Size = new System.Drawing.Size(120, 21);
             this.el_refereeList.TabIndex = 8;
             // 
             // btn_matchStart
@@ -437,7 +436,7 @@
             // 
             this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("NEWSFLASH", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(691, 0);
+            this.label11.Location = new System.Drawing.Point(691, -3);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(56, 15);
             this.label11.TabIndex = 18;
@@ -452,23 +451,13 @@
             this.el_difficulty.Size = new System.Drawing.Size(43, 21);
             this.el_difficulty.TabIndex = 19;
             // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("NEWSFLASH", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(3, 0);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(46, 15);
-            this.label6.TabIndex = 11;
-            this.label6.Text = "Referee";
-            // 
             // el_venueList
             // 
             this.el_venueList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.el_venueList.FormattingEnabled = true;
-            this.el_venueList.Location = new System.Drawing.Point(148, 17);
+            this.el_venueList.Location = new System.Drawing.Point(130, 17);
             this.el_venueList.Name = "el_venueList";
-            this.el_venueList.Size = new System.Drawing.Size(102, 21);
+            this.el_venueList.Size = new System.Drawing.Size(120, 21);
             this.el_venueList.TabIndex = 9;
             // 
             // label10
@@ -485,7 +474,7 @@
             // 
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("NEWSFLASH", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(153, 0);
+            this.label7.Location = new System.Drawing.Point(153, -3);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(37, 15);
             this.label7.TabIndex = 12;
@@ -532,11 +521,21 @@
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("NEWSFLASH", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(256, 0);
+            this.label8.Location = new System.Drawing.Point(264, -3);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(29, 15);
             this.label8.TabIndex = 13;
             this.label8.Text = "Ring";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("NEWSFLASH", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(29, 9);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(46, 15);
+            this.label6.TabIndex = 11;
+            this.label6.Text = "Referee";
             // 
             // formClose
             // 
@@ -559,6 +558,7 @@
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.panel1);
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.panel3);
             this.Name = "EliminationForm";
             this.Text = "Extended Elimination Configuration";
@@ -572,6 +572,7 @@
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 

@@ -416,7 +416,7 @@ namespace MoreMatchTypes
         }
         private void formClose_Click(object sender, EventArgs e)
         {
-            SaveSurvivalRoadData();
+            SaveSurvivalRoadData(MoreMatchTypes_Form.SurvivalRoadData.InProgress);
             this.Hide();
         }
         private void sr_progressRefresh_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -434,6 +434,11 @@ namespace MoreMatchTypes
             if (!ValidateMatch())
             {
                 return;
+            }
+
+            if (MoreMatchTypes_Form.SurvivalRoadData.InProgress)
+            {
+                ShowError("Please end the current Survival Road session first.");
             }
 
             #region Variables
@@ -672,25 +677,18 @@ namespace MoreMatchTypes
             {
                 return;
             }
-            if (promotionField.SelectedItem.ToString().Contains("未登録"))
+            foreach (WresIDGroup current in wrestlerList)
             {
-                LoadEdits();
-            }
-            else
-            {
-                foreach (WresIDGroup current in wrestlerList)
+                try
                 {
-                    try
+                    if (current.Group == FindGroup(promotionField.SelectedItem.ToString()))
                     {
-                        if (current.Group == FindGroup(promotionField.SelectedItem.ToString()))
-                        {
-                            resultField.Items.Add(current);
-                        }
+                        resultField.Items.Add(current);
                     }
-                    catch (Exception ex)
-                    {
-                        L.D("Error: " + ex.Message);
-                    }
+                }
+                catch (Exception ex)
+                {
+                    L.D("Error: " + ex.Message);
                 }
             }
         }
@@ -734,16 +732,28 @@ namespace MoreMatchTypes
             {
                 RingInfo ring = (RingInfo)ringList.SelectedItem;
 
-                if (ring.SaveID == -1)
+                switch (ring.SaveID)
                 {
-                    settings.ringID = RingID.SWA;
-                }
-                else
-                {
-                    settings.ringID = (RingID)ring.SaveID;
+                    case -1:
+                        settings.ringID = RingID.SWA;
+                        break;
+                    case -2:
+                        settings.ringID = RingID.NJPW;
+                        break;
+                    case -3:
+                        settings.ringID = RingID.Stardom;
+                        break;
+                    case -4:
+                        settings.ringID = RingID.Takayamania;
+                        break;
+                    case -5:
+                        settings.ringID = RingID.TakayamaniaEmpire;
+                        break;                        
+                    default:
+                        settings.ringID = (RingID)ring.SaveID;
+                        break;
                 }
             }
-
             catch
             {
                 L.D("Error Setting Ring");
@@ -754,17 +764,19 @@ namespace MoreMatchTypes
             try
             {
                 RefereeInfo referee = (RefereeInfo)refereeList.SelectedItem;
-                if (referee.SaveID == -1)
+                switch (referee.SaveID)
                 {
-                    settings.RefereeID = RefereeID.MrJudgement;
-                }
-                else if (referee.SaveID == -2)
-                {
-                    settings.RefereeID = RefereeID.RedShoesUnno;
-                }
-                else
-                {
-                    settings.RefereeID = (RefereeID)referee.SaveID;
+                    case -1:
+                        settings.RefereeID = RefereeID.MrJudgement;
+                        break;
+                    case -2:
+                        settings.RefereeID = RefereeID.RedShoesUnno;
+                        break;
+                    case -3:
+                    default:
+                        settings.RefereeID = (RefereeID)referee.SaveID;
+                        break;
+
                 }
             }
             catch
@@ -896,13 +908,29 @@ namespace MoreMatchTypes
             }
 
             //Need to set a valid MatchBGM type  here, then override it on match start if necessary.
-            if (sr_bgmList.SelectedIndex > 2)
+            try
             {
-                settings.matchBGM = MatchBGM.SpinningPanther;
+                if (sr_bgmList.SelectedIndex == 0)
+                {
+                    settings.matchBGM = MatchBGM.FireProWrestling;
+                }
+                else if (sr_bgmList.SelectedIndex == 1)
+                {
+                    settings.matchBGM = MatchBGM.SpinningPanther;
+                }
+                else if (sr_bgmList.SelectedIndex == 2)
+                {
+                    settings.matchBGM = MatchBGM.LonelyStage;
+                }
+                else
+                {
+                    settings.matchBGM = (MatchBGM)sr_bgmList.SelectedIndex;
+                }
             }
-            else
+            catch (Exception e)
             {
-                settings.matchBGM = (MatchBGM)sr_bgmList.SelectedIndex;
+                L.D("Error setting Match BGM");
+                settings.matchBGM = MatchBGM.FireProWrestling;
             }
 
             GlobalParam.flg_CallDebugMenu = false;
@@ -915,10 +943,10 @@ namespace MoreMatchTypes
         }
         private void StartMatch()
         {
-            SaveSurvivalRoadData();
+            SaveSurvivalRoadData(true);
             UnityEngine.SceneManagement.SceneManager.LoadScene("Match");
         }
-        private void SaveSurvivalRoadData()
+        private void SaveSurvivalRoadData(bool inProgress)
         {
             //Save current data
             if (!MoreMatchTypes_Form.SurvivalRoadData.InProgress)
@@ -934,6 +962,7 @@ namespace MoreMatchTypes
                         Speed = (uint)sr_speedList.SelectedItem,
                         MatchBGM = (String)sr_bgmList.SelectedItem,
                         Difficulty = (String)sr_difficultyList.SelectedItem,
+                        InProgress = inProgress,
 
                         //Player Options
                         Wrestler = sr_wrestler.Items.Count > 0 ? (WresIDGroup)sr_wrestler.Items[0] : null,
@@ -957,7 +986,6 @@ namespace MoreMatchTypes
                         InitialOpponents = initialOpponents
                     };
 
-                    survivalRoadData.InProgress = true;
                     foreach (WresIDGroup wrestler in sr_teamList.Items)
                     {
                         survivalRoadData.Opponents.Add(wrestler);
@@ -980,7 +1008,5 @@ namespace MoreMatchTypes
             }
         }
         #endregion
-
-
     }
 }

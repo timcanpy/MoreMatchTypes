@@ -246,7 +246,7 @@ namespace MoreMatchTypes.Wrestling_Match_Types
                 }
                 else
                 {
-                    teamNames[0] = GetTeamName(wrestlers);
+                    teamNames[0] = MatchConfiguration.GetTeamName(wrestlers, SideCornerPostEnum.Left);
                 }
 
                 //Get Team Two Members
@@ -272,7 +272,7 @@ namespace MoreMatchTypes.Wrestling_Match_Types
                 }
                 else
                 {
-                    teamNames[1] = GetTeamName(wrestlers);
+                    teamNames[1] = MatchConfiguration.GetTeamName(wrestlers, SideCornerPostEnum.Right);
                 }
             }
             catch
@@ -281,79 +281,6 @@ namespace MoreMatchTypes.Wrestling_Match_Types
                 teamNames[1] = "Red Team";
             }
 
-        }
-        public static String GetTeamName(List<String> wrestlers)
-        {
-            List<string> list = new List<string>(wrestlers);
-            foreach (Team current in ModPack.ModPack.Teams)
-            {
-                bool flag = list.Count == 1;
-                if (flag)
-                {
-                    break;
-                }
-                bool flag2 = Contains(list, current.Members);
-                if (flag2)
-                {
-                    list.Add(current.Name);
-                    foreach (string current2 in current.Members)
-                    {
-                        list.Remove(current2);
-                    }
-                }
-            }
-            int count = list.Count;
-            int num = count;
-            string result;
-            if (num != 1)
-            {
-                if (num != 2)
-                {
-                    string text = string.Join(", ", list.ToArray());
-                    text = text.Insert(text.LastIndexOf(",") + 2, "& ");
-                    result = text;
-                }
-                else
-                {
-                    result = list[0] + " & " + list[1];
-                }
-            }
-            else
-            {
-                result = list[0];
-            }
-            return result;
-        }
-        public static bool Contains(List<string> champs, List<string> members)
-        {
-            bool flag = champs.Count <= members.Count;
-            bool result;
-            if (flag)
-            {
-                foreach (string current in champs)
-                {
-                    bool flag2 = !members.Contains(current);
-                    if (flag2)
-                    {
-                        result = false;
-                        return result;
-                    }
-                }
-            }
-            else
-            {
-                foreach (string current2 in members)
-                {
-                    bool flag3 = !champs.Contains(current2);
-                    if (flag3)
-                    {
-                        result = false;
-                        return result;
-                    }
-                }
-            }
-            result = true;
-            return result;
         }
         public static bool CheckMatchEnd(Referee r)
         {

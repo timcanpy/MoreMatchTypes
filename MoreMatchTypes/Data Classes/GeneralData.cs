@@ -25,6 +25,9 @@ namespace MoreMatchTypes.Data_Classes
         private String difficulty;
         public String Difficulty { get => difficulty; set => difficulty = value; }
 
+        private bool inProgress;
+        public bool InProgress { get => inProgress; set => inProgress = value; }
+
         protected String reportFolder = "./EGOData/Reports";
     }
 }
