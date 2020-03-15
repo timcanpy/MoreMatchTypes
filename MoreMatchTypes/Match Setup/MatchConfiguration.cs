@@ -220,14 +220,14 @@ namespace MatchConfig
                 });
             }
 
-            if (SaveData.inst.IsDLCInstalled(DLCEnum.Stardom2))
-            {
-                referees.Add(new RefereeInfo
-                {
-                    SaveID = -3,
-                    Name = "Daichi Murayama"
-                });
-            }
+            //if (SaveData.inst.IsDLCInstalled(DLCEnum.Stardom2))
+            //{
+            //    referees.Add(new RefereeInfo
+            //    {
+            //        SaveID = -3,
+            //        Name = "Daichi Murayama"
+            //    });
+            //}
 
             foreach (RefereeData referee in SaveData.GetInst().editRefereeData)
             {
@@ -385,6 +385,12 @@ namespace MatchConfig
             //return result;
         }
 
+        public static bool ValidateWrestler(WrestlerID wid)
+        {
+            return DataBase.CheckValidation_DLCMove(wid) &&
+                   DataBase.CheckEditWrestlerValidation_DLCParts(wid);
+        }
+
         public static bool Contains(List<string> champs, List<string> members)
         {
             bool result;
@@ -412,6 +418,83 @@ namespace MatchConfig
             }
             result = true;
             return result;
+        }
+
+        public static MatchWrestlerInfo CreateWrestlerInfo(int wID)
+        {
+            #region Variables
+            int num = 0;
+            SaveData inst = SaveData.inst;
+            MatchSetting matchSetting = GlobalWork.inst.MatchSetting;
+            MatchWrestlerInfo matchWrestlerInfo = new MatchWrestlerInfo();
+            Player plObj = new Player();
+            matchWrestlerInfo.entry = true;
+            matchWrestlerInfo.isSecond = false;
+            matchWrestlerInfo.isIntruder = false;
+            matchWrestlerInfo.assignedPad = PadPort.Num;
+            matchWrestlerInfo.wrestlerID = (WrestlerID)wID;
+            matchWrestlerInfo.InitialLifeRate = 1f;
+            #endregion
+
+            matchWrestlerInfo.editCtiticalMoveName = string.Empty;
+            if (!GlobalParam.flg_IsOnline)
+            {
+                matchWrestlerInfo.param = DataBase.GetWrestlerParam(matchWrestlerInfo.wrestlerID);
+                bool flag3 = matchWrestlerInfo.wrestlerID >= WrestlerID.EditWrestlerIDTop;
+                if (flag3)
+                {
+                    EditWrestlerData editWrestlerData = SaveData.inst.GetEditWrestlerData(matchWrestlerInfo.wrestlerID);
+                    WrestlerAppearanceData wrestlerAppearanceData = editWrestlerData.appearanceData;
+                    matchWrestlerInfo.editCtiticalMoveName = editWrestlerData.criticalMoveName;
+                }
+                else
+                {
+                    WrestlerAppearanceData wrestlerAppearanceData = PresetWrestlerDataMan.inst.GetPresetAppearanceData(matchWrestlerInfo.wrestlerID);
+                    PresetWrestlerData presetWrestlerData = PresetWrestlerDataMan.inst.GetPresetWrestlerData(matchWrestlerInfo.wrestlerID);
+                    matchWrestlerInfo.editCtiticalMoveName = presetWrestlerData.criticalMoveName[(int)inst.optionSettings.language];
+                }
+            }
+            else
+            {
+                int[] array = new int[8];
+                MonoSingleton<Network>.instance.Online_Wrestler_CostumeSlot(array);
+                Debug.Log(string.Concat(new object[]
+                {
+                "table[i] ",
+                num,
+                " / ",
+                array[num]
+                }));
+                EditWrestlerData editWrestlerData2 = Online_WrestlerData.Online_EditWrestler[array[0]];
+                matchWrestlerInfo.param = editWrestlerData2.wrestlerParam;
+                WrestlerAppearanceData wrestlerAppearanceData = editWrestlerData2.appearanceData;
+                matchWrestlerInfo.editCtiticalMoveName = editWrestlerData2.criticalMoveName;
+            }
+            matchWrestlerInfo.group = 0;
+            bool flag4 = matchSetting.BattleRoyalKind == BattleRoyalKindEnum.Off;
+            if (flag4)
+            {
+                matchWrestlerInfo.group = num;
+            }
+            else
+            {
+                matchWrestlerInfo.group = num;
+            }
+            matchWrestlerInfo.costume_no = 0;
+            matchWrestlerInfo.alignment = SaveData.inst.groupList[matchWrestlerInfo.param.groupID].alignment;
+            bool flag5 = !matchSetting.isCarryOverHP;
+            if (flag5)
+            {
+                matchWrestlerInfo.HP = 65535f * matchWrestlerInfo.InitialLifeRate;
+                matchWrestlerInfo.SP = 65535f * matchWrestlerInfo.InitialLifeRate;
+                matchWrestlerInfo.HP_Neck = 65535f * matchWrestlerInfo.InitialLifeRate;
+                matchWrestlerInfo.HP_Arm = 65535f * matchWrestlerInfo.InitialLifeRate;
+                matchWrestlerInfo.HP_Waist = 65535f * matchWrestlerInfo.InitialLifeRate;
+                matchWrestlerInfo.HP_Leg = 65535f * matchWrestlerInfo.InitialLifeRate;
+
+            }
+
+            return matchWrestlerInfo;
         }
 
     }

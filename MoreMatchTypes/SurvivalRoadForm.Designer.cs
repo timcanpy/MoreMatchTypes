@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.sr_progressRefresh = new System.Windows.Forms.LinkLabel();
             this.sr_regenHP = new System.Windows.Forms.CheckBox();
             this.sr_randomSecond = new System.Windows.Forms.Button();
             this.sr_randomWrestler = new System.Windows.Forms.Button();
@@ -90,7 +91,8 @@
             this.sr_Search = new System.Windows.Forms.Button();
             this.sr_searchInput = new System.Windows.Forms.TextBox();
             this.formClose = new System.Windows.Forms.Button();
-            this.sr_progressRefresh = new System.Windows.Forms.LinkLabel();
+            this.btn_export = new System.Windows.Forms.Button();
+            this.btn_import = new System.Windows.Forms.Button();
             this.groupBox4.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.panel4.SuspendLayout();
@@ -131,6 +133,17 @@
             this.groupBox4.TabIndex = 50;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Player Options";
+            // 
+            // sr_progressRefresh
+            // 
+            this.sr_progressRefresh.AutoSize = true;
+            this.sr_progressRefresh.Location = new System.Drawing.Point(99, 207);
+            this.sr_progressRefresh.Name = "sr_progressRefresh";
+            this.sr_progressRefresh.Size = new System.Drawing.Size(46, 15);
+            this.sr_progressRefresh.TabIndex = 72;
+            this.sr_progressRefresh.TabStop = true;
+            this.sr_progressRefresh.Text = "Refresh";
+            this.sr_progressRefresh.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.sr_progressRefresh_LinkClicked);
             // 
             // sr_regenHP
             // 
@@ -771,7 +784,7 @@
             // 
             // formClose
             // 
-            this.formClose.Location = new System.Drawing.Point(452, 537);
+            this.formClose.Location = new System.Drawing.Point(609, 537);
             this.formClose.Name = "formClose";
             this.formClose.Size = new System.Drawing.Size(87, 27);
             this.formClose.TabIndex = 51;
@@ -779,16 +792,25 @@
             this.formClose.UseVisualStyleBackColor = true;
             this.formClose.Click += new System.EventHandler(this.formClose_Click);
             // 
-            // sr_progressRefresh
+            // btn_export
             // 
-            this.sr_progressRefresh.AutoSize = true;
-            this.sr_progressRefresh.Location = new System.Drawing.Point(99, 207);
-            this.sr_progressRefresh.Name = "sr_progressRefresh";
-            this.sr_progressRefresh.Size = new System.Drawing.Size(46, 15);
-            this.sr_progressRefresh.TabIndex = 72;
-            this.sr_progressRefresh.TabStop = true;
-            this.sr_progressRefresh.Text = "Refresh";
-            this.sr_progressRefresh.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.sr_progressRefresh_LinkClicked);
+            this.btn_export.Location = new System.Drawing.Point(502, 537);
+            this.btn_export.Name = "btn_export";
+            this.btn_export.Size = new System.Drawing.Size(87, 27);
+            this.btn_export.TabIndex = 52;
+            this.btn_export.Text = "Export";
+            this.btn_export.UseVisualStyleBackColor = true;
+            this.btn_export.Click += new System.EventHandler(this.btn_export_Click);
+            // 
+            // btn_import
+            // 
+            this.btn_import.Location = new System.Drawing.Point(397, 537);
+            this.btn_import.Name = "btn_import";
+            this.btn_import.Size = new System.Drawing.Size(87, 27);
+            this.btn_import.TabIndex = 53;
+            this.btn_import.Text = "Import";
+            this.btn_import.UseVisualStyleBackColor = true;
+            this.btn_import.Click += new System.EventHandler(this.btn_import_Click);
             // 
             // SurvivalRoadForm
             // 
@@ -796,6 +818,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.SkyBlue;
             this.ClientSize = new System.Drawing.Size(1015, 576);
+            this.Controls.Add(this.btn_import);
+            this.Controls.Add(this.btn_export);
             this.Controls.Add(this.formClose);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
@@ -882,5 +906,7 @@
         public System.Windows.Forms.TextBox sr_searchInput;
         private System.Windows.Forms.Button formClose;
         private System.Windows.Forms.LinkLabel sr_progressRefresh;
+        private System.Windows.Forms.Button btn_export;
+        private System.Windows.Forms.Button btn_import;
     }
 }

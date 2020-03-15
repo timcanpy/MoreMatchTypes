@@ -912,6 +912,7 @@ namespace MoreMatchTypes
         {
             if (cb_luchaTag.Checked || cb_elimination.Checked || cb_ttt.Checked)
             {
+                UncheckWrestling();
                 cb_normalMatch.Checked = true;
             }
         }

@@ -103,8 +103,15 @@ namespace MoreMatchTypes.Wrestling_Match_Types
                     countLimit = UnityEngine.Random.Range(0, countLimit);
                 }
 
-                if ((referee.RefeCount >= countLimit || NoLegalManInRing()) && PlayerMan.inst.GetPlayerNum_OutOfRingCount() != playerCount)
+                //Checking the legal man still inside the ring
+                Player legalBlue = PlayerMan.inst.GetPlObj(GetLegalMan("blue"));
+                Player legalRed = PlayerMan.inst.GetPlObj(GetLegalMan("red"));
+                Player legalInRing = IsInRing(legalBlue) ? legalBlue : legalRed;
+                
+                //New condition, if the legal man inside the ring is running then the auto-tag cannot be made
+                if (((referee.RefeCount >= countLimit && legalInRing.State != PlStateEnum.Run && legalInRing.State != PlStateEnum.RopeRebound) || NoLegalManInRing()) && PlayerMan.inst.GetPlayerNum_OutOfRingCount() != playerCount)
                 {
+                    L.D("LegalInRing State is " + legalInRing.State);
                     countLimit = -1;
                     SetLegalMen("");
                 }

@@ -523,7 +523,6 @@
         public System.Windows.Forms.RadioButton cb_FirstBlood;
         public System.Windows.Forms.RadioButton cb_IronManMatch;
         public System.Windows.Forms.RadioButton cb_uwfi;
-        private System.Windows.Forms.RadioButton cb_normalMatch;
         public System.Windows.Forms.RadioButton cb_Pancrase;
         public System.Windows.Forms.TextBox tb_basic;
         public System.Windows.Forms.TextBox tb_illegal;
@@ -556,5 +555,6 @@
         public System.Windows.Forms.RadioButton cb_exElim;
         public System.Windows.Forms.RadioButton cb_sumo;
         public System.Windows.Forms.CheckBox cb_luchaFalls;
+        public System.Windows.Forms.RadioButton cb_normalMatch;
     }
 }

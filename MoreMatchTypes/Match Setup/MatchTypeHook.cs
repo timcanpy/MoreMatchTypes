@@ -12,9 +12,11 @@ namespace MoreMatchTypes.Match_Setup
         {
             MoreMatchTypes_Form.moreMatchTypesForm.ResetModOptions();
         }
+        
 
         public static void SetLuchaRules()
         {
+            MoreMatchTypes_Form.moreMatchTypesForm.cb_normalMatch.Checked = false;
             MoreMatchTypes_Form.moreMatchTypesForm.cb_luchaTag.Checked = true;
 
             if (Control.ModifierKeys == Keys.Shift)
@@ -29,11 +31,13 @@ namespace MoreMatchTypes.Match_Setup
 
         public static void SetEliminationRules()
         {
+            MoreMatchTypes_Form.moreMatchTypesForm.cb_normalMatch.Checked = false;
             MoreMatchTypes_Form.moreMatchTypesForm.cb_elimination.Checked = true;
         }
 
         public static void SetTTTRules()
         {
+            MoreMatchTypes_Form.moreMatchTypesForm.cb_normalMatch.Checked = false;
             MoreMatchTypes_Form.moreMatchTypesForm.cb_ttt.Checked = true;
         }
 
