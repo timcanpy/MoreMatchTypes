@@ -96,11 +96,13 @@ namespace MoreMatchTypes.Data_Classes
                 if (replacementPlayer.side == CornerSide.Blue)
                 {
                     ExElimination.blueOrderQueue.Enqueue(index);
+                    L.D(index + " has been queued for entry in the Blue Order queue.");
                     nextMember = ExElimination.blueTeamReplacements.Dequeue();
                 }
                 else
                 {
                     ExElimination.redOrderQueue.Enqueue(index);
+                    L.D(index + " has been queued for entry in the Red Order queue.");
                     nextMember = ExElimination.redTeamReplaements.Dequeue();
                 }
 

@@ -12,6 +12,8 @@ namespace MoreMatchTypes.Wrestling_Match_Types
     class ExElimination
     {
         #region Variables
+
+        public static int recentLoserIndex; //Ensure that players who have already lost aren't double counted.
         public static bool isExElim;
         public static String loserName;
         public static Queue<WresIDGroup> blueTeamReplacements;
@@ -19,7 +21,7 @@ namespace MoreMatchTypes.Wrestling_Match_Types
         public static Queue<int> blueOrderQueue;
         public static Queue<int> redOrderQueue;
         public static Queue<DefeatedPlayer> defeatedPlayers;
-        public static int[] membersRemaining;
+        public static int[] pointsRemaining;
         public static int[] wins;
         public static EliminationUpdate eUpdate;
         public static bool endMatch;
@@ -31,8 +33,9 @@ namespace MoreMatchTypes.Wrestling_Match_Types
         {
             isExElim = MoreMatchTypes_Form.moreMatchTypesForm.cb_exElim.Checked;
             endMatch = false;
+            recentLoserIndex = -1;
 
-            membersRemaining = new Int32[2];
+            pointsRemaining = new Int32[2];
             wins = new Int32[2];
             blueOrderQueue = new Queue<Int32>(new List<Int32> { 1, 2, 3 });
             redOrderQueue = new Queue<Int32>(new List<Int32> { 5, 6, 7 });
@@ -53,9 +56,12 @@ namespace MoreMatchTypes.Wrestling_Match_Types
                 redTeamReplaements.Enqueue(MoreMatchTypes_Form.ExEliminationData.RedTeamMembers[i]);
             }
 
+            L.D("Blue Team Replacements: " + blueTeamReplacements.Count);
+            L.D("Red Team Replacements: " + redTeamReplaements.Count);
+
             //Add remaining team members.
-            membersRemaining[0] = MoreMatchTypes_Form.ExEliminationData.BlueTeamMembers.Count ;
-            membersRemaining[1] = MoreMatchTypes_Form.ExEliminationData.RedTeamMembers.Count;
+            pointsRemaining[0] = MoreMatchTypes_Form.ExEliminationData.BlueTeamMembers.Count;
+            pointsRemaining[1] = MoreMatchTypes_Form.ExEliminationData.RedTeamMembers.Count;
 
             //Adding custom class for handling character switching
             eUpdate = MatchMain.inst.gameObject.GetComponent<EliminationUpdate>();
@@ -131,11 +137,12 @@ namespace MoreMatchTypes.Wrestling_Match_Types
                     continue;
                 }
                 plObj.isKO = false;
-                if (plObj.isLoseAndStop && (plObj.Zone == ZoneEnum.InRing || plObj.Zone == ZoneEnum.OutOfRing))
+                if (plObj.isLoseAndStop && (plObj.Zone == ZoneEnum.InRing || plObj.Zone == ZoneEnum.OutOfRing) && i != recentLoserIndex)
                 {
                     L.D(DataBase.GetWrestlerFullName(plObj.WresParam) + " at index " + i + " has been eliminated.");
-
-                    if (i < 3)
+                    recentLoserIndex = i;
+                    
+                    if (i <= 3)
                     {
                         loserSide = CornerSide.Blue;
                     }
@@ -144,15 +151,18 @@ namespace MoreMatchTypes.Wrestling_Match_Types
                         loserSide = CornerSide.Red;
                     }
 
+                    //Queue player for replacement
+                    defeatedPlayers.Enqueue(new DefeatedPlayer { player = plObj, side = loserSide });
+
                     loserName = DataBase.GetWrestlerFullName(plObj.WresParam);
                     SetLoserState(i);
 
-                    //Add loser to the queue for replacement processing
-                    defeatedPlayers.Enqueue(new DefeatedPlayer { player = plObj, side = loserSide });
-
+                    //Add loser to the queue for replacement processing      
                     bool continueMatch = UpdateTeam(loserSide);
+                  
                     main.isMatchEnd = !continueMatch;
                     endMatch = !continueMatch;
+                    
                     return continueMatch;
                 }
                 else
@@ -231,32 +241,43 @@ namespace MoreMatchTypes.Wrestling_Match_Types
             if (loserSide == CornerSide.Blue)
             {
                 wins[1]++;
-                membersRemaining[0]--;
+                pointsRemaining[0]--;
 
-                if (membersRemaining[0] <= 0)
+                if (pointsRemaining[0] <= 0)
                 {
                     return false;
                 }
 
-                membersLeft = membersRemaining[0];
+                membersLeft = pointsRemaining[0];
                 if (blueOrderQueue.Count != 0)
+                {
                     nextPlayer = blueOrderQueue.Dequeue();
+                }
+                else
+                {
+                    L.D("Blue Order Queue is empty");
+                }
                 teamName = MoreMatchTypes_Form.ExEliminationData.TeamNames[0];
-
             }
             else
             {
                 wins[0]++;
-                membersRemaining[1]--;
+                pointsRemaining[1]--;
 
-                if (membersRemaining[1] <= 0)
+                if (pointsRemaining[1] <= 0)
                 {
                     return false;
                 }
 
-                membersLeft = membersRemaining[1];
+                membersLeft = pointsRemaining[1];
                 if (redOrderQueue.Count != 0)
+                {
                     nextPlayer = redOrderQueue.Dequeue();
+                }
+                else
+                {
+                    L.D("Red Order Queue is empty");
+                }
                 teamName = MoreMatchTypes_Form.ExEliminationData.TeamNames[1];
             }
 
@@ -274,8 +295,10 @@ namespace MoreMatchTypes.Wrestling_Match_Types
         }
         public static void ActivateMember(int playerIndex, CornerSide loserSide)
         {
+            L.D("Activating player at index " + playerIndex + " for the side: " + loserSide);
             if (playerIndex == -1)
             {
+
                 return;
             }
 

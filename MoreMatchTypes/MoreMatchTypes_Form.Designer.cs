@@ -501,7 +501,7 @@
             this.Controls.Add(this.cb_normalMatch);
             this.Font = new System.Drawing.Font("NEWSFLASH", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "MoreMatchTypes_Form";
-            this.Text = "More Match Types";
+            this.Text = "Extra Game Types";
             this.Load += new System.EventHandler(this.MoreMatchTypes_Form_Load);
             this.rulesTabControl.ResumeLayout(false);
             this.rulesTab.ResumeLayout(false);

@@ -784,7 +784,7 @@
             // 
             // formClose
             // 
-            this.formClose.Location = new System.Drawing.Point(609, 537);
+            this.formClose.Location = new System.Drawing.Point(473, 537);
             this.formClose.Name = "formClose";
             this.formClose.Size = new System.Drawing.Size(87, 27);
             this.formClose.TabIndex = 51;
@@ -794,22 +794,24 @@
             // 
             // btn_export
             // 
-            this.btn_export.Location = new System.Drawing.Point(502, 537);
+            this.btn_export.Location = new System.Drawing.Point(189, 537);
             this.btn_export.Name = "btn_export";
             this.btn_export.Size = new System.Drawing.Size(87, 27);
             this.btn_export.TabIndex = 52;
             this.btn_export.Text = "Export";
             this.btn_export.UseVisualStyleBackColor = true;
+            this.btn_export.Visible = false;
             this.btn_export.Click += new System.EventHandler(this.btn_export_Click);
             // 
             // btn_import
             // 
-            this.btn_import.Location = new System.Drawing.Point(397, 537);
+            this.btn_import.Location = new System.Drawing.Point(84, 537);
             this.btn_import.Name = "btn_import";
             this.btn_import.Size = new System.Drawing.Size(87, 27);
             this.btn_import.TabIndex = 53;
             this.btn_import.Text = "Import";
             this.btn_import.UseVisualStyleBackColor = true;
+            this.btn_import.Visible = false;
             this.btn_import.Click += new System.EventHandler(this.btn_import_Click);
             // 
             // SurvivalRoadForm
