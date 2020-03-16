@@ -76,9 +76,10 @@
             // cb_FirstBlood
             // 
             this.cb_FirstBlood.AutoSize = true;
-            this.cb_FirstBlood.Location = new System.Drawing.Point(7, 56);
+            this.cb_FirstBlood.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cb_FirstBlood.Location = new System.Drawing.Point(7, 67);
             this.cb_FirstBlood.Name = "cb_FirstBlood";
-            this.cb_FirstBlood.Size = new System.Drawing.Size(80, 19);
+            this.cb_FirstBlood.Size = new System.Drawing.Size(78, 19);
             this.cb_FirstBlood.TabIndex = 0;
             this.cb_FirstBlood.Text = "First Blood";
             this.cb_FirstBlood.UseVisualStyleBackColor = true;
@@ -87,9 +88,10 @@
             // cb_IronManMatch
             // 
             this.cb_IronManMatch.AutoSize = true;
-            this.cb_IronManMatch.Location = new System.Drawing.Point(139, 56);
+            this.cb_IronManMatch.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cb_IronManMatch.Location = new System.Drawing.Point(139, 67);
             this.cb_IronManMatch.Name = "cb_IronManMatch";
-            this.cb_IronManMatch.Size = new System.Drawing.Size(67, 19);
+            this.cb_IronManMatch.Size = new System.Drawing.Size(68, 19);
             this.cb_IronManMatch.TabIndex = 1;
             this.cb_IronManMatch.Text = "Iron Man";
             this.cb_IronManMatch.UseVisualStyleBackColor = true;
@@ -98,9 +100,10 @@
             // cb_uwfi
             // 
             this.cb_uwfi.AutoSize = true;
+            this.cb_uwfi.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cb_uwfi.Location = new System.Drawing.Point(199, 10);
             this.cb_uwfi.Name = "cb_uwfi";
-            this.cb_uwfi.Size = new System.Drawing.Size(55, 19);
+            this.cb_uwfi.Size = new System.Drawing.Size(50, 19);
             this.cb_uwfi.TabIndex = 2;
             this.cb_uwfi.Text = "UWFI";
             this.cb_uwfi.UseVisualStyleBackColor = true;
@@ -110,6 +113,7 @@
             // 
             this.cb_normalMatch.AutoSize = true;
             this.cb_normalMatch.Checked = true;
+            this.cb_normalMatch.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cb_normalMatch.Location = new System.Drawing.Point(10, 14);
             this.cb_normalMatch.Name = "cb_normalMatch";
             this.cb_normalMatch.Size = new System.Drawing.Size(93, 19);
@@ -122,9 +126,10 @@
             // cb_Pancrase
             // 
             this.cb_Pancrase.AutoSize = true;
+            this.cb_Pancrase.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cb_Pancrase.Location = new System.Drawing.Point(112, 35);
             this.cb_Pancrase.Name = "cb_Pancrase";
-            this.cb_Pancrase.Size = new System.Drawing.Size(71, 19);
+            this.cb_Pancrase.Size = new System.Drawing.Size(70, 19);
             this.cb_Pancrase.TabIndex = 5;
             this.cb_Pancrase.Text = "Pancrase";
             this.cb_Pancrase.UseVisualStyleBackColor = true;
@@ -136,7 +141,7 @@
             this.tb_basic.Multiline = true;
             this.tb_basic.Name = "tb_basic";
             this.tb_basic.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.tb_basic.Size = new System.Drawing.Size(275, 410);
+            this.tb_basic.Size = new System.Drawing.Size(276, 410);
             this.tb_basic.TabIndex = 6;
             this.tb_basic.Visible = false;
             // 
@@ -164,9 +169,10 @@
             // lbl_Basic
             // 
             this.lbl_Basic.AutoSize = true;
+            this.lbl_Basic.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbl_Basic.Location = new System.Drawing.Point(17, 20);
             this.lbl_Basic.Name = "lbl_Basic";
-            this.lbl_Basic.Size = new System.Drawing.Size(78, 15);
+            this.lbl_Basic.Size = new System.Drawing.Size(86, 15);
             this.lbl_Basic.TabIndex = 9;
             this.lbl_Basic.Text = "Basic Attacks";
             this.lbl_Basic.Visible = false;
@@ -174,9 +180,10 @@
             // lbl_illegal
             // 
             this.lbl_illegal.AutoSize = true;
+            this.lbl_illegal.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbl_illegal.Location = new System.Drawing.Point(325, 20);
             this.lbl_illegal.Name = "lbl_illegal";
-            this.lbl_illegal.Size = new System.Drawing.Size(79, 15);
+            this.lbl_illegal.Size = new System.Drawing.Size(92, 15);
             this.lbl_illegal.TabIndex = 10;
             this.lbl_illegal.Text = "Illegal Attacks";
             this.lbl_illegal.Visible = false;
@@ -184,9 +191,10 @@
             // lbl_dq
             // 
             this.lbl_dq.AutoSize = true;
-            this.lbl_dq.Location = new System.Drawing.Point(677, 20);
+            this.lbl_dq.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_dq.Location = new System.Drawing.Point(678, 20);
             this.lbl_dq.Name = "lbl_dq";
-            this.lbl_dq.Size = new System.Drawing.Size(66, 15);
+            this.lbl_dq.Size = new System.Drawing.Size(71, 15);
             this.lbl_dq.TabIndex = 11;
             this.lbl_dq.Text = "DQ Attacks";
             this.lbl_dq.Visible = false;
@@ -194,6 +202,7 @@
             // cb_elimination
             // 
             this.cb_elimination.AutoSize = true;
+            this.cb_elimination.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cb_elimination.Location = new System.Drawing.Point(139, 6);
             this.cb_elimination.Name = "cb_elimination";
             this.cb_elimination.Size = new System.Drawing.Size(80, 19);
@@ -205,6 +214,7 @@
             // rulesTabControl
             // 
             this.rulesTabControl.Controls.Add(this.rulesTab);
+            this.rulesTabControl.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rulesTabControl.Location = new System.Drawing.Point(6, 227);
             this.rulesTabControl.Name = "rulesTabControl";
             this.rulesTabControl.SelectedIndex = 0;
@@ -234,9 +244,10 @@
             this.cb_losersLeave.Checked = true;
             this.cb_losersLeave.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cb_losersLeave.Enabled = false;
-            this.cb_losersLeave.Location = new System.Drawing.Point(3, 107);
+            this.cb_losersLeave.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cb_losersLeave.Location = new System.Drawing.Point(3, 109);
             this.cb_losersLeave.Name = "cb_losersLeave";
-            this.cb_losersLeave.Size = new System.Drawing.Size(200, 19);
+            this.cb_losersLeave.Size = new System.Drawing.Size(197, 19);
             this.cb_losersLeave.TabIndex = 3;
             this.cb_losersLeave.Text = "Losers Leave Ringside (Elimination)";
             this.cb_losersLeave.UseVisualStyleBackColor = true;
@@ -248,9 +259,10 @@
             this.cb_membersWait.Checked = true;
             this.cb_membersWait.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cb_membersWait.Enabled = false;
-            this.cb_membersWait.Location = new System.Drawing.Point(3, 83);
+            this.cb_membersWait.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cb_membersWait.Location = new System.Drawing.Point(3, 84);
             this.cb_membersWait.Name = "cb_membersWait";
-            this.cb_membersWait.Size = new System.Drawing.Size(221, 19);
+            this.cb_membersWait.Size = new System.Drawing.Size(219, 19);
             this.cb_membersWait.TabIndex = 2;
             this.cb_membersWait.Text = "Members Wait At Ringside (Elimination)";
             this.cb_membersWait.UseVisualStyleBackColor = true;
@@ -258,7 +270,7 @@
             // 
             // matchHelp
             // 
-            this.matchHelp.Font = new System.Drawing.Font("Impact", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.matchHelp.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.matchHelp.Location = new System.Drawing.Point(168, 5);
             this.matchHelp.Name = "matchHelp";
             this.matchHelp.Size = new System.Drawing.Size(48, 29);
@@ -277,6 +289,7 @@
             // cb_ttt
             // 
             this.cb_ttt.AutoSize = true;
+            this.cb_ttt.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cb_ttt.Location = new System.Drawing.Point(7, 7);
             this.cb_ttt.Name = "cb_ttt";
             this.cb_ttt.Size = new System.Drawing.Size(116, 19);
@@ -288,9 +301,10 @@
             // cb_boxing
             // 
             this.cb_boxing.AutoSize = true;
+            this.cb_boxing.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cb_boxing.Location = new System.Drawing.Point(6, 10);
             this.cb_boxing.Name = "cb_boxing";
-            this.cb_boxing.Size = new System.Drawing.Size(60, 19);
+            this.cb_boxing.Size = new System.Drawing.Size(58, 19);
             this.cb_boxing.TabIndex = 21;
             this.cb_boxing.Text = "Boxing";
             this.cb_boxing.UseVisualStyleBackColor = true;
@@ -299,9 +313,10 @@
             // cb_kickboxing
             // 
             this.cb_kickboxing.AutoSize = true;
+            this.cb_kickboxing.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cb_kickboxing.Location = new System.Drawing.Point(6, 35);
             this.cb_kickboxing.Name = "cb_kickboxing";
-            this.cb_kickboxing.Size = new System.Drawing.Size(85, 19);
+            this.cb_kickboxing.Size = new System.Drawing.Size(82, 19);
             this.cb_kickboxing.TabIndex = 22;
             this.cb_kickboxing.Text = "Kick Boxing";
             this.cb_kickboxing.UseVisualStyleBackColor = true;
@@ -310,9 +325,10 @@
             // removePosts
             // 
             this.removePosts.AutoSize = true;
+            this.removePosts.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.removePosts.Location = new System.Drawing.Point(3, 59);
             this.removePosts.Name = "removePosts";
-            this.removePosts.Size = new System.Drawing.Size(93, 19);
+            this.removePosts.Size = new System.Drawing.Size(95, 19);
             this.removePosts.TabIndex = 27;
             this.removePosts.Text = "Remove Posts";
             this.removePosts.UseVisualStyleBackColor = true;
@@ -321,9 +337,10 @@
             // removeRopes
             // 
             this.removeRopes.AutoSize = true;
+            this.removeRopes.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.removeRopes.Location = new System.Drawing.Point(3, 32);
             this.removeRopes.Name = "removeRopes";
-            this.removeRopes.Size = new System.Drawing.Size(95, 19);
+            this.removeRopes.Size = new System.Drawing.Size(98, 19);
             this.removeRopes.TabIndex = 26;
             this.removeRopes.Text = "Remove Ropes";
             this.removeRopes.UseVisualStyleBackColor = true;
@@ -332,9 +349,10 @@
             // 
             this.isk1mma.AutoSize = true;
             this.isk1mma.Enabled = false;
+            this.isk1mma.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.isk1mma.Location = new System.Drawing.Point(200, 36);
             this.isk1mma.Name = "isk1mma";
-            this.isk1mma.Size = new System.Drawing.Size(132, 19);
+            this.isk1mma.Size = new System.Drawing.Size(133, 19);
             this.isk1mma.TabIndex = 28;
             this.isk1mma.Text = "K-1/MMA Mixed Rules";
             this.isk1mma.UseVisualStyleBackColor = true;
@@ -343,9 +361,10 @@
             // cb_luchaTag
             // 
             this.cb_luchaTag.AutoSize = true;
-            this.cb_luchaTag.Location = new System.Drawing.Point(7, 31);
+            this.cb_luchaTag.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cb_luchaTag.Location = new System.Drawing.Point(7, 37);
             this.cb_luchaTag.Name = "cb_luchaTag";
-            this.cb_luchaTag.Size = new System.Drawing.Size(104, 19);
+            this.cb_luchaTag.Size = new System.Drawing.Size(103, 19);
             this.cb_luchaTag.TabIndex = 29;
             this.cb_luchaTag.Text = "Lucha Tag Rules";
             this.cb_luchaTag.UseVisualStyleBackColor = true;
@@ -354,6 +373,7 @@
             // isAutoKo
             // 
             this.isAutoKo.AutoSize = true;
+            this.isAutoKo.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.isAutoKo.Location = new System.Drawing.Point(3, 8);
             this.isAutoKo.Name = "isAutoKo";
             this.isAutoKo.Size = new System.Drawing.Size(105, 19);
@@ -365,6 +385,7 @@
             // 
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
+            this.tabControl1.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tabControl1.Location = new System.Drawing.Point(6, 59);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -392,9 +413,10 @@
             // cb_survival
             // 
             this.cb_survival.AutoSize = true;
-            this.cb_survival.Location = new System.Drawing.Point(278, 6);
+            this.cb_survival.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cb_survival.Location = new System.Drawing.Point(279, 6);
             this.cb_survival.Name = "cb_survival";
-            this.cb_survival.Size = new System.Drawing.Size(92, 19);
+            this.cb_survival.Size = new System.Drawing.Size(91, 19);
             this.cb_survival.TabIndex = 31;
             this.cb_survival.Text = "Survival Road";
             this.cb_survival.UseVisualStyleBackColor = true;
@@ -403,9 +425,10 @@
             // cb_exElim
             // 
             this.cb_exElim.AutoSize = true;
-            this.cb_exElim.Location = new System.Drawing.Point(139, 31);
+            this.cb_exElim.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cb_exElim.Location = new System.Drawing.Point(139, 37);
             this.cb_exElim.Name = "cb_exElim";
-            this.cb_exElim.Size = new System.Drawing.Size(130, 19);
+            this.cb_exElim.Size = new System.Drawing.Size(128, 19);
             this.cb_exElim.TabIndex = 30;
             this.cb_exElim.Text = "Extended Elimination";
             this.cb_exElim.UseVisualStyleBackColor = true;
@@ -431,9 +454,10 @@
             // cb_sumo
             // 
             this.cb_sumo.AutoSize = true;
+            this.cb_sumo.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cb_sumo.Location = new System.Drawing.Point(112, 10);
             this.cb_sumo.Name = "cb_sumo";
-            this.cb_sumo.Size = new System.Drawing.Size(54, 19);
+            this.cb_sumo.Size = new System.Drawing.Size(52, 19);
             this.cb_sumo.TabIndex = 29;
             this.cb_sumo.Text = "Sumo";
             this.cb_sumo.UseVisualStyleBackColor = true;
@@ -452,15 +476,16 @@
             this.panel1.Controls.Add(this.cb_membersWait);
             this.panel1.Location = new System.Drawing.Point(650, 83);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(328, 134);
+            this.panel1.Size = new System.Drawing.Size(327, 134);
             this.panel1.TabIndex = 32;
             // 
             // cb_luchaFalls
             // 
             this.cb_luchaFalls.AutoSize = true;
-            this.cb_luchaFalls.Location = new System.Drawing.Point(3, 84);
+            this.cb_luchaFalls.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cb_luchaFalls.Location = new System.Drawing.Point(3, 85);
             this.cb_luchaFalls.Name = "cb_luchaFalls";
-            this.cb_luchaFalls.Size = new System.Drawing.Size(108, 19);
+            this.cb_luchaFalls.Size = new System.Drawing.Size(106, 19);
             this.cb_luchaFalls.TabIndex = 32;
             this.cb_luchaFalls.Text = "2/3 Falls (Lucha)";
             this.cb_luchaFalls.UseVisualStyleBackColor = true;
@@ -468,9 +493,10 @@
             // 
             // matchConfig
             // 
+            this.matchConfig.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.matchConfig.Location = new System.Drawing.Point(209, 8);
             this.matchConfig.Name = "matchConfig";
-            this.matchConfig.Size = new System.Drawing.Size(75, 23);
+            this.matchConfig.Size = new System.Drawing.Size(76, 23);
             this.matchConfig.TabIndex = 31;
             this.matchConfig.Text = "Setup";
             this.matchConfig.UseVisualStyleBackColor = true;
@@ -480,10 +506,10 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("NEWSFLASH", 9.75F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(795, 60);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(41, 17);
+            this.label1.Size = new System.Drawing.Size(39, 15);
             this.label1.TabIndex = 33;
             this.label1.Text = "Rules";
             // 
@@ -501,7 +527,7 @@
             this.Controls.Add(this.cb_normalMatch);
             this.Font = new System.Drawing.Font("NEWSFLASH", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "MoreMatchTypes_Form";
-            this.Text = "Extra Game Types";
+            this.Text = "Extra Match Types";
             this.Load += new System.EventHandler(this.MoreMatchTypes_Form_Load);
             this.rulesTabControl.ResumeLayout(false);
             this.rulesTab.ResumeLayout(false);

@@ -127,6 +127,7 @@
             this.groupBox4.Controls.Add(this.sr_wrestlerClear);
             this.groupBox4.Controls.Add(this.label20);
             this.groupBox4.Controls.Add(this.label19);
+            this.groupBox4.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox4.Location = new System.Drawing.Point(26, 210);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(474, 314);
@@ -137,9 +138,10 @@
             // sr_progressRefresh
             // 
             this.sr_progressRefresh.AutoSize = true;
-            this.sr_progressRefresh.Location = new System.Drawing.Point(99, 207);
+            this.sr_progressRefresh.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.sr_progressRefresh.Location = new System.Drawing.Point(112, 208);
             this.sr_progressRefresh.Name = "sr_progressRefresh";
-            this.sr_progressRefresh.Size = new System.Drawing.Size(46, 15);
+            this.sr_progressRefresh.Size = new System.Drawing.Size(44, 15);
             this.sr_progressRefresh.TabIndex = 72;
             this.sr_progressRefresh.TabStop = true;
             this.sr_progressRefresh.Text = "Refresh";
@@ -150,11 +152,11 @@
             this.sr_regenHP.AutoSize = true;
             this.sr_regenHP.Checked = true;
             this.sr_regenHP.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.sr_regenHP.Font = new System.Drawing.Font("NCAA Utah St Aggies Bold", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.sr_regenHP.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.sr_regenHP.ForeColor = System.Drawing.Color.Green;
             this.sr_regenHP.Location = new System.Drawing.Point(15, 183);
             this.sr_regenHP.Name = "sr_regenHP";
-            this.sr_regenHP.Size = new System.Drawing.Size(111, 15);
+            this.sr_regenHP.Size = new System.Drawing.Size(98, 19);
             this.sr_regenHP.TabIndex = 71;
             this.sr_regenHP.Text = "Regain Full HP";
             this.sr_regenHP.UseVisualStyleBackColor = true;
@@ -186,9 +188,10 @@
             // sr_simSecond
             // 
             this.sr_simSecond.AutoSize = true;
+            this.sr_simSecond.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.sr_simSecond.Location = new System.Drawing.Point(324, 194);
             this.sr_simSecond.Name = "sr_simSecond";
-            this.sr_simSecond.Size = new System.Drawing.Size(103, 19);
+            this.sr_simSecond.Size = new System.Drawing.Size(99, 19);
             this.sr_simSecond.TabIndex = 68;
             this.sr_simSecond.Text = "Control Second";
             this.sr_simSecond.UseVisualStyleBackColor = true;
@@ -197,7 +200,8 @@
             // sr_cutplay
             // 
             this.sr_cutplay.AutoSize = true;
-            this.sr_cutplay.Location = new System.Drawing.Point(154, 194);
+            this.sr_cutplay.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.sr_cutplay.Location = new System.Drawing.Point(158, 194);
             this.sr_cutplay.Name = "sr_cutplay";
             this.sr_cutplay.Size = new System.Drawing.Size(66, 19);
             this.sr_cutplay.TabIndex = 67;
@@ -232,11 +236,11 @@
             this.sr_simulate.AutoSize = true;
             this.sr_simulate.Checked = true;
             this.sr_simulate.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.sr_simulate.Font = new System.Drawing.Font("NCAA Utah St Aggies Bold", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.sr_simulate.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.sr_simulate.ForeColor = System.Drawing.Color.Red;
             this.sr_simulate.Location = new System.Drawing.Point(324, 167);
             this.sr_simulate.Name = "sr_simulate";
-            this.sr_simulate.Size = new System.Drawing.Size(81, 15);
+            this.sr_simulate.Size = new System.Drawing.Size(69, 19);
             this.sr_simulate.TabIndex = 64;
             this.sr_simulate.Text = "Simulate";
             this.sr_simulate.UseVisualStyleBackColor = true;
@@ -245,6 +249,7 @@
             // sr_resetContinues
             // 
             this.sr_resetContinues.AutoSize = true;
+            this.sr_resetContinues.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.sr_resetContinues.Location = new System.Drawing.Point(12, 162);
             this.sr_resetContinues.Name = "sr_resetContinues";
             this.sr_resetContinues.Size = new System.Drawing.Size(35, 15);
@@ -256,6 +261,7 @@
             // sr_resetMatches
             // 
             this.sr_resetMatches.AutoSize = true;
+            this.sr_resetMatches.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.sr_resetMatches.Location = new System.Drawing.Point(78, 162);
             this.sr_resetMatches.Name = "sr_resetMatches";
             this.sr_resetMatches.Size = new System.Drawing.Size(35, 15);
@@ -276,9 +282,10 @@
             // label27
             // 
             this.label27.AutoSize = true;
+            this.label27.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label27.Location = new System.Drawing.Point(321, 122);
             this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(62, 15);
+            this.label27.Size = new System.Drawing.Size(72, 15);
             this.label27.TabIndex = 61;
             this.label27.Text = "Match Type";
             // 
@@ -287,7 +294,7 @@
             this.sr_matches.Location = new System.Drawing.Point(82, 138);
             this.sr_matches.Name = "sr_matches";
             this.sr_matches.ReadOnly = true;
-            this.sr_matches.Size = new System.Drawing.Size(57, 22);
+            this.sr_matches.Size = new System.Drawing.Size(57, 20);
             this.sr_matches.TabIndex = 60;
             // 
             // sr_continues
@@ -295,15 +302,16 @@
             this.sr_continues.Location = new System.Drawing.Point(13, 138);
             this.sr_continues.Name = "sr_continues";
             this.sr_continues.ReadOnly = true;
-            this.sr_continues.Size = new System.Drawing.Size(57, 22);
+            this.sr_continues.Size = new System.Drawing.Size(57, 20);
             this.sr_continues.TabIndex = 59;
             // 
             // sr_controlBoth
             // 
             this.sr_controlBoth.AutoSize = true;
-            this.sr_controlBoth.Location = new System.Drawing.Point(154, 167);
+            this.sr_controlBoth.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.sr_controlBoth.Location = new System.Drawing.Point(158, 167);
             this.sr_controlBoth.Name = "sr_controlBoth";
-            this.sr_controlBoth.Size = new System.Drawing.Size(141, 19);
+            this.sr_controlBoth.Size = new System.Drawing.Size(136, 19);
             this.sr_controlBoth.TabIndex = 58;
             this.sr_controlBoth.Text = "Control Both Wrestlers";
             this.sr_controlBoth.UseVisualStyleBackColor = true;
@@ -324,34 +332,38 @@
             // label26
             // 
             this.label26.AutoSize = true;
+            this.label26.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label26.Location = new System.Drawing.Point(12, 208);
             this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(83, 15);
+            this.label26.Size = new System.Drawing.Size(97, 15);
             this.label26.TabIndex = 55;
             this.label26.Text = "Match Progress";
             // 
             // label25
             // 
             this.label25.AutoSize = true;
+            this.label25.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label25.Location = new System.Drawing.Point(78, 120);
             this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(49, 15);
+            this.label25.Size = new System.Drawing.Size(55, 15);
             this.label25.TabIndex = 53;
             this.label25.Text = "Matches";
             // 
             // label24
             // 
             this.label24.AutoSize = true;
+            this.label24.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label24.Location = new System.Drawing.Point(7, 120);
             this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(58, 15);
+            this.label24.Size = new System.Drawing.Size(64, 15);
             this.label24.TabIndex = 51;
             this.label24.Text = "Continues";
             // 
             // sr_tag
             // 
             this.sr_tag.AutoSize = true;
-            this.sr_tag.Location = new System.Drawing.Point(154, 141);
+            this.sr_tag.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.sr_tag.Location = new System.Drawing.Point(158, 141);
             this.sr_tag.Name = "sr_tag";
             this.sr_tag.Size = new System.Drawing.Size(86, 19);
             this.sr_tag.TabIndex = 50;
@@ -362,9 +374,10 @@
             // 
             this.sr_single.AutoSize = true;
             this.sr_single.Checked = true;
-            this.sr_single.Location = new System.Drawing.Point(154, 120);
+            this.sr_single.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.sr_single.Location = new System.Drawing.Point(158, 120);
             this.sr_single.Name = "sr_single";
-            this.sr_single.Size = new System.Drawing.Size(107, 19);
+            this.sr_single.Size = new System.Drawing.Size(104, 19);
             this.sr_single.TabIndex = 49;
             this.sr_single.TabStop = true;
             this.sr_single.Text = "Singles Matches";
@@ -397,18 +410,20 @@
             // label20
             // 
             this.label20.AutoSize = true;
+            this.label20.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label20.Location = new System.Drawing.Point(5, 69);
             this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(45, 15);
+            this.label20.Size = new System.Drawing.Size(48, 15);
             this.label20.TabIndex = 46;
             this.label20.Text = "Second";
             // 
             // label19
             // 
             this.label19.AutoSize = true;
+            this.label19.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label19.Location = new System.Drawing.Point(5, 21);
             this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(51, 15);
+            this.label19.Size = new System.Drawing.Size(56, 15);
             this.label19.TabIndex = 45;
             this.label19.Text = "Wrestler";
             // 
@@ -420,6 +435,7 @@
             this.groupBox3.Controls.Add(this.sr_removeAll);
             this.groupBox3.Controls.Add(this.sr_RemoveOne);
             this.groupBox3.Controls.Add(this.sr_teamList);
+            this.groupBox3.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox3.Location = new System.Drawing.Point(506, 210);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(489, 309);
@@ -430,9 +446,10 @@
             // sr_random
             // 
             this.sr_random.AutoSize = true;
+            this.sr_random.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.sr_random.Location = new System.Drawing.Point(124, 18);
             this.sr_random.Name = "sr_random";
-            this.sr_random.Size = new System.Drawing.Size(100, 19);
+            this.sr_random.Size = new System.Drawing.Size(99, 19);
             this.sr_random.TabIndex = 5;
             this.sr_random.Text = "Random Select";
             this.sr_random.UseVisualStyleBackColor = true;
@@ -448,14 +465,16 @@
             // label18
             // 
             this.label18.AutoSize = true;
+            this.label18.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label18.Location = new System.Drawing.Point(8, 23);
             this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(64, 15);
+            this.label18.Size = new System.Drawing.Size(73, 15);
             this.label18.TabIndex = 3;
             this.label18.Text = "Team Name";
             // 
             // sr_removeAll
             // 
+            this.sr_removeAll.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.sr_removeAll.Location = new System.Drawing.Point(281, 271);
             this.sr_removeAll.Name = "sr_removeAll";
             this.sr_removeAll.Size = new System.Drawing.Size(190, 27);
@@ -466,6 +485,7 @@
             // 
             // sr_RemoveOne
             // 
+            this.sr_RemoveOne.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.sr_RemoveOne.Location = new System.Drawing.Point(7, 271);
             this.sr_RemoveOne.Name = "sr_RemoveOne";
             this.sr_RemoveOne.Size = new System.Drawing.Size(188, 27);
@@ -516,6 +536,7 @@
             // 
             // sr_start
             // 
+            this.sr_start.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.sr_start.Location = new System.Drawing.Point(863, 17);
             this.sr_start.Name = "sr_start";
             this.sr_start.Size = new System.Drawing.Size(87, 27);
@@ -527,9 +548,10 @@
             // label12
             // 
             this.label12.AutoSize = true;
+            this.label12.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label12.Location = new System.Drawing.Point(806, 0);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(56, 15);
+            this.label12.Size = new System.Drawing.Size(59, 15);
             this.label12.TabIndex = 18;
             this.label12.Text = "Difficulty";
             // 
@@ -546,9 +568,10 @@
             // label13
             // 
             this.label13.AutoSize = true;
+            this.label13.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label13.Location = new System.Drawing.Point(8, 1);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(46, 15);
+            this.label13.Size = new System.Drawing.Size(52, 15);
             this.label13.TabIndex = 11;
             this.label13.Text = "Referee";
             // 
@@ -565,18 +588,20 @@
             // label14
             // 
             this.label14.AutoSize = true;
+            this.label14.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label14.Location = new System.Drawing.Point(540, 1);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(64, 15);
+            this.label14.Size = new System.Drawing.Size(72, 15);
             this.label14.TabIndex = 17;
             this.label14.Text = "Match BGM";
             // 
             // label15
             // 
             this.label15.AutoSize = true;
+            this.label15.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label15.Location = new System.Drawing.Point(178, 1);
             this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(37, 15);
+            this.label15.Size = new System.Drawing.Size(42, 15);
             this.label15.TabIndex = 12;
             this.label15.Text = "Venue";
             // 
@@ -613,18 +638,20 @@
             // label16
             // 
             this.label16.AutoSize = true;
+            this.label16.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label16.Location = new System.Drawing.Point(472, 1);
             this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(39, 15);
+            this.label16.Size = new System.Drawing.Size(42, 15);
             this.label16.TabIndex = 15;
             this.label16.Text = "Speed";
             // 
             // label17
             // 
             this.label17.AutoSize = true;
+            this.label17.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label17.Location = new System.Drawing.Point(299, 1);
             this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(29, 15);
+            this.label17.Size = new System.Drawing.Size(33, 15);
             this.label17.TabIndex = 13;
             this.label17.Text = "Ring";
             // 
@@ -651,9 +678,10 @@
             // sr_addAll
             // 
             this.sr_addAll.AutoSize = true;
+            this.sr_addAll.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.sr_addAll.Location = new System.Drawing.Point(608, 100);
             this.sr_addAll.Name = "sr_addAll";
-            this.sr_addAll.Size = new System.Drawing.Size(119, 19);
+            this.sr_addAll.Size = new System.Drawing.Size(115, 19);
             this.sr_addAll.TabIndex = 14;
             this.sr_addAll.TabStop = true;
             this.sr_addAll.Text = "Add All Opponents";
@@ -661,6 +689,7 @@
             // 
             // sr_Add
             // 
+            this.sr_Add.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.sr_Add.Location = new System.Drawing.Point(864, 100);
             this.sr_Add.Name = "sr_Add";
             this.sr_Add.Size = new System.Drawing.Size(87, 27);
@@ -672,6 +701,7 @@
             // 
             // sr_Refresh
             // 
+            this.sr_Refresh.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.sr_Refresh.Location = new System.Drawing.Point(864, 66);
             this.sr_Refresh.Name = "sr_Refresh";
             this.sr_Refresh.Size = new System.Drawing.Size(87, 27);
@@ -683,9 +713,10 @@
             // sr_addSingle
             // 
             this.sr_addSingle.AutoSize = true;
+            this.sr_addSingle.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.sr_addSingle.Location = new System.Drawing.Point(608, 74);
             this.sr_addSingle.Name = "sr_addSingle";
-            this.sr_addSingle.Size = new System.Drawing.Size(130, 19);
+            this.sr_addSingle.Size = new System.Drawing.Size(127, 19);
             this.sr_addSingle.TabIndex = 9;
             this.sr_addSingle.TabStop = true;
             this.sr_addSingle.Text = "Add Single Opponent";
@@ -694,9 +725,10 @@
             // sr_addSecond
             // 
             this.sr_addSecond.AutoSize = true;
+            this.sr_addSecond.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.sr_addSecond.Location = new System.Drawing.Point(421, 100);
             this.sr_addSecond.Name = "sr_addSecond";
-            this.sr_addSecond.Size = new System.Drawing.Size(152, 19);
+            this.sr_addSecond.Size = new System.Drawing.Size(151, 19);
             this.sr_addSecond.TabIndex = 8;
             this.sr_addSecond.TabStop = true;
             this.sr_addSecond.Text = "Add Second (Player Team)";
@@ -706,9 +738,10 @@
             // 
             this.sr_addWrestler.AutoSize = true;
             this.sr_addWrestler.Checked = true;
+            this.sr_addWrestler.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.sr_addWrestler.Location = new System.Drawing.Point(421, 74);
             this.sr_addWrestler.Name = "sr_addWrestler";
-            this.sr_addWrestler.Size = new System.Drawing.Size(158, 19);
+            this.sr_addWrestler.Size = new System.Drawing.Size(157, 19);
             this.sr_addWrestler.TabIndex = 7;
             this.sr_addWrestler.TabStop = true;
             this.sr_addWrestler.Text = "Add Wrestler (Player Team)";
@@ -717,9 +750,10 @@
             // label21
             // 
             this.label21.AutoSize = true;
+            this.label21.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label21.Location = new System.Drawing.Point(3, 61);
             this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(82, 15);
+            this.label21.Size = new System.Drawing.Size(93, 15);
             this.label21.TabIndex = 6;
             this.label21.Text = "Search Results";
             // 
@@ -749,23 +783,26 @@
             // label22
             // 
             this.label22.AutoSize = true;
+            this.label22.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label22.Location = new System.Drawing.Point(418, 9);
             this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(78, 15);
+            this.label22.Size = new System.Drawing.Size(92, 15);
             this.label22.TabIndex = 3;
             this.label22.Text = "Promotion List";
             // 
             // label23
             // 
             this.label23.AutoSize = true;
+            this.label23.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label23.Location = new System.Drawing.Point(3, 9);
             this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(89, 15);
+            this.label23.Size = new System.Drawing.Size(99, 15);
             this.label23.TabIndex = 2;
             this.label23.Text = "Wrestler Search";
             // 
             // sr_Search
             // 
+            this.sr_Search.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.sr_Search.Location = new System.Drawing.Point(864, 31);
             this.sr_Search.Name = "sr_Search";
             this.sr_Search.Size = new System.Drawing.Size(87, 27);
@@ -776,7 +813,7 @@
             // 
             // sr_searchInput
             // 
-            this.sr_searchInput.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.sr_searchInput.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.sr_searchInput.Location = new System.Drawing.Point(7, 31);
             this.sr_searchInput.Name = "sr_searchInput";
             this.sr_searchInput.Size = new System.Drawing.Size(391, 20);
@@ -784,6 +821,7 @@
             // 
             // formClose
             // 
+            this.formClose.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.formClose.Location = new System.Drawing.Point(473, 537);
             this.formClose.Name = "formClose";
             this.formClose.Size = new System.Drawing.Size(87, 27);
@@ -794,6 +832,7 @@
             // 
             // btn_export
             // 
+            this.btn_export.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn_export.Location = new System.Drawing.Point(189, 537);
             this.btn_export.Name = "btn_export";
             this.btn_export.Size = new System.Drawing.Size(87, 27);
@@ -805,6 +844,7 @@
             // 
             // btn_import
             // 
+            this.btn_import.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btn_import.Location = new System.Drawing.Point(84, 537);
             this.btn_import.Name = "btn_import";
             this.btn_import.Size = new System.Drawing.Size(87, 27);

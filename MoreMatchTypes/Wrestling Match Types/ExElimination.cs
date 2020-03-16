@@ -32,6 +32,11 @@ namespace MoreMatchTypes.Wrestling_Match_Types
         public static void SetUpMatch()
         {
             isExElim = MoreMatchTypes_Form.moreMatchTypesForm.cb_exElim.Checked;
+
+            if (!isExElim)
+            {
+                return;
+            }
             endMatch = false;
             recentLoserIndex = -1;
 
@@ -78,6 +83,10 @@ namespace MoreMatchTypes.Wrestling_Match_Types
             Group = "MoreMatchTypes")]
         public static void SetUpPositions()
         {
+            if (!isExElim)
+            {
+                return;
+            }
             SetSeconds();
         }
 
@@ -114,6 +123,10 @@ namespace MoreMatchTypes.Wrestling_Match_Types
             InjectFlags = HookInjectFlags.ModifyReturn, Group = "MoreMatchTypes")]
         public static bool CheckMatchEnd()
         {
+            if (!isExElim)
+            {
+                return false;
+            }
             MatchMain main = MatchMain.inst;
             if (!main.isMatchEnd || endMatch)
             {
