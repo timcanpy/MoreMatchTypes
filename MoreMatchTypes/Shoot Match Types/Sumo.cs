@@ -211,20 +211,22 @@ namespace MoreMatchTypes
             }
         }
 
-        [Hook(TargetClass = "MatchMain", TargetMethod = "InitRound", InjectionLocation = int.MaxValue, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.PassInvokingInstance, Group = "MoreMatchTypes")]
-        public static void PerformCeremony(MatchMain m)
-        {
-            if (!isSumo)
-            {
-                return;
-            }
-            Player plObj = PlayerMan.inst.GetPlObj(0);
-            plObj.animator.StartSlotAnm_Immediately(SkillSlotEnum.Performance_1, 0, true, 4);
+        //[Hook(TargetClass = "MatchMain", TargetMethod = "InitRound", InjectionLocation = int.MaxValue, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.PassInvokingInstance, Group = "MoreMatchTypes")]
+        //public static void PerformCeremony(MatchMain m)
+        //{
+        //    if (!isSumo)
+        //    {
+        //        return;
+        //    }
+        //    Player plObj = PlayerMan.inst.GetPlObj(0);
+        //    plObj.TargetPlIdx = 4;
+        //    plObj.animator.StartSlotAnm_Immediately(SkillSlotEnum.Performance_1, 0, true, 4);
 
-            plObj = PlayerMan.inst.GetPlObj(4);
-            plObj.animator.StartSlotAnm_Immediately(SkillSlotEnum.Performance_1, 0, true, 0);
+        //    plObj = PlayerMan.inst.GetPlObj(4);
+        //    plObj.TargetPlIdx = 0;
+        //    plObj.animator.StartSlotAnm_Immediately(SkillSlotEnum.Performance_1, 0, true, 0);
 
-        }
+        //}
 
         [Hook(TargetClass = "Menu_Result", TargetMethod = "Set_FinishSkill", InjectionLocation = 0, InjectDirection = HookInjectDirection.After, InjectFlags = HookInjectFlags.PassParametersRef, Group = "MoreMatchTypes")]
         public static void SetResultScreenDisplay(ref string str)

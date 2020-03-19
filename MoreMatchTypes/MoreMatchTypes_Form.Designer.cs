@@ -44,7 +44,6 @@
             this.rulesTabControl = new System.Windows.Forms.TabControl();
             this.rulesTab = new System.Windows.Forms.TabPage();
             this.cb_losersLeave = new System.Windows.Forms.CheckBox();
-            this.cb_membersWait = new System.Windows.Forms.CheckBox();
             this.matchHelp = new System.Windows.Forms.Button();
             this.tt_normal = new System.Windows.Forms.ToolTip(this.components);
             this.cb_ttt = new System.Windows.Forms.RadioButton();
@@ -241,32 +240,14 @@
             // cb_losersLeave
             // 
             this.cb_losersLeave.AutoSize = true;
-            this.cb_losersLeave.Checked = true;
-            this.cb_losersLeave.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cb_losersLeave.Enabled = false;
             this.cb_losersLeave.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cb_losersLeave.Location = new System.Drawing.Point(3, 109);
+            this.cb_losersLeave.Location = new System.Drawing.Point(3, 85);
             this.cb_losersLeave.Name = "cb_losersLeave";
             this.cb_losersLeave.Size = new System.Drawing.Size(197, 19);
             this.cb_losersLeave.TabIndex = 3;
             this.cb_losersLeave.Text = "Losers Leave Ringside (Elimination)";
             this.cb_losersLeave.UseVisualStyleBackColor = true;
             this.cb_losersLeave.Visible = false;
-            // 
-            // cb_membersWait
-            // 
-            this.cb_membersWait.AutoSize = true;
-            this.cb_membersWait.Checked = true;
-            this.cb_membersWait.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cb_membersWait.Enabled = false;
-            this.cb_membersWait.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cb_membersWait.Location = new System.Drawing.Point(3, 84);
-            this.cb_membersWait.Name = "cb_membersWait";
-            this.cb_membersWait.Size = new System.Drawing.Size(219, 19);
-            this.cb_membersWait.TabIndex = 2;
-            this.cb_membersWait.Text = "Members Wait At Ringside (Elimination)";
-            this.cb_membersWait.UseVisualStyleBackColor = true;
-            this.cb_membersWait.Visible = false;
             // 
             // matchHelp
             // 
@@ -473,7 +454,6 @@
             this.panel1.Controls.Add(this.isAutoKo);
             this.panel1.Controls.Add(this.removePosts);
             this.panel1.Controls.Add(this.cb_losersLeave);
-            this.panel1.Controls.Add(this.cb_membersWait);
             this.panel1.Location = new System.Drawing.Point(650, 83);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(327, 134);
@@ -558,7 +538,6 @@
         public System.Windows.Forms.Label lbl_dq;
         private System.Windows.Forms.TabPage rulesTab;
         public System.Windows.Forms.RadioButton cb_elimination;
-        public System.Windows.Forms.CheckBox cb_membersWait;
         public System.Windows.Forms.CheckBox cb_losersLeave;
         public System.Windows.Forms.TabControl rulesTabControl;
         public System.Windows.Forms.ToolTip tt_normal;

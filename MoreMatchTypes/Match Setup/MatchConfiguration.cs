@@ -496,6 +496,5 @@ namespace MatchConfig
 
             return matchWrestlerInfo;
         }
-
     }
 }

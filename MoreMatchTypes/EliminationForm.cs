@@ -142,7 +142,7 @@ namespace MoreMatchTypes
         {
             String[] venues = MatchConfiguration.LoadVenue();
             foreach (String venue in venues)
-            {
+            {        
                 el_venueList.Items.Add(venue);
             }
 
@@ -577,7 +577,7 @@ namespace MoreMatchTypes
             settings.isFoulCount = true;
             //settings.entranceSceneMode = EntranceSceneMode.EachWrestler;
             settings.isSkipEntranceScene = true;
-            
+
             //Need to set a valid MatchBGM type  here, then override it on match start if necessary.
             if (el_bgm.SelectedIndex > 2)
             {
@@ -676,6 +676,7 @@ namespace MoreMatchTypes
         {
             SaveExEliminationData(true);
             UnityEngine.SceneManagement.SceneManager.LoadScene("Match");
+            this.Hide();
         }
         #endregion
 

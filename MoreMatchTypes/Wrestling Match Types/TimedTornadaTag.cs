@@ -42,7 +42,7 @@ namespace MoreMatchTypes
                 settings.isTornadoBattle = true;
                 settings.isCutPlay = false;
                 critRate = settings.CriticalRate;
-                outOfRingCount = settings.isOutOfRingCount;
+                outOfRingCount = false;
                 settings.VictoryCondition = VictoryConditionEnum.OnlyEscape;
             }
         }
@@ -131,6 +131,7 @@ namespace MoreMatchTypes
             }
         }
 
+        #region Helper Methods
         //Ensure that the match is One vs One
         private static bool IsOneOnOne()
         {
@@ -230,5 +231,6 @@ namespace MoreMatchTypes
                 changeFlag = "blue";
             }
         }
+        #endregion
     }
 }

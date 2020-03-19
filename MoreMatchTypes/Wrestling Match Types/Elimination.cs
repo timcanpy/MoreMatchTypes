@@ -11,6 +11,7 @@ namespace MoreMatchTypes
     [FieldAccess(Class = "MatchMain", Field = "InitMatch", Group = "MoreMatchTypes"), FieldAccess(Class = "MatchMain", Field = "InitRound", Group = "MoreMatchTypes"), FieldAccess(Class = "Referee", Field = "CheckMatchEnd", Group = "MoreMatchTypes")]
     [FieldAccess(Class = "PlayerForcedController", Field = "FoceControl_SecondStandby", Group = "MoreMatchTypes")]
     [FieldAccess(Class = "PlayerForcedController", Field = "FoceControl_LoseAndExit_ToStage", Group = "MoreMatchTypes")]
+    [FieldAccess(Class = "Referee", Field = "ProcesskMatchEnd_Normal", Group = "MoreMatchTypes")]
     public class Elimination
     {
         #region Variables
@@ -19,8 +20,8 @@ namespace MoreMatchTypes
         public static string[] teamNames = new string[2];
         public static Queue<String> blueTeamMembers;
         public static Queue<String> redTeamMembers;
+        public static bool endMatch;
         public static int[] memberTrack;
-        public static bool endRound;
         public static int loserTrack;
         public static bool isElimination;
         public static MenuPadKind[] padControls;
@@ -52,12 +53,12 @@ namespace MoreMatchTypes
             }
 
             //Set variables for the match type
+            endMatch = false;
             teamNames = new string[2];
             memberTrack = new int[2];
-            endRound = false;
-            loserTrack = 0;
-            settings.isSkipEntranceScene = true;
-            settings.CriticalRate = CriticalRateEnum.Half;
+            memberTrack[0] = 0;
+            memberTrack[1] = 0;
+            loserTrack = -1;
             SetTeamNames();
             SetTeamMembers();
             SetPadControls();
@@ -70,64 +71,64 @@ namespace MoreMatchTypes
             {
                 return;
             }
-
+            #region Old Code
             //Settings for the start of a match
-            if (!endRound)
-            {
-                //Setting up team members to track; this will be decreased as a team loses.
-                memberTrack[0] = 0;
-                memberTrack[1] = 0;
-            }
-            else
-            {
-                endRound = false;
+            //if (!endRound)
+            //{
+            //    //Setting up team members to track; this will be decreased as a team loses.
+            //    memberTrack[0] = 0;
+            //    memberTrack[1] = 0;
+            //}
+            //else
+            //{
+            //    endRound = false;
 
-                //Removing members from the losing team
-                if (loserTrack == 0)
-                {
-                    Player plObj = PlayerMan.inst.GetPlObj(memberTrack[0]);
+            //    //Removing members from the losing team
+            //    if (loserTrack == 0)
+            //    {
+            //        Player plObj = PlayerMan.inst.GetPlObj(memberTrack[0]);
 
-                    SetLoserState(memberTrack[0]);
-                    memberTrack[0]++;
-                    blueTeamMembers.Dequeue();
+            //        SetLoserState(memberTrack[0]);
+            //        memberTrack[0]++;
+            //        blueTeamMembers.Dequeue();
 
-                    ActivateMember(memberTrack[0]);
-                }
-                else if (loserTrack == 1)
-                {
-                    Player plObj = PlayerMan.inst.GetPlObj(memberTrack[1] + 4);
+            //        ActivateMember(memberTrack[0]);
+            //    }
+            //    else if (loserTrack == 1)
+            //    {
+            //        Player plObj = PlayerMan.inst.GetPlObj(memberTrack[1] + 4);
 
-                    SetLoserState(memberTrack[1] + 4);
-                    memberTrack[1]++;
-                    redTeamMembers.Dequeue();
+            //        SetLoserState(memberTrack[1] + 4);
+            //        memberTrack[1]++;
+            //        redTeamMembers.Dequeue();
 
-                    ActivateMember(memberTrack[1] + 4);
-                }
-                //Handle double count outs
-                else if (loserTrack == 2)
-                {
-                    Player plObj;
+            //        ActivateMember(memberTrack[1] + 4);
+            //    }
+            //    //Handle double count outs
+            //    else if (loserTrack == 2)
+            //    {
+            //        Player plObj;
 
-                    //Blue Team
-                    plObj = PlayerMan.inst.GetPlObj(memberTrack[0]);
+            //        //Blue Team
+            //        plObj = PlayerMan.inst.GetPlObj(memberTrack[0]);
 
-                    SetLoserState(memberTrack[0]);
-                    memberTrack[0]++;
-                    blueTeamMembers.Dequeue();
+            //        SetLoserState(memberTrack[0]);
+            //        memberTrack[0]++;
+            //        blueTeamMembers.Dequeue();
 
-                    ActivateMember(memberTrack[0]);
+            //        ActivateMember(memberTrack[0]);
 
-                    //Red Team
-                    plObj = PlayerMan.inst.GetPlObj(memberTrack[1] + 4);
+            //        //Red Team
+            //        plObj = PlayerMan.inst.GetPlObj(memberTrack[1] + 4);
 
-                    SetLoserState(memberTrack[1] + 4);
-                    memberTrack[1]++;
-                    redTeamMembers.Dequeue();
+            //        SetLoserState(memberTrack[1] + 4);
+            //        memberTrack[1]++;
+            //        redTeamMembers.Dequeue();
 
-                    ActivateMember(memberTrack[1] + 4);
-                }
-            }
-
+            //        ActivateMember(memberTrack[1] + 4);
+            //    }
+            //}
+            #endregion
             SetSeconds();
         }
 
@@ -172,15 +173,10 @@ namespace MoreMatchTypes
             EndRound();
         }
 
-        [Hook(TargetClass = "Referee", TargetMethod = "CheckMatchEnd", InjectionLocation = 0, InjectFlags = HookInjectFlags.ModifyReturn, Group = "MoreMatchTypes")]
+        [Hook(TargetClass = "Referee", TargetMethod = "ProcesskMatchEnd_Normal", InjectionLocation = 0, InjectFlags = HookInjectFlags.ModifyReturn, Group = "MoreMatchTypes")]
         public static bool CheckMatchEnd()
         {
             if (!isElimination)
-            {
-                return false;
-            }
-            MatchMain main = MatchMain.inst;
-            if (!main.isMatchEnd)
             {
                 return false;
             }
@@ -197,7 +193,7 @@ namespace MoreMatchTypes
                 }
 
                 plObj.isKO = false;
-                if (plObj.isLoseAndStop)
+                if (plObj.isLose)
                 {
                     //Ensure that we ignore members that have already lost
                     if (i < 4 && i == memberTrack[0])
@@ -227,7 +223,7 @@ namespace MoreMatchTypes
             {
                 if (blueTeamMembers.Count == 1)
                 {
-                    //EndMatch(-1);
+                    endMatch = true;
                     return false;
                 }
                 else
@@ -241,7 +237,7 @@ namespace MoreMatchTypes
             {
                 if (redTeamMembers.Count == 1)
                 {
-                    //EndMatch(-1);
+                    endMatch = true;
                     return false;
                 }
                 else
@@ -254,6 +250,7 @@ namespace MoreMatchTypes
             else
             {
                 //There's an error if we reach this point.
+                L.D("EliminationError: Reached point where loser track is zero");
                 return false;
             }
         }
@@ -405,7 +402,12 @@ namespace MoreMatchTypes
                     continue;
                 }
 
-                //Ensure losers are forced to leave ringside if applicable
+                if (plObj.isIntruder)
+                {
+                    continue;
+                }
+
+                //Force players to leave ring side
                 if (MoreMatchTypes_Form.moreMatchTypesForm.cb_losersLeave.Checked && i < 4 && i < memberTrack[0])
                 {
                     plObj.Start_ForceControl(ForceCtrlEnum.LoseAndExit);
@@ -418,19 +420,8 @@ namespace MoreMatchTypes
                     continue;
                 }
 
-                if (MoreMatchTypes_Form.moreMatchTypesForm.cb_membersWait.Checked)
-                {
-                    plObj.isSecond = true;
-                    plObj.Start_ForceControl(ForceCtrlEnum.SecondStanbdby);
-                }
-                else
-                {
-                    //Error - Player is not leaving ringside at match start.
-                    plObj.Zone = ZoneEnum.StageEntrance;
-                    plObj.isSecond = true;
-                    plObj.Start_ForceControl(ForceCtrlEnum.LoseAndExit);
-                }
-
+                plObj.isSecond = true;
+                plObj.Start_ForceControl(ForceCtrlEnum.SecondStanbdby);
                 plObj.hasRight = false;
             }
         }
@@ -525,12 +516,12 @@ namespace MoreMatchTypes
                     continue;
                 }
 
-                if (plObj.isSecond || plObj.isIntruder)
+                if (plObj.isIntruder)
                 {
                     continue;
                 }
 
-                if (i < 4 )
+                if (i < 4)
                 {
                     blueTeamMembers.Enqueue(DataBase.GetWrestlerFullName(plObj.WresParam));
                 }

@@ -6,7 +6,10 @@ using DG;
 using JetBrains.Annotations;
 using MatchConfig;
 using MoreMatchTypes.Data_Classes;
+using MoreMatchTypes.Match_Setup;
 
+
+//Error related to CheckMatchEnd, where isMatchEnd throws off the remaining checks for new matches
 namespace MoreMatchTypes.Wrestling_Match_Types
 {
     class ExElimination
@@ -24,20 +27,27 @@ namespace MoreMatchTypes.Wrestling_Match_Types
         public static int[] pointsRemaining;
         public static int[] wins;
         public static EliminationUpdate eUpdate;
-        public static bool endMatch;
+        //public static bool endMatch;
         #endregion
 
         [Hook(TargetClass = "MatchMain", TargetMethod = "Awake", InjectionLocation = int.MaxValue,
             InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.None, Group = "MoreMatchTypes")]
         public static void SetUpMatch()
         {
-            isExElim = MoreMatchTypes_Form.moreMatchTypesForm.cb_exElim.Checked;
+            MatchSetting settings = GlobalWork.inst.MatchSetting;
+            if (settings.BattleRoyalKind != BattleRoyalKindEnum.Off || settings.isS1Rule || settings.arena == VenueEnum.BarbedWire || settings.arena == VenueEnum.Cage || settings.arena == VenueEnum.Dodecagon)
+            {
+                isExElim = false;
+                ResetFormSettings();
+            }
 
+            isExElim = MoreMatchTypes_Form.moreMatchTypesForm.cb_exElim.Checked;
+            
             if (!isExElim)
             {
                 return;
             }
-            endMatch = false;
+            //endMatch = false;
             recentLoserIndex = -1;
 
             pointsRemaining = new Int32[2];
@@ -67,6 +77,9 @@ namespace MoreMatchTypes.Wrestling_Match_Types
             //Add remaining team members.
             pointsRemaining[0] = MoreMatchTypes_Form.ExEliminationData.BlueTeamMembers.Count;
             pointsRemaining[1] = MoreMatchTypes_Form.ExEliminationData.RedTeamMembers.Count;
+
+            L.D("Points For Blue: " + pointsRemaining[0]);
+            L.D("Points For Red: " + pointsRemaining[1]);
 
             //Adding custom class for handling character switching
             eUpdate = MatchMain.inst.gameObject.GetComponent<EliminationUpdate>();
@@ -103,7 +116,7 @@ namespace MoreMatchTypes.Wrestling_Match_Types
             //Ensure that we reset all tracking variables
             if (main.isInterruptedMatch || main.isMatchEnd)
             {
-                MoreMatchTypes_Form.ExEliminationData.InProgress = false;
+                ResetFormSettings();
             }
 
         }
@@ -119,7 +132,7 @@ namespace MoreMatchTypes.Wrestling_Match_Types
             Ring.inst.venueSetting.se_Scuffle = MatchSEEnum.NoUse;
         }
 
-        [Hook(TargetClass = "Referee", TargetMethod = "CheckMatchEnd", InjectionLocation = 0,
+        [Hook(TargetClass = "Referee", TargetMethod = "ProcesskMatchEnd_Normal", InjectionLocation = 0,
             InjectFlags = HookInjectFlags.ModifyReturn, Group = "MoreMatchTypes")]
         public static bool CheckMatchEnd()
         {
@@ -128,10 +141,12 @@ namespace MoreMatchTypes.Wrestling_Match_Types
                 return false;
             }
             MatchMain main = MatchMain.inst;
-            if (!main.isMatchEnd || endMatch)
-            {
-                return false;
-            }
+
+            //This should only proceed when the match has been completed.
+            //if (!main.isMatchEnd)
+            //{
+            //    return false;
+            //}
 
             Player plObj;
             CornerSide loserSide = CornerSide.Unknown;
@@ -145,16 +160,16 @@ namespace MoreMatchTypes.Wrestling_Match_Types
                     continue;
                 }
 
-                if (plObj.isSecond || plObj.isIntruder)
+                if (plObj.isSecond || plObj.isIntruder || plObj.isSleep)
                 {
                     continue;
                 }
                 plObj.isKO = false;
-                if (plObj.isLoseAndStop && (plObj.Zone == ZoneEnum.InRing || plObj.Zone == ZoneEnum.OutOfRing) && i != recentLoserIndex)
+                if (plObj.isLose && (plObj.Zone == ZoneEnum.InRing || plObj.Zone == ZoneEnum.OutOfRing) && i != recentLoserIndex)
                 {
                     L.D(DataBase.GetWrestlerFullName(plObj.WresParam) + " at index " + i + " has been eliminated.");
                     recentLoserIndex = i;
-                    
+
                     if (i <= 3)
                     {
                         loserSide = CornerSide.Blue;
@@ -172,10 +187,10 @@ namespace MoreMatchTypes.Wrestling_Match_Types
 
                     //Add loser to the queue for replacement processing      
                     bool continueMatch = UpdateTeam(loserSide);
-                  
+
                     main.isMatchEnd = !continueMatch;
-                    endMatch = !continueMatch;
-                    
+
+                    L.D("Continue Match: " + continueMatch);
                     return continueMatch;
                 }
                 else
@@ -238,10 +253,19 @@ namespace MoreMatchTypes.Wrestling_Match_Types
                     continue;
                 }
 
+                if (plObj.isIntruder)
+                {
+                    continue;
+                }
                 plObj.isSecond = true;
                 plObj.Start_ForceControl(ForceCtrlEnum.SecondStanbdby);
                 plObj.hasRight = false;
             }
+        }
+        public static void ResetFormSettings()
+        {
+            MoreMatchTypes_Form.ExEliminationData.InProgress = false;
+            MatchTypeHook.ResetRules();
         }
         public static bool UpdateTeam(CornerSide loserSide)
         {
@@ -320,6 +344,7 @@ namespace MoreMatchTypes.Wrestling_Match_Types
             plObj.hasRight = true;
             plObj.isSecond = false;
             plObj.isSleep = false;
+            
 
             //Ensure that player comes in fresh
             plObj.SetSP(65535f);

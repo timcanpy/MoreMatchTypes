@@ -836,7 +836,6 @@ namespace MoreMatchTypes
         private void HideAllOptions()
         {
             cb_luchaFalls.Visible = false;
-            cb_membersWait.Visible = false;
             cb_losersLeave.Visible = false;
         }
         private void ShowOptions()
@@ -845,12 +844,7 @@ namespace MoreMatchTypes
             {
                 cb_losersLeave.Visible = true;
             }
-
-            if (cb_elimination.Checked || cb_exElim.Checked)
-            {
-                cb_membersWait.Visible = true;
-            }
-
+            
             if (cb_luchaTag.Checked)
             {
                 cb_luchaFalls.Visible = true;

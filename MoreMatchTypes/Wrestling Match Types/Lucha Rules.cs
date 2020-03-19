@@ -109,9 +109,10 @@ namespace MoreMatchTypes.Wrestling_Match_Types
                 Player legalInRing = IsInRing(legalBlue) ? legalBlue : legalRed;
                 
                 //New condition, if the legal man inside the ring is running then the auto-tag cannot be made
-                if (((referee.RefeCount >= countLimit && legalInRing.State != PlStateEnum.Run && legalInRing.State != PlStateEnum.RopeRebound) || NoLegalManInRing()) && PlayerMan.inst.GetPlayerNum_OutOfRingCount() != playerCount)
+                if (((referee.RefeCount >= countLimit && legalInRing.State != PlStateEnum.Run && legalInRing.State != PlStateEnum.RopeRebound)
+                     || NoLegalManInRing())
+                    && GetPlayersOutsideRing() != playerCount)
                 {
-                    L.D("LegalInRing State is " + legalInRing.State);
                     countLimit = -1;
                     SetLegalMen("");
                 }
@@ -126,6 +127,10 @@ namespace MoreMatchTypes.Wrestling_Match_Types
             InjectFlags = HookInjectFlags.ModifyReturn | HookInjectFlags.PassInvokingInstance, Group = "MoreMatchTypes")]
         public static bool ProcessPin(Referee r)
         {
+            if (!isLuchaTag)
+            {
+                return false;
+            }
             return CheckMatchEnd(r);
         }
 
@@ -200,17 +205,6 @@ namespace MoreMatchTypes.Wrestling_Match_Types
             string resultString = "Lucha Tag Match\n\n" + result;
             str = resultString;
         }
-
-        #region UI Methods
-
-        [Hook(TargetClass = "Menu_SceneManager", TargetMethod = ".ctor", InjectionLocation = int.MaxValue,
-            InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.PassInvokingInstance,
-            Group = "MoreMatchTypes")]
-        public static void AddLuchaButton(Menu_SceneManager manager)
-        {
-            //ModButtonManager.AddButton("Lucha Tag", "ラッチャー・タグ", "Take part in a Lucha Libre Tag match.", "Lucha Libreの試合に参加する", 200, Menu_SceneManager.MainMenuBtnType.BTN_TYPE_CHANGE_SCENE, Menu_SceneManager.SELECT_SCENE.BATTLE_ONENIGHT_NORMAL);
-        }
-        #endregion
 
         #region Helper Methods
         public static void SetTeamNames()
@@ -293,7 +287,6 @@ namespace MoreMatchTypes.Wrestling_Match_Types
         {
             if (!isLuchaTag)
             {
-                L.D("Not lucha tag rules");
                 return false;
             }
 
@@ -302,13 +295,11 @@ namespace MoreMatchTypes.Wrestling_Match_Types
             //Determine if a captain has lost
             if (loser == 0)
             {
-                L.D("Blue Captain lost");
                 points[1] = 2;
                 return false;
             }
             else if (loser == 4)
             {
-                L.D("Red Captain lost");
                 points[0] = 2;
                 return false;
             }
@@ -325,24 +316,20 @@ namespace MoreMatchTypes.Wrestling_Match_Types
                     points[0] = 2;
                 }
 
-                L.D("Player knocked out");
                 return false;
             }
 
             if (loser < 4)
             {
                 points[1]++;
-                L.D("Blue loses a point");
             }
             else if (loser > 4)
             {
                 points[0]++;
-                L.D("Red loses a point");
             }
 
             if (points[0] >= 2 || points[1] >= 2)
             {
-                L.D("Point total exceeded");
                 return false;
             }
 
@@ -555,6 +542,32 @@ namespace MoreMatchTypes.Wrestling_Match_Types
         private static int GetPlayerCount()
         {
             return MatchConfiguration.GetPlayerCount();
+        }
+        private static int GetPlayersOutsideRing()
+        {
+            int result = 0;
+            for (int i = 0; i < 8; i++)
+            {
+                Player pl = PlayerMan.inst.GetPlObj(i);
+
+                //Ignore if this spot is empty.
+                if (!pl)
+                {
+                    continue;
+                }
+
+                if (pl.isSecond || pl.isIntruder)
+                {
+                    continue;
+                }
+
+                if (!IsInRing(pl))
+                {
+                    result++;
+                }
+            }
+
+            return result;
         }
         #endregion
     }

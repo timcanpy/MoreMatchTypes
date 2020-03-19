@@ -13,7 +13,6 @@ namespace MoreMatchTypes.Match_Setup
             MoreMatchTypes_Form.moreMatchTypesForm.ResetModOptions();
         }
         
-
         public static void SetLuchaRules()
         {
             MoreMatchTypes_Form.moreMatchTypesForm.cb_normalMatch.Checked = false;
@@ -33,6 +32,15 @@ namespace MoreMatchTypes.Match_Setup
         {
             MoreMatchTypes_Form.moreMatchTypesForm.cb_normalMatch.Checked = false;
             MoreMatchTypes_Form.moreMatchTypesForm.cb_elimination.Checked = true;
+
+            if (Control.ModifierKeys == Keys.Shift)
+            {
+                MoreMatchTypes_Form.moreMatchTypesForm.cb_losersLeave.Checked = true;
+            }
+            else
+            {
+                MoreMatchTypes_Form.moreMatchTypesForm.cb_losersLeave.Checked = false;
+            }
         }
 
         public static void SetTTTRules()

@@ -50,7 +50,7 @@ namespace MoreMatchTypes
             MoreMatchTypes_Form.moreMatchTypesForm.Enabled = false;
         }
 
-        [Hook(TargetClass = "Referee", TargetMethod = "CheckMatchEnd", InjectionLocation = 0, InjectFlags = HookInjectFlags.ModifyReturn, Group = "MoreMatchTypes")]
+        [Hook(TargetClass = "Referee", TargetMethod = "ProcesskMatchEnd_Normal", InjectionLocation = 0, InjectFlags = HookInjectFlags.ModifyReturn, Group = "MoreMatchTypes")]
         public static bool SetMatchRestrictions()
         {
            if(!isIronMan)
@@ -64,7 +64,7 @@ namespace MoreMatchTypes
                 MatchMain main = MatchMain.inst;
 
                 //If a victory condition is met
-                if (!main.isTimeUp && main.isMatchEnd)
+                if (!main.isTimeUp)
                 {
                     //Signal that the current round has ended
                     Referee matchRef = RefereeMan.inst.GetRefereeObj();
@@ -80,7 +80,7 @@ namespace MoreMatchTypes
                         {
                             continue;
                         }
-                        if (plObj.isLoseAndStop)
+                        if (plObj.isLose)
                         {
                             loser = i;
                         }

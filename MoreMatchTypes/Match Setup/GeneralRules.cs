@@ -137,7 +137,7 @@ namespace MoreMatchTypes.Match_Rules
         [Hook(TargetClass = "Menu_SceneManager", TargetMethod = ".ctor", InjectionLocation = int.MaxValue, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.PassInvokingInstance, Group = "MoreMatchTypes")]
         public static void AddEliminationButton(Menu_SceneManager msm)
         {
-            ModPack.ModButtonManager.AddButton("Elimination Rules", "撤廃規則", "Two teams participate in a gauntlet of 1v1 battles.", "2つのチームが1対1のバトルに参加します。", 1001, Menu_SceneManager.MainMenuBtnType.BTN_TYPE_CHANGE_SCENE, Menu_SceneManager.SELECT_SCENE.BATTLE_ONENIGHT_NORMAL, 1, ModPack.ModButtonManager.ButtonList.MatchMenu, typeof(MatchTypeHook), "SetEliminationRules", null, false, msm, "ResetRules", 0);
+            ModPack.ModButtonManager.AddButton("Elimination Rules", "撤廃規則", "Two teams participate in a gauntlet of 1v1 battles. Hold shift when selecting to force eliminated members to leave ringside.", "2つのチームが1対1のバトルに参加します。 排除されたメンバーを強制的にリングサイドから退出させる場合は、Shiftキーを押したままにします。", 1001, Menu_SceneManager.MainMenuBtnType.BTN_TYPE_CHANGE_SCENE, Menu_SceneManager.SELECT_SCENE.BATTLE_ONENIGHT_NORMAL, 1, ModPack.ModButtonManager.ButtonList.MatchMenu, typeof(MatchTypeHook), "SetEliminationRules", null, false, msm, "ResetRules", 0);
         }
 
         [Hook(TargetClass = "Menu_SceneManager", TargetMethod = ".ctor", InjectionLocation = int.MaxValue, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.PassInvokingInstance, Group = "MoreMatchTypes")]
@@ -146,6 +146,14 @@ namespace MoreMatchTypes.Match_Rules
             ModPack.ModButtonManager.AddButton("Timed Tornado Tag Rules", "竜巻タグ（時限", "Tornado tag battle, where players join over the course of a match.", "トルネードタグバトル。プレイヤーは試合中に参加します", 1002, Menu_SceneManager.MainMenuBtnType.BTN_TYPE_CHANGE_SCENE, Menu_SceneManager.SELECT_SCENE.BATTLE_ONENIGHT_NORMAL, 2, ModPack.ModButtonManager.ButtonList.MatchMenu, typeof(MatchTypeHook), "SetTTTRules", null, false, msm, "ResetRules", 0);
         }
         #endregion
+
+        //[Hook(TargetClass = "Referee", TargetMethod = "ProcesskMatchEnd_Normal", InjectionLocation = int.MaxValue,
+        //    InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.None,
+        //    Group = "MoreMatchTypes")]
+        //public static void CallingLoss()
+        //{
+        //    L.D("Ending the match");
+        //}
 
         #region Personal Use
         public static void UpdateMatchInfo(String info)
