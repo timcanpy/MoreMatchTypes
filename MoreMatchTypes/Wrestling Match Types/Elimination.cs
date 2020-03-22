@@ -5,6 +5,7 @@ using DG;
 using MatchConfig;
 using ModPack;
 using UnityEngine;
+using MatchConfig;
 
 namespace MoreMatchTypes
 {
@@ -143,6 +144,18 @@ namespace MoreMatchTypes
             MatchMain main = MatchMain.inst;
             if (main.isTimeUp)
             {
+                //Determine who has more points
+                if (wins[0] > wins[1])
+                {
+                    //Red Team Loses
+                    EndMatch(MatchConfiguration.GetLegalMan(CornerSide.Red));
+                }
+                else
+                {
+                    //Blue Team Loses
+                    EndMatch(MatchConfiguration.GetLegalMan(CornerSide.Blue));
+                }
+
                 return;
             }
 
@@ -291,7 +304,7 @@ namespace MoreMatchTypes
             Referee matchRef = RefereeMan.inst.GetRefereeObj();
             matchRef.PlDir = PlDirEnum.Left;
             matchRef.ReqRefereeAnm(BasicSkillEnum.Refe_Stand_MatchEnd_Front_Left);
-            Announcer.inst.PlayGong_Eliminated();
+            //Announcer.inst.PlayGong_Eliminated();
 
             //Removing members from the losing team
             if (loserTrack == 0)
@@ -347,6 +360,13 @@ namespace MoreMatchTypes
         public static void ActivateMember(int playerIndex)
         {
             Player plObj = PlayerMan.inst.GetPlObj(playerIndex);
+            L.D("Next member state is " + plObj.State);
+
+            //Ensure that edits immediately enter a ready state.
+            if (plObj.State != PlStateEnum.Stand && plObj.State != PlStateEnum.Performance && plObj.Zone == ZoneEnum.OutOfRing)
+            {
+                plObj.ChangeState(PlStateEnum.Stand);
+            }
 
             plObj.hasRight = true;
             plObj.isSecond = false;

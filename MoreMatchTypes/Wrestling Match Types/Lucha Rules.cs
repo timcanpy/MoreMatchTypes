@@ -104,8 +104,8 @@ namespace MoreMatchTypes.Wrestling_Match_Types
                 }
 
                 //Checking the legal man still inside the ring
-                Player legalBlue = PlayerMan.inst.GetPlObj(GetLegalMan("blue"));
-                Player legalRed = PlayerMan.inst.GetPlObj(GetLegalMan("red"));
+                Player legalBlue = PlayerMan.inst.GetPlObj(MatchConfiguration.GetLegalMan(CornerSide.Blue));
+                Player legalRed = PlayerMan.inst.GetPlObj(MatchConfiguration.GetLegalMan(CornerSide.Red));
                 Player legalInRing = IsInRing(legalBlue) ? legalBlue : legalRed;
                 
                 //New condition, if the legal man inside the ring is running then the auto-tag cannot be made
@@ -173,12 +173,12 @@ namespace MoreMatchTypes.Wrestling_Match_Types
                     if (points[0] > points[1])
                     {
                         matchRef.SentenceLose(p.GetPlObj(4).PlIdx);
-                        SetLosers(GetLegalMan("red"), p);
+                        SetLosers(MatchConfiguration.GetLegalMan(CornerSide.Red), p);
                     }
                     else
                     {
                         matchRef.SentenceLose(p.GetPlObj(0).PlIdx);
-                        SetLosers(GetLegalMan("blue"), p);
+                        SetLosers(MatchConfiguration.GetLegalMan(CornerSide.Blue), p);
                     }
                 }
             }
@@ -398,8 +398,8 @@ namespace MoreMatchTypes.Wrestling_Match_Types
         }
         private static void SetLegalMen(String forceSwitch)
         {
-            Player blueMan = PlayerMan.inst.GetPlObj(GetLegalMan("blue"));
-            Player redMan = PlayerMan.inst.GetPlObj(GetLegalMan("red"));
+            Player blueMan = PlayerMan.inst.GetPlObj(MatchConfiguration.GetLegalMan(CornerSide.Blue));
+            Player redMan = PlayerMan.inst.GetPlObj(MatchConfiguration.GetLegalMan(CornerSide.Red));
 
             //Process Blue Corner
             if (!IsInRing(blueMan) || forceSwitch.Equals("blue"))
@@ -426,56 +426,6 @@ namespace MoreMatchTypes.Wrestling_Match_Types
                 nextPlayer.Start_ForceControl(ForceCtrlEnum.GoBackToRing);
                 redMan.Start_ForceControl(ForceCtrlEnum.GoBackToApron);
             }
-        }
-        private static int GetLegalMan(String corner)
-        {
-            int legalMan = 0;
-            switch (corner.ToLower())
-            {
-                case "blue":
-                    for (int i = 0; i < 4; i++)
-                    {
-                        Player pl = PlayerMan.inst.GetPlObj(i);
-
-                        //Ignore if this spot is empty.
-                        if (!pl)
-                        {
-                            continue;
-                        }
-
-                        if (pl.hasRight)
-                        {
-                            legalMan = pl.PlIdx;
-                            break;
-                        }
-                    }
-
-                    break;
-
-                case "red":
-                    {
-                        for (int i = 4; i < 8; i++)
-                        {
-                            Player pl = PlayerMan.inst.GetPlObj(i);
-
-                            //Ignore if this spot is empty.
-                            if (!pl)
-                            {
-                                continue;
-                            }
-
-                            if (pl.hasRight)
-                            {
-                                legalMan = pl.PlIdx;
-                                break;
-                            }
-                        }
-
-                        break;
-                    }
-            }
-
-            return legalMan;
         }
         private static int GetNextTag(String corner, int legalMan)
         {

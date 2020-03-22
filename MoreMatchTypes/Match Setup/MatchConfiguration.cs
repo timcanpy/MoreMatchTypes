@@ -496,5 +496,56 @@ namespace MatchConfig
 
             return matchWrestlerInfo;
         }
+
+        public static int GetLegalMan(CornerSide corner)
+        {
+            int legalMan = 0;
+            switch (corner)
+            {
+                case CornerSide.Blue:
+                    for (int i = 0; i < 4; i++)
+                    {
+                        Player pl = PlayerMan.inst.GetPlObj(i);
+
+                        //Ignore if this spot is empty.
+                        if (!pl)
+                        {
+                            continue;
+                        }
+
+                        if (pl.hasRight)
+                        {
+                            legalMan = pl.PlIdx;
+                            break;
+                        }
+                    }
+
+                    break;
+
+                case CornerSide.Red:
+                {
+                    for (int i = 4; i < 8; i++)
+                    {
+                        Player pl = PlayerMan.inst.GetPlObj(i);
+
+                        //Ignore if this spot is empty.
+                        if (!pl)
+                        {
+                            continue;
+                        }
+
+                        if (pl.hasRight)
+                        {
+                            legalMan = pl.PlIdx;
+                            break;
+                        }
+                    }
+
+                    break;
+                }
+            }
+
+            return legalMan;
+        }
     }
 }
