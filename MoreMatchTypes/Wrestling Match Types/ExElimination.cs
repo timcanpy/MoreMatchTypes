@@ -42,7 +42,7 @@ namespace MoreMatchTypes.Wrestling_Match_Types
             }
 
             isExElim = MoreMatchTypes_Form.moreMatchTypesForm.cb_exElim.Checked;
-            
+
             if (!isExElim)
             {
                 return;
@@ -121,6 +121,61 @@ namespace MoreMatchTypes.Wrestling_Match_Types
 
         }
 
+        [Hook(TargetClass = "MatchMain", TargetMethod = "ProcessMatchEnd_Draw", InjectionLocation = int.MaxValue,
+            InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.None, Group = "MoreMatchTypes")]
+        public static void CheckCountOut()
+        {
+            if (!isExElim)
+            {
+                return;
+            }
+
+            //This is a valid draw
+            if (pointsRemaining[0] == 1 && pointsRemaining[1] == 1)
+            {
+                wins[0]++;
+                wins[1]++;
+                return;
+            }
+
+            //Blue team loses
+            if (pointsRemaining[0] == 1)
+            {
+                UpdateTeam(CornerSide.Blue);
+                EndMatch(GetLoser(CornerSide.Red));
+                return;
+            }
+            //Red team loses
+            else if (pointsRemaining[1] == 1)
+            {
+                UpdateTeam(CornerSide.Red);
+                EndMatch(GetLoser(CornerSide.Red));
+                return;
+            }
+            //Continue the match
+            else
+            {
+                Player blueLoser = PlayerMan.inst.GetPlObj(GetLoser(CornerSide.Blue));
+                Player redLoser = PlayerMan.inst.GetPlObj(GetLoser(CornerSide.Red));
+
+                //Queue players for replacement
+                defeatedPlayers.Enqueue(new DefeatedPlayer { player = blueLoser, side = CornerSide.Blue });
+                defeatedPlayers.Enqueue(new DefeatedPlayer { player = blueLoser, side = CornerSide.Blue });
+
+                //Update teams for the next entrants
+                SetLoserState(blueLoser.PlIdx);
+                SetLoserState(redLoser.PlIdx);
+
+                UpdateTeam(CornerSide.Blue, true);
+                UpdateTeam(CornerSide.Red, true);
+
+                AnnounceDoubleElimation();
+
+                //Ensure match does not end
+                MatchMain.inst.isMatchEnd = false;
+            }
+        }
+
         [Hook(TargetClass = "Announcer", TargetMethod = "Watch_Scuffle", InjectionLocation = 0, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.None, Group = "MoreMatchTypes")]
         public static void OverrideScuffle()
         {
@@ -141,13 +196,6 @@ namespace MoreMatchTypes.Wrestling_Match_Types
                 return false;
             }
             MatchMain main = MatchMain.inst;
-
-            //This should only proceed when the match has been completed.
-            //if (!main.isMatchEnd)
-            //{
-            //    return false;
-            //}
-
             Player plObj;
             CornerSide loserSide = CornerSide.Unknown;
 
@@ -235,6 +283,21 @@ namespace MoreMatchTypes.Wrestling_Match_Types
         }
 
         #region Helper Methods
+        public static void EndMatch(int loserIndex)
+        {
+            //Only occurs if there is an error.
+            if (loserIndex == -1)
+            {
+                return;
+            }
+
+            Referee mref = RefereeMan.inst.GetRefereeObj();
+            //mref.PlDir = PlDirEnum.Left;
+            //mref.State = RefeStateEnum.DeclareVictory;
+            //mref.ReqRefereeAnm(BasicSkillEnum.Refe_Stand_MatchEnd_Front_Left);
+            mref.SentenceLose(loserIndex);
+            mref.matchResult = MatchResultEnum.RingOut;
+        }
         public static void SetSeconds()
         {
             Player plObj;
@@ -322,6 +385,49 @@ namespace MoreMatchTypes.Wrestling_Match_Types
             ActivateMember(nextPlayer, loserSide);
             return true;
         }
+        public static void UpdateTeam(CornerSide loserSide, bool isRingOut)
+        {
+            int membersLeft;
+            int nextPlayer = -1;
+            String teamName;
+
+            //Announcer.inst.PlayGong_Eliminated();
+
+            if (loserSide == CornerSide.Blue)
+            {
+                wins[1]++;
+                pointsRemaining[0]--;
+
+                membersLeft = pointsRemaining[0];
+                if (blueOrderQueue.Count != 0)
+                {
+                    nextPlayer = blueOrderQueue.Dequeue();
+                }
+                else
+                {
+                    L.D("Blue Order Queue is empty");
+                }
+                teamName = MoreMatchTypes_Form.ExEliminationData.TeamNames[0];
+            }
+            else
+            {
+                wins[0]++;
+                pointsRemaining[1]--;
+
+                membersLeft = pointsRemaining[1];
+                if (redOrderQueue.Count != 0)
+                {
+                    nextPlayer = redOrderQueue.Dequeue();
+                }
+                else
+                {
+                    L.D("Red Order Queue is empty");
+                }
+                teamName = MoreMatchTypes_Form.ExEliminationData.TeamNames[1];
+            }
+
+            ActivateMember(nextPlayer, loserSide);
+        }
         public static void SetLoserState(int playerIndex)
         {
             Player plObj = PlayerMan.inst.GetPlObj(playerIndex);
@@ -351,7 +457,7 @@ namespace MoreMatchTypes.Wrestling_Match_Types
             plObj.hasRight = true;
             plObj.isSecond = false;
             plObj.isSleep = false;
-            
+
 
             //Ensure that player comes in fresh
             plObj.SetSP(65535f);
@@ -400,6 +506,62 @@ namespace MoreMatchTypes.Wrestling_Match_Types
         public static void AnnounceElimination(String eliminatedPlayer, int membersRemaining, String teamName)
         {
             DispNotification.inst.Show(eliminatedPlayer + " has been eliminated!\t" + teamName + " members remaining: " + membersRemaining, 300);
+        }
+        public static void AnnounceDoubleElimation()
+        {
+            DispNotification.inst.Show("Double Elimination!\t" + MoreMatchTypes_Form.ExEliminationData.TeamNames[0] + ": " + wins[0] + "\t" + MoreMatchTypes_Form.ExEliminationData.TeamNames[1] + ": " + wins[1]);
+        }
+        public static int GetLoser(CornerSide side)
+        {
+            int loserIndex = -1;
+            if (side == CornerSide.Blue)
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    Player plObj = PlayerMan.inst.GetPlObj(i);
+                    if (!plObj)
+                    {
+                        continue;
+                    }
+
+                    if (plObj.isSecond || plObj.isIntruder)
+                    {
+                        continue;
+                    }
+
+                    plObj.isKO = false;
+                    if (plObj.isLoseAndStop && (plObj.Zone == ZoneEnum.InRing || plObj.Zone == ZoneEnum.OutOfRing))
+                    {
+                        loserIndex = i;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                for (int i = 4; i < 8; i++)
+                {
+                    Player plObj = PlayerMan.inst.GetPlObj(i);
+                    if (!plObj)
+                    {
+                        continue;
+                    }
+
+                    if (plObj.isSecond || plObj.isIntruder)
+                    {
+                        continue;
+                    }
+
+                    plObj.isKO = false;
+                    if (plObj.isLoseAndStop && (plObj.Zone == ZoneEnum.InRing || plObj.Zone == ZoneEnum.OutOfRing))
+                    {
+                        loserIndex = i;
+                        break;
+                    }
+                }
+            }
+
+            return loserIndex;
         }
         #endregion
     }

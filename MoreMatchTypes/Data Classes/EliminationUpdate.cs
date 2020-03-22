@@ -43,9 +43,6 @@ namespace MoreMatchTypes.Data_Classes
             {
                 if (newPlayer.Zone == ZoneEnum.OutOfRing)
                 {
-                    //newPlayer.isIntruder = false;
-                    //newPlayer.intrusionTimer = 0;
-                    //newPlayer.isSecond = true;
                     newPlayer.hasRight = false;
                     newPlayer.isLoseAndStop = false;
                     L.D(DataBase.GetWrestlerFullName(newPlayer.WresParam) + " is now at ringside");
@@ -115,23 +112,32 @@ namespace MoreMatchTypes.Data_Classes
                 newPlayer = ActivatePlayer(replacementPlayer.player, nextMember);
 
                 //Resetting the player controller AI
-                //newPlayer.forceControl = ForceCtrlEnum.SecondStanbdby;
                 newPlayer.plCont_AI = new PlayerController_AI(index);
                 newPlayer.plCont_AI.Init(newPlayer);
 
                 //Necessary to ensure the player is activated.
-                //newPlayer.plController.kind = PlayerControllerKind.AI;
                 newPlayer.plController.plIdx = index;
                 newPlayer.SetPlayerController(PlayerControllerKind.AI);
                 newPlayer.Start_ForceControl(ForceCtrlEnum.SecondStanbdby);
 
-                //newPlayer.isIntruder = true;
-                //newPlayer.intrusionTimer = 100;
                 newPlayer.isSecond = true;
                 newPlayer.SecondPos = MatchData.SecondStandbyPosIdxTbl[newPlayer.PlIdx];
                 newPlayer.Group = group;
 
-                
+                //Set the starting location
+                newPlayer.Zone = ZoneEnum.OutOfRing;
+                if (replacementPlayer.side == CornerSide.Blue)
+                {
+                    newPlayer.PlPos.x = MatchData.SecondStandbyPosTbl[0].x;
+                    newPlayer.PlPos.y = MatchData.SecondStandbyPosTbl[0].y;
+                }
+                else
+                {
+                    newPlayer.PlPos.x = MatchData.SecondStandbyPosTbl[5].x;
+                    newPlayer.PlPos.y = MatchData.SecondStandbyPosTbl[5].y;
+                }
+
+
                 L.D(DataBase.GetWrestlerFullName(replacementPlayer.player.WresParam) + " has been replaced by " +
                     DataBase.GetWrestlerFullName(newPlayer.WresParam));
                 replacementPlayer = null;
@@ -255,7 +261,6 @@ namespace MoreMatchTypes.Data_Classes
             #region Setting player to enter
             VenueSetting venueSetting = Ring.inst.venueSetting;
             player.moveSpeed = player.WresParam.walkSpeed;
-            //player.isPossibleToGrapple = true;
             player.isLoseAndStop = false;
             player.isLose = false;
             player.isEntranceWalking = false;
@@ -265,19 +270,8 @@ namespace MoreMatchTypes.Data_Classes
             player.TargetPlIdx = player.PlIdx;
             player.Group = idx;
 
-            //Determine appearance zone
-            //if(venue.runwayKind == RunwayKindEnum.Horizontal || venue.runwayKind == RunwayKindEnum.Slope)
-            //{
-            //    player.Zone = ZoneEnum.Stage;
-            //}
-            //else
-            //{
-            //    player.Zone = venueSetting.appearZone;
-            //}
-            player.Zone = venueSetting.appearZone;
-            player.PlPos.x = MatchData.PlayerInitialPosTbl[idx].x;
-            player.PlPos.y = MatchData.PlayerInitialPosTbl[idx].y;
-            player.PlPos.z = 1f;
+            //player.PlPos.x = MatchData.PlayerInitialPosTbl[idx].x;
+            //player.PlPos.y = MatchData.PlayerInitialPosTbl[idx].y;
             #endregion
 
             PlayerMan.inst.SetPlayer(idx, player);

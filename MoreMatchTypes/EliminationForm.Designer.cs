@@ -103,6 +103,7 @@
             this.el_redControl.TabIndex = 5;
             this.el_redControl.Text = "Player Control?";
             this.el_redControl.UseVisualStyleBackColor = true;
+            this.el_redControl.Visible = false;
             // 
             // el_redTeamName
             // 
@@ -180,6 +181,7 @@
             this.el_blueControl.TabIndex = 15;
             this.el_blueControl.Text = "Player Control?";
             this.el_blueControl.UseVisualStyleBackColor = true;
+            this.el_blueControl.Visible = false;
             // 
             // el_blueTeamName
             // 
