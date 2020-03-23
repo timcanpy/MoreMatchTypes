@@ -327,8 +327,18 @@ namespace MoreMatchTypes.Wrestling_Match_Types
         }
         public static void ResetFormSettings()
         {
-            MoreMatchTypes_Form.ExEliminationData.InProgress = false;
-            MatchTypeHook.ResetRules();
+            try
+            {
+                MatchTypeHook.ResetRules();
+                MoreMatchTypes_Form.ExEliminationData.InProgress = false;
+            }
+            catch (NullReferenceException)
+            {
+            }
+            catch (Exception ex)
+            {
+                L.D("ResetFormSettingsException: " + ex);
+            }
         }
         public static bool UpdateTeam(CornerSide loserSide)
         {

@@ -174,8 +174,19 @@ namespace MoreMatchTypes.Wrestling_Match_Types
             //Ensure that we reset all tracking variables
             if (endMatch || main.isInterruptedMatch)
             {
-                endRound = false;
-                MoreMatchTypes_Form.SurvivalRoadData.InProgress = false;
+                try
+                {
+
+                    endRound = false;
+                    MoreMatchTypes_Form.SurvivalRoadData.InProgress = false;
+                }
+                catch (NullReferenceException)
+                {
+                }
+                catch (Exception ex)
+                {
+                    L.D("ResetVariablesException: " + ex);
+                }
             }
         }
 
