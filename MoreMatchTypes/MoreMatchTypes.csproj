@@ -106,7 +106,6 @@
     <Compile Include="Match Setup\MatchEndFunctions.cs" />
     <Compile Include="Match Setup\MatchTypeHook.cs" />
     <Compile Include="Shoot Match Types\Boxing.cs" />
-    <Compile Include="Shoot Match Types\K1MMA.cs" />
     <Compile Include="Shoot Match Types\Pancrase.cs" />
     <Compile Include="Shoot Match Types\Sumo.cs" />
     <Compile Include="Shoot Match Types\Uwfi.cs" />

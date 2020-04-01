@@ -51,6 +51,7 @@ namespace MoreMatchTypes
                 settings.isReversalOff = true;
                 settings.isOverTheTopRopeOn = true;
                 settings.isPowerCompetitionOff = true;
+                settings.isExchangeOfStriking = false;
                 settings.isSkipEntranceScene = true;
                 settings.MatchTime = 0;
 

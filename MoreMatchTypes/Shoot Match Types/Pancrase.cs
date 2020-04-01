@@ -185,6 +185,7 @@ namespace MoreMatchTypes
             settings.isOutOfRingCount = false;
             settings.is10CountKO = true;
             settings.MatchTime = 0;
+            settings.isExchangeOfStriking = false;
 
             resultText = "";
             foulChecked = false;

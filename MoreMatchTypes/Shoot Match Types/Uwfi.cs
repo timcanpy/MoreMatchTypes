@@ -136,6 +136,7 @@ namespace MoreMatchTypes
             settings.isCutPlay = false;
             settings.MatchTime = 0;
             settings.is10CountKO = true;
+            settings.isExchangeOfStriking = false;
 
             tdRecorded = new bool[8] { false, false, false, false, false, false, false, false };
             koRecorded = new bool[8] { false, false, false, false, false, false, false, false };
