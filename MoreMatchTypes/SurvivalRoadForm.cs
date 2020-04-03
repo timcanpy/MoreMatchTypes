@@ -548,6 +548,7 @@ namespace MoreMatchTypes
                             wrestlerNo = (WrestlerID)second.ID;
                             if (sr_tag.Checked)
                             {
+                                L.D("Setting tag options");
                                 isSecond = false;
                                 if (sr_controlBoth.Checked)
                                 {
@@ -632,12 +633,14 @@ namespace MoreMatchTypes
                         }
                         else if (sr_tag.Checked && i == 5)
                         {
+                            L.D("Creating tag opponents");
                             opponent = (MatchConfig.WresIDGroup)sr_teamList.Items[searchIndex];
                             wrestlerNo = MatchConfiguration.GetWrestlerNo(opponent);
 
                             //Ensure that we aren't fielding duplicate wrestlers
-                            while (MoreMatchTypes_Form.SurvivalRoadData.InitialOpponents[0].ID == (int)wrestlerNo)
+                            while (initialOpponents[0].ID == (int)wrestlerNo)
                             {
+                                L.D("Preventing duplicates");
                                 searchIndex = UnityEngine.Random.Range(0, opponentCount);
                                 opponent = (MatchConfig.WresIDGroup)sr_teamList.Items[searchIndex];
                                 wrestlerNo = MatchConfiguration.GetWrestlerNo(opponent);
