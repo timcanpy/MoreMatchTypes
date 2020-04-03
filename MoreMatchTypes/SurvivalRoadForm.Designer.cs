@@ -195,7 +195,6 @@
             this.sr_simSecond.TabIndex = 68;
             this.sr_simSecond.Text = "Control Second";
             this.sr_simSecond.UseVisualStyleBackColor = true;
-            this.sr_simSecond.Visible = false;
             // 
             // sr_cutplay
             // 
@@ -369,6 +368,7 @@
             this.sr_tag.TabIndex = 50;
             this.sr_tag.Text = "Tag Matches";
             this.sr_tag.UseVisualStyleBackColor = true;
+            this.sr_tag.CheckedChanged += new System.EventHandler(this.sr_tag_CheckedChanged);
             // 
             // sr_single
             // 
@@ -382,6 +382,7 @@
             this.sr_single.TabStop = true;
             this.sr_single.Text = "Singles Matches";
             this.sr_single.UseVisualStyleBackColor = true;
+            this.sr_single.CheckedChanged += new System.EventHandler(this.sr_single_CheckedChanged);
             // 
             // sr_secondClear
             // 

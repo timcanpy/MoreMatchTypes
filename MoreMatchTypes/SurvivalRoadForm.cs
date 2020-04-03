@@ -315,7 +315,14 @@ namespace MoreMatchTypes
                             }
                             if (((MatchConfig.WresIDGroup)sr_wrestler.SelectedItem).Name.Equals(item.Name))
                             {
-                                continue;
+                               continue;
+                            }
+                            if (sr_second.Items.Count > 0)
+                            {
+                                if (((MatchConfig.WresIDGroup)sr_second.SelectedItem).Name.Equals(item.Name))
+                                {
+                                    continue;
+                                }
                             }
                         }
                         sr_teamList.Items.Add(item);
