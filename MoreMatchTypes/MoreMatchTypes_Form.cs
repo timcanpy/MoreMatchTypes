@@ -590,6 +590,10 @@ namespace MoreMatchTypes
             Clear();
             UncheckNormal();
             UncheckWrestling();
+            pancraseLostPerDown.Visible = true;
+            pancraseTotalPoints.Visible = true;
+            downPointsLbl.Visible = true;
+            totalPointsLbl.Visible = true;
             lbl_illegal.Visible = true;
             lbl_dq.Visible = true;
             tb_illegal.Visible = true;
@@ -862,6 +866,10 @@ namespace MoreMatchTypes
             cb_uwfi.Checked = false;
             cb_sumo.Checked = false;
             isk1mma.Checked = false;
+            pancraseLostPerDown.Visible = false;
+            pancraseTotalPoints.Visible = false;
+            downPointsLbl.Visible = false;
+            totalPointsLbl.Visible = false;
         }
         private void UncheckWrestling()
         {

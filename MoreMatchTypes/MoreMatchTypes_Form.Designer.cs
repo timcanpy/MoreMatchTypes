@@ -64,12 +64,18 @@
             this.cb_luchaFalls = new System.Windows.Forms.CheckBox();
             this.matchConfig = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
+            this.pancraseTotalPoints = new System.Windows.Forms.NumericUpDown();
+            this.totalPointsLbl = new System.Windows.Forms.Label();
+            this.downPointsLbl = new System.Windows.Forms.Label();
+            this.pancraseLostPerDown = new System.Windows.Forms.NumericUpDown();
             this.rulesTabControl.SuspendLayout();
             this.rulesTab.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pancraseTotalPoints)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pancraseLostPerDown)).BeginInit();
             this.SuspendLayout();
             // 
             // cb_FirstBlood
@@ -448,6 +454,10 @@
             // 
             this.panel1.BackColor = System.Drawing.Color.White;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.panel1.Controls.Add(this.pancraseLostPerDown);
+            this.panel1.Controls.Add(this.downPointsLbl);
+            this.panel1.Controls.Add(this.totalPointsLbl);
+            this.panel1.Controls.Add(this.pancraseTotalPoints);
             this.panel1.Controls.Add(this.cb_luchaFalls);
             this.panel1.Controls.Add(this.matchConfig);
             this.panel1.Controls.Add(this.removeRopes);
@@ -493,6 +503,76 @@
             this.label1.TabIndex = 33;
             this.label1.Text = "Rules";
             // 
+            // pancraseTotalPoints
+            // 
+            this.pancraseTotalPoints.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.pancraseTotalPoints.Location = new System.Drawing.Point(74, 84);
+            this.pancraseTotalPoints.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.pancraseTotalPoints.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.pancraseTotalPoints.Name = "pancraseTotalPoints";
+            this.pancraseTotalPoints.Size = new System.Drawing.Size(35, 20);
+            this.pancraseTotalPoints.TabIndex = 33;
+            this.pancraseTotalPoints.Value = new decimal(new int[] {
+            3,
+            0,
+            0,
+            0});
+            this.pancraseTotalPoints.Visible = false;
+            // 
+            // totalPointsLbl
+            // 
+            this.totalPointsLbl.AutoSize = true;
+            this.totalPointsLbl.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.totalPointsLbl.Location = new System.Drawing.Point(3, 85);
+            this.totalPointsLbl.Name = "totalPointsLbl";
+            this.totalPointsLbl.Size = new System.Drawing.Size(65, 15);
+            this.totalPointsLbl.TabIndex = 30;
+            this.totalPointsLbl.Text = "Total Points";
+            this.totalPointsLbl.Visible = false;
+            // 
+            // downPointsLbl
+            // 
+            this.downPointsLbl.AutoSize = true;
+            this.downPointsLbl.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.downPointsLbl.Location = new System.Drawing.Point(3, 109);
+            this.downPointsLbl.Name = "downPointsLbl";
+            this.downPointsLbl.Size = new System.Drawing.Size(110, 15);
+            this.downPointsLbl.TabIndex = 34;
+            this.downPointsLbl.Text = "Points Lost Per Down";
+            this.downPointsLbl.Visible = false;
+            // 
+            // pancraseLostPerDown
+            // 
+            this.pancraseLostPerDown.Font = new System.Drawing.Font("Franklin Gothic Medium", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.pancraseLostPerDown.Location = new System.Drawing.Point(119, 106);
+            this.pancraseLostPerDown.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.pancraseLostPerDown.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.pancraseLostPerDown.Name = "pancraseLostPerDown";
+            this.pancraseLostPerDown.Size = new System.Drawing.Size(35, 20);
+            this.pancraseLostPerDown.TabIndex = 35;
+            this.pancraseLostPerDown.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.pancraseLostPerDown.Visible = false;
+            // 
             // MoreMatchTypes_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -519,6 +599,8 @@
             this.tabPage3.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pancraseTotalPoints)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pancraseLostPerDown)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -561,5 +643,9 @@
         public System.Windows.Forms.RadioButton cb_sumo;
         public System.Windows.Forms.CheckBox cb_luchaFalls;
         public System.Windows.Forms.RadioButton cb_normalMatch;
+        private System.Windows.Forms.Label totalPointsLbl;
+        public System.Windows.Forms.NumericUpDown pancraseLostPerDown;
+        private System.Windows.Forms.Label downPointsLbl;
+        public System.Windows.Forms.NumericUpDown pancraseTotalPoints;
     }
 }

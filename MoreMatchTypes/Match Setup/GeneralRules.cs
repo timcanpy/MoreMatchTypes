@@ -146,20 +146,5 @@ namespace MoreMatchTypes.Match_Rules
             ModPack.ModButtonManager.AddButton("Timed Tornado Tag Rules", "竜巻タグ（時限", "Tornado tag battle, where players join over the course of a match.", "トルネードタグバトル。プレイヤーは試合中に参加します", 1002, Menu_SceneManager.MainMenuBtnType.BTN_TYPE_CHANGE_SCENE, Menu_SceneManager.SELECT_SCENE.BATTLE_ONENIGHT_NORMAL, 2, ModPack.ModButtonManager.ButtonList.MatchMenu, typeof(MatchTypeHook), "SetTTTRules", null, false, msm, "ResetRules", 0);
         }
         #endregion
-
-        //[Hook(TargetClass = "Referee", TargetMethod = "ProcesskMatchEnd_Normal", InjectionLocation = int.MaxValue,
-        //    InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.None,
-        //    Group = "MoreMatchTypes")]
-        //public static void CallingLoss()
-        //{
-        //    L.D("Ending the match");
-        //}
-
-        #region Personal Use
-        public static void UpdateMatchInfo(String info)
-        {
-
-        }
-        #endregion
     }
 }

@@ -33,6 +33,7 @@ namespace MoreMatchTypes
         public static int[] points;
         public static string resultText;
         public static string[] teamNames;
+        public static int downPoints;
         #endregion
 
         [Hook(TargetClass = "MatchMain", TargetMethod = "InitMatch", InjectionLocation = int.MaxValue, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.None, Group = "MoreMatchTypes")]
@@ -185,6 +186,7 @@ namespace MoreMatchTypes
             settings.isOutOfRingCount = false;
             settings.is10CountKO = true;
             settings.MatchTime = 0;
+            settings.RoundNum = 0;
             settings.isExchangeOfStriking = false;
 
             resultText = "";
@@ -195,9 +197,9 @@ namespace MoreMatchTypes
             endMatch = false;
             points = new int[2];
             teamNames = new string[2];
-            points[0] = 5;
-            points[1] = 5;
-
+            points[0] = (int)MoreMatchTypes_Form.moreMatchTypesForm.pancraseTotalPoints.Value;
+            points[1] = (int)MoreMatchTypes_Form.moreMatchTypesForm.pancraseTotalPoints.Value;
+            downPoints = (int) (int) MoreMatchTypes_Form.moreMatchTypesForm.pancraseLostPerDown.Value;
             SetTeamNames();
         }
 
@@ -244,12 +246,12 @@ namespace MoreMatchTypes
                 {
                     if (plObj.PlIdx < 4)
                     {
-                        points[0]--;
+                        points[0] = points[0] - downPoints;
                         checkKo = true;
                     }
                     else
                     {
-                        points[1]--;
+                        points[1] = points[1] - downPoints;
                         checkKo = true;
                     }
                 }
@@ -391,7 +393,7 @@ namespace MoreMatchTypes
                     point = points[1];
                 }
 
-                if (point - 1 <= 0)
+                if (point - downPoints <= 0)
                 {
                     GlobalWork.inst.MatchSetting.TKOCount = 1;
                     global::PlayerMan.inst.GetPlObj(pl_idx).TKO_Count = 1;
