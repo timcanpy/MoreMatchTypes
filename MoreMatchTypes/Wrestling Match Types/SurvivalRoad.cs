@@ -51,6 +51,7 @@ namespace MoreMatchTypes.Wrestling_Match_Types
         private static WresIDGroup playerEdit;
         private static WresIDGroup secondEdit;
         private static String opponentTeam;
+        private static int resultTimer;
 
         #endregion
 
@@ -205,6 +206,32 @@ namespace MoreMatchTypes.Wrestling_Match_Types
             {
                 MoreMatchTypes_Form.SurvivalRoadData.SaveSurvivalData();
             }
+        }
+
+        [Hook(TargetClass = "Menu_Result", TargetMethod = "Update", InjectionLocation = 0, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.PassInvokingInstance, Group = "MoreMatchTypes")]
+        public static void ResultsScreenTimer(Menu_Result mr)
+        {
+            if (!isSurvival)
+            {
+                return;
+            }
+
+            try
+            {
+                if (!endMatch && MoreMatchTypes_Form.SurvivalRoadData.Simulate)
+                {
+                    resultTimer++;
+                    if (resultTimer == 600)
+                    {
+                        MatchConfiguration.SetField(mr, "seq", false, 7);
+                        resultTimer = 0;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                L.D("ResultsScreenTimerError: " + e);
+            }       
         }
 
         #region Helper Methods

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using DG;
 using ModPack;
@@ -546,6 +547,13 @@ namespace MatchConfig
             }
 
             return legalMan;
+        }
+
+        public static void SetField(object obj, string field, bool isStatic, object value)
+        {
+            Type myType = obj.GetType();
+            FieldInfo myInfo = myType.GetField(field, isStatic ? (BindingFlags.Static | BindingFlags.NonPublic) : (BindingFlags.Instance | BindingFlags.NonPublic));
+            myInfo.SetValue(isStatic ? null : obj, value);
         }
     }
 }
