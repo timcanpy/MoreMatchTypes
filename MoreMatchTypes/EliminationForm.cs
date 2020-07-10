@@ -579,13 +579,13 @@ namespace MoreMatchTypes
             settings.isSkipEntranceScene = true;
 
             //Need to set a valid MatchBGM type  here, then override it on match start if necessary.
-            if (el_bgm.SelectedIndex > 2)
+            if (el_bgm.SelectedIndex <= 2)
             {
                 settings.matchBGM = MatchBGM.SpinningPanther;
             }
             else
             {
-                settings.matchBGM = (MatchBGM)el_bgm.SelectedIndex;
+                settings.matchBGM = (MatchBGM)GetValidBGMID((String)el_bgm.SelectedItem);
             }
 
             GlobalParam.flg_CallDebugMenu = false;
@@ -828,6 +828,19 @@ namespace MoreMatchTypes
             }
 
             return isDuplicate;
+        }
+        private int GetValidBGMID(String name)
+        {
+            L.D("GetValidBGMID: " + name);
+            for (int i = 0; i < MyMusic.FileList_Match.Count; i++)
+            {
+                if (MyMusic.FileList_Match[i].name.Equals(name))
+                {
+                    return i;
+                }
+            }
+
+            return 0;
         }
     }
 }

@@ -1006,7 +1006,7 @@ namespace MoreMatchTypes
                 }
                 else
                 {
-                    settings.matchBGM = (MatchBGM)sr_bgmList.SelectedIndex;
+                    settings.matchBGM = (MatchBGM)GetValidBGMID((String)sr_bgmList.SelectedItem);
                 }
             }
             catch (Exception e)
@@ -1088,6 +1088,20 @@ namespace MoreMatchTypes
             {
                 sr_progress.Text += info;
             }
+        }
+
+        private int GetValidBGMID(String name)
+        {
+            L.D("GetValidBGMID: " + name);
+            for (int i = 0; i < MyMusic.FileList_Match.Count; i++)
+            {
+                if (MyMusic.FileList_Match[i].name.Equals(name))
+                {
+                    return i;
+                }
+            }
+
+            return 0;
         }
 
         #endregion
