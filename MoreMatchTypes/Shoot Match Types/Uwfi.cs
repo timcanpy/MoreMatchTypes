@@ -17,7 +17,7 @@ namespace MoreMatchTypes
     #endregion
     class Uwfi
     {
-        #region
+        #region Variables
         public static int[] points = new int[2];
         public static int[] foulCount = new int[2];
         public static string[] teamNames = new string[2];
@@ -30,6 +30,8 @@ namespace MoreMatchTypes
         public static string resultText;
         public static List<String> illegalMoves;
         public static List<String> instantDQ;
+        public static int bleedCeiling = 0;
+        public static String refName = "";
         #endregion
 
         [Hook(TargetClass = "MatchMain", TargetMethod = "InitMatch", InjectionLocation = int.MaxValue, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.None, Group = "MoreMatchTypes")]
@@ -159,6 +161,10 @@ namespace MoreMatchTypes
             }
 
             SetTeamNames();
+
+            Referee mref = RefereeMan.inst.GetRefereeObj();
+            bleedCeiling = 5 - mref.RefePrm.interfereTime;
+            refName = mref.RefePrm.name;
         }
 
         [Hook(TargetClass = "Player", TargetMethod = "UpdatePlayer", InjectionLocation = 0, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.PassInvokingInstance, Group = "MoreMatchTypes")]
@@ -444,23 +450,28 @@ namespace MoreMatchTypes
             }
         }
 
-        public static void CheckBleeding(Player pl)
+        [Hook(TargetClass = "Player", TargetMethod = "Bleeding", InjectionLocation = 0, InjectFlags = HookInjectFlags.PassInvokingInstance, Group = "MoreMatchTypes")]
+        public static void CheckBleeding(Player p)
         {
             if (!isUwfi)
-            { return; }
-
-            bloodState[pl.PlIdx]++;
-
-            switch (bloodState[pl.PlIdx])
             {
-                case 2:
-                    break;
-
-                case 3:
-                    break;
-
-                case 4:
-                    break;
+                return;
+            }
+            int bloodLevel = global::MatchEvaluation.inst.PlResult[p.PlIdx].bledCnt;
+            if (bloodLevel == bleedCeiling - 1)
+            {
+                DispNotification.inst.Show(refName + " is watching " + DataBase.GetWrestlerFullName(p.WresParam) + " closely.", 300);
+            }
+            else if (bloodLevel >= bleedCeiling)
+            {
+                DispNotification.inst.Show(refName + " calls for a doctor stoppage!", 300);
+                Referee mRef = RefereeMan.inst.GetRefereeObj();
+                mRef.PlDir = PlDirEnum.Left;
+                mRef.State = RefeStateEnum.DeclareVictory;
+                mRef.ReqRefereeAnm(BasicSkillEnum.Refe_Stand_MatchEnd_Front_Left);
+                mRef.matchResult = MatchResultEnum.GiveUp;
+                PlayerMan.inst.GetPlObj(p.PlIdx).isLoseAndStop = true;
+                mRef.SentenceLose(p.PlIdx);
             }
         }
 

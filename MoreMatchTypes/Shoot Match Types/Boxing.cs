@@ -149,7 +149,7 @@ namespace MoreMatchTypes.Shoot_Match_Types
                     int foulIncrement = 1;
                     int currFouls = 0;
 
-                    if (dqAttacks.Contains(sd.skillName[1].ToLower()))
+                    if (dqAttacks.Contains(sd.skillName[(int)SaveData.inst.optionSettings.language].ToLower()))
                     {
                         foulIncrement = foulCeiling + 1;
                     }
@@ -188,7 +188,7 @@ namespace MoreMatchTypes.Shoot_Match_Types
                             }
                             else
                             {
-                                CallFoul(plIDx, sd.skillName[1]);
+                                CallFoul(plIDx, sd.skillName[(int)SaveData.inst.optionSettings.language]);
 
                                 //Ensure that foul move does not continue
                                 defender.animator.isReqAnmLoopEnd = true;
@@ -204,7 +204,7 @@ namespace MoreMatchTypes.Shoot_Match_Types
                             }
                             else
                             {
-                                CallFoul(plIDx, sd.skillName[1]);
+                                CallFoul(plIDx, sd.skillName[(int)SaveData.inst.optionSettings.language]);
 
                                 //Ensure that foul move does not continue
                                 defender.animator.isReqAnmLoopEnd = true;

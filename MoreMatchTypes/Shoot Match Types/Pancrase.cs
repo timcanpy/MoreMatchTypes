@@ -34,6 +34,8 @@ namespace MoreMatchTypes
         public static string resultText;
         public static string[] teamNames;
         public static int downPoints;
+        public static int bleedCeiling = 0;
+        public static String refName = "";
         #endregion
 
         [Hook(TargetClass = "MatchMain", TargetMethod = "InitMatch", InjectionLocation = int.MaxValue, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.None, Group = "MoreMatchTypes")]
@@ -201,6 +203,10 @@ namespace MoreMatchTypes
             points[1] = (int)MoreMatchTypes_Form.moreMatchTypesForm.pancraseTotalPoints.Value;
             downPoints = (int) (int) MoreMatchTypes_Form.moreMatchTypesForm.pancraseLostPerDown.Value;
             SetTeamNames();
+
+            Referee mref = RefereeMan.inst.GetRefereeObj();
+            bleedCeiling = 5 - mref.RefePrm.interfereTime;
+            refName = mref.RefePrm.name;
         }
 
         [Hook(TargetClass = "MatchMain", TargetMethod = "Update_Match", InjectionLocation = 0, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.None, Group = "MoreMatchTypes")]
@@ -295,7 +301,7 @@ namespace MoreMatchTypes
             if (isPancrase)
             {
 
-                if (instantDQ.Contains(sd.skillName[1]))
+                if (instantDQ.Contains(sd.skillName[(int)SaveData.inst.optionSettings.language]))
                 {
 
                     if (plIDx < 4)
@@ -309,7 +315,7 @@ namespace MoreMatchTypes
                         dqChecked = true;
                     }
                 }
-                else if (illegalMoves.Contains(sd.skillName[1]))
+                else if (illegalMoves.Contains(sd.skillName[(int)SaveData.inst.optionSettings.language]))
                 {
                     if (plIDx < 4)
                     {
@@ -398,6 +404,31 @@ namespace MoreMatchTypes
                     GlobalWork.inst.MatchSetting.TKOCount = 1;
                     global::PlayerMan.inst.GetPlObj(pl_idx).TKO_Count = 1;
                 }
+            }
+        }
+
+        [Hook(TargetClass = "Player", TargetMethod = "Bleeding", InjectionLocation = 0, InjectFlags = HookInjectFlags.PassInvokingInstance, Group = "MoreMatchTypes")]
+        public static void CheckBleeding(Player p)
+        {
+            if (!isPancrase)
+            {
+                return;
+            }
+            int bloodLevel = global::MatchEvaluation.inst.PlResult[p.PlIdx].bledCnt;
+            if (bloodLevel == bleedCeiling - 1)
+            {
+                DispNotification.inst.Show(refName + " is watching " + DataBase.GetWrestlerFullName(p.WresParam) + " closely.", 300);
+            }
+            else if (bloodLevel >= bleedCeiling)
+            {
+                DispNotification.inst.Show(refName + " calls for a doctor stoppage!", 300);
+                Referee mRef = RefereeMan.inst.GetRefereeObj();
+                mRef.PlDir = PlDirEnum.Left;
+                mRef.State = RefeStateEnum.DeclareVictory;
+                mRef.ReqRefereeAnm(BasicSkillEnum.Refe_Stand_MatchEnd_Front_Left);
+                mRef.matchResult = MatchResultEnum.GiveUp;
+                PlayerMan.inst.GetPlObj(p.PlIdx).isLoseAndStop = true;
+                mRef.SentenceLose(p.PlIdx);
             }
         }
 

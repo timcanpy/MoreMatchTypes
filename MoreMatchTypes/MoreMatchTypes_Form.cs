@@ -541,8 +541,8 @@ namespace MoreMatchTypes
             Clear();
             UncheckNormal();
             UncheckWrestling();
-            lbl_Basic.Visible = true;
-            tb_basic.Visible = true;
+            lbl_Basic.Visible = false;
+            tb_basic.Visible = false;
             tb_basic.Clear();
 
             String moveList = "";
@@ -551,7 +551,7 @@ namespace MoreMatchTypes
                 moveList += move + "\n";
             }
             tb_basic.Text = moveList;
-            rulesTabControl.TabPages[0].Text = "Attack Rules (Sumo)";
+            rulesTabControl.TabPages[0].Text = "Not Applicable";
 
             removePosts.Checked = true;
             removeRopes.Checked = true;
