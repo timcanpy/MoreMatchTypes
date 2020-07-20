@@ -297,7 +297,7 @@ namespace MoreMatchTypes
                 DisplayScore("Disqualification");
                 HandleFoul();
             }
-            else if (illegalMoves.Contains(sd.skillName[(int)global::SaveData.inst.optionSettings.language]))
+            else if (illegalMoves.Contains(sd.skillName[(int)global::SaveData.inst.optionSettings.language]) || sd.flags == SkillData.SkillFlags.FoulTech )
             {
 
                 if (plIDx < 4)

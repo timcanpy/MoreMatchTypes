@@ -149,13 +149,13 @@ namespace MoreMatchTypes.Shoot_Match_Types
                     int foulIncrement = 1;
                     int currFouls = 0;
 
-                    if (dqAttacks.Contains(sd.skillName[(int)SaveData.inst.optionSettings.language].ToLower()))
+                    if (dqAttacks.Contains(sd.skillName[(int)SaveData.inst.optionSettings.language].ToLower()) || sd.flags == SkillData.SkillFlags.FoulTech)
                     {
                         foulIncrement = foulCeiling + 1;
                     }
-
+               
                     //Determine if defender resists illegal blows
-                    if (sd.filteringType == SkillFilteringType.Foul)
+                    if (sd.flags == SkillData.SkillFlags.FoulTech)
                     {
                         ResistBlow(defender);
                     }
