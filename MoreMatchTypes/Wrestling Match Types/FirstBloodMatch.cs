@@ -1,4 +1,5 @@
 ﻿using DG;
+using MatchConfig;
 using System;
 using System.Windows.Forms;
 using UnityEngine;
@@ -79,15 +80,15 @@ namespace MoreMatchTypes
 
                     if (bloodMeter[matchPlayer.PlIdx] <= 100)
                     {
-                        DispNotification.inst.Show(attacker + " is trying to bust open " + defender + ".", 180);
+                        MatchConfiguration.ShowCommentaryMessage(attacker + " is trying to bust open " + defender + ".");
                     }
                     else if (bloodMeter[matchPlayer.PlIdx] <= 200)
                     {
-                        DispNotification.inst.Show(attacker + " is really working over " + defender + "!", 180);
+                        MatchConfiguration.ShowCommentaryMessage(attacker + " is really working over " + defender + "!");
                     }
                     else
                     {
-                        DispNotification.inst.Show(attacker + " is trying to put " + defender + " in the hospital! Such savagery!", 180);
+                        MatchConfiguration.ShowCommentaryMessage(attacker + " is trying to put " + defender + " in the hospital! Such savagery!");
                     }
 
                 }

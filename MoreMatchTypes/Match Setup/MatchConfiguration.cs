@@ -549,6 +549,16 @@ namespace MatchConfig
             return legalMan;
         }
 
+        public static void ShowCommentaryMessage(String message, int time = 300)
+        {
+            CutSceneMessage.GetInst().Show(message, time);
+        }
+
+        public static void ShowAnnouncement(String message, int time = 300)
+        {
+            DispNotification.inst.Show(message, time);
+        }
+
         public static void SetField(object obj, string field, bool isStatic, object value)
         {
             Type myType = obj.GetType();

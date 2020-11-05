@@ -217,7 +217,7 @@ namespace MoreMatchTypes
                 GlobalWork.inst.MatchSetting.VictoryCondition = VictoryConditionEnum.Count3;
                 GlobalWork.inst.MatchSetting.isOutOfRingCount = outOfRingCount;
                 GlobalWork.inst.MatchSetting.CriticalRate = critRate;
-                DispNotification.inst.Show("Pinfall victories are now possible!", 180);
+                MatchConfiguration.ShowCommentaryMessage("Pinfall victories are now possible!");
             }
         }
         private static void SwitchFlag()

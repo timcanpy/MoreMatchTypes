@@ -355,7 +355,7 @@ namespace MoreMatchTypes
         }
         public static void DisplayElimination(String wrestlerName, int membersRemaining)
         {
-            DispNotification.inst.Show(wrestlerName + " has been eliminated!\t" + teamNames[loserTrack] + " members remaining: " + membersRemaining, 300);
+            MatchConfiguration.ShowAnnouncement(wrestlerName + " has been eliminated!\t" + teamNames[loserTrack] + " members remaining: " + membersRemaining, 300);
         }
         public static void ActivateMember(int playerIndex)
         {

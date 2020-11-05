@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 using DG;
+using MatchConfig;
 
 namespace MoreMatchTypes
 {
@@ -191,7 +192,7 @@ namespace MoreMatchTypes
             {
                 if (isIronMan && currMatchTime != null)
                 {
-                    DispNotification.inst.Show(teamNames[0] + " : " + wins[0] + "      " + teamNames[1] + " : " + wins[1], 300);
+                    MatchConfiguration.ShowAnnouncement(teamNames[0] + " : " + wins[0] + "      " + teamNames[1] + " : " + wins[1], 300);
                     m.matchTime.Set(currMatchTime);
 
                     //Replenish wrestlers hp, stamina and spirit

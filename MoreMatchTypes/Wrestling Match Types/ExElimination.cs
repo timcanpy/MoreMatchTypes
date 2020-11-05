@@ -515,11 +515,11 @@ namespace MoreMatchTypes.Wrestling_Match_Types
         }
         public static void AnnounceElimination(String eliminatedPlayer, int membersRemaining, String teamName)
         {
-            DispNotification.inst.Show(eliminatedPlayer + " has been eliminated!\t" + teamName + " members remaining: " + membersRemaining, 300);
+            MatchConfiguration.ShowAnnouncement(eliminatedPlayer + " has been eliminated!\t" + teamName + " members remaining: " + membersRemaining, 300);
         }
         public static void AnnounceDoubleElimation()
         {
-            DispNotification.inst.Show("Double Elimination!\t" + MoreMatchTypes_Form.ExEliminationData.TeamNames[0] + ": " + wins[0] + "\t" + MoreMatchTypes_Form.ExEliminationData.TeamNames[1] + ": " + wins[1]);
+            MatchConfiguration.ShowAnnouncement("Double Elimination!\t" + MoreMatchTypes_Form.ExEliminationData.TeamNames[0] + ": " + wins[0] + "\t" + MoreMatchTypes_Form.ExEliminationData.TeamNames[1] + ": " + wins[1]);
         }
         public static int GetLoser(CornerSide side)
         {

@@ -237,11 +237,11 @@ namespace MoreMatchTypes.Shoot_Match_Types
             int bloodLevel = global::MatchEvaluation.inst.PlResult[p.PlIdx].bledCnt;
             if (bloodLevel == bleedCeiling - 1)
             {
-                DispNotification.inst.Show(refName + " is watching " + DataBase.GetWrestlerFullName(p.WresParam) + " closely.", 300);
+                MatchConfiguration.ShowCommentaryMessage(refName + " is watching " + DataBase.GetWrestlerFullName(p.WresParam) + " closely.");
             }
             else if (bloodLevel >= bleedCeiling)
             {
-                DispNotification.inst.Show(refName + " calls for a doctor stoppage!", 300);
+                MatchConfiguration.ShowCommentaryMessage(refName + " calls for a doctor stoppage!");
                 Referee mRef = RefereeMan.inst.GetRefereeObj();
                 mRef.PlDir = PlDirEnum.Left;
                 mRef.State = RefeStateEnum.DeclareVictory;
@@ -316,7 +316,7 @@ namespace MoreMatchTypes.Shoot_Match_Types
                     CallNoContest();
                 }
             }
-            DispNotification.inst.Show("Foul! " + DataBase.GetWrestlerFullName(PlayerMan.inst.GetPlObj(plIdx).WresParam) + " is warned for usage of an illegal " + move + ".", 300);
+            MatchConfiguration.ShowCommentaryMessage("Foul! " + DataBase.GetWrestlerFullName(PlayerMan.inst.GetPlObj(plIdx).WresParam) + " is warned for usage of an illegal " + move + ".");
 
             ForceCleanBreak();
         }

@@ -417,11 +417,11 @@ namespace MoreMatchTypes
             int bloodLevel = global::MatchEvaluation.inst.PlResult[p.PlIdx].bledCnt;
             if (bloodLevel == bleedCeiling - 1)
             {
-                DispNotification.inst.Show(refName + " is watching " + DataBase.GetWrestlerFullName(p.WresParam) + " closely.", 300);
+                MatchConfiguration.ShowCommentaryMessage(refName + " is watching " + DataBase.GetWrestlerFullName(p.WresParam) + " closely.");
             }
             else if (bloodLevel >= bleedCeiling)
             {
-                DispNotification.inst.Show(refName + " calls for a doctor stoppage!", 300);
+                MatchConfiguration.ShowCommentaryMessage(refName + " calls for a doctor stoppage!");
                 Referee mRef = RefereeMan.inst.GetRefereeObj();
                 mRef.PlDir = PlDirEnum.Left;
                 mRef.State = RefeStateEnum.DeclareVictory;
@@ -440,7 +440,7 @@ namespace MoreMatchTypes
         }
         private static void TriggerLoss(int team, string reason)
         {
-            DispNotification.inst.Show(reason + " -\t" + teamNames[0] + ": " + points[0] + " points \t\t" + teamNames[1] + ": " + points[1] + " points", 300);
+            MatchConfiguration.ShowAnnouncement(reason + " -\t" + teamNames[0] + ": " + points[0] + " points \t\t" + teamNames[1] + ": " + points[1] + " points", 300);
             Referee mref = RefereeMan.inst.GetRefereeObj();
             mref.PlDir = PlDirEnum.Left;
             mref.State = RefeStateEnum.DeclareVictory;
@@ -468,7 +468,7 @@ namespace MoreMatchTypes
             }
             else
             {
-                DispNotification.inst.Show(reason + " -\t" + teamNames[0] + ": " + points[0] + " points \t\t" + teamNames[1] + ": " + points[1] + " points", 300);
+                MatchConfiguration.ShowAnnouncement(reason + " -\t" + teamNames[0] + ": " + points[0] + " points \t\t" + teamNames[1] + ": " + points[1] + " points", 300);
                 ForceCleanBreak(); //Allows the round to continue
                 ResumeAfterBreak();
             }

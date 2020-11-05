@@ -342,7 +342,7 @@ namespace MoreMatchTypes.Wrestling_Match_Types
             SetLegalMen("blue");
             SetLegalMen("red");
 
-            DispNotification.inst.Show("Score -\t" + teamNames[0] + ": " + points[0] + "\t\t" + teamNames[1] + ": " + points[1], 300);
+            MatchConfiguration.ShowAnnouncement("Score -\t" + teamNames[0] + ": " + points[0] + "\t\t" + teamNames[1] + ": " + points[1], 300);
             return true;
         }
         public static void SetLosers(int startIndex, PlayerMan p)
