@@ -579,14 +579,15 @@ namespace MoreMatchTypes
             settings.isSkipEntranceScene = true;
 
             //Need to set a valid MatchBGM type  here, then override it on match start if necessary.
-            if (el_bgm.SelectedIndex <= 2)
-            {
-                settings.matchBGM = MatchBGM.SpinningPanther;
-            }
-            else
-            {
-                settings.matchBGM = (MatchBGM)GetValidBGMID((String)el_bgm.SelectedItem);
-            }
+            //if (el_bgm.SelectedIndex <= 2)
+            //{
+            //    settings.matchBGM = MatchBGM.FireProWrestling;
+            //}
+            //else
+            //{
+            //    settings.matchBGM = (MatchBGM)GetValidBGMID((String)el_bgm.SelectedItem);
+            //}
+            settings.matchBGM = MatchBGM.FireProWrestling;
 
             GlobalParam.flg_CallDebugMenu = false;
             GlobalParam.befor_scene = "Scene_BattleSetting";

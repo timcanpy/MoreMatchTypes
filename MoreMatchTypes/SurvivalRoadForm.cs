@@ -993,21 +993,23 @@ namespace MoreMatchTypes
             try
             {
                 if (sr_bgmList.SelectedIndex == 0)
-                {
-                    settings.matchBGM = MatchBGM.FireProWrestling;
-                }
-                else if (sr_bgmList.SelectedIndex == 1)
-                {
-                    settings.matchBGM = MatchBGM.SpinningPanther;
-                }
-                else if (sr_bgmList.SelectedIndex == 2)
-                {
-                    settings.matchBGM = MatchBGM.LonelyStage;
-                }
-                else
-                {
-                    settings.matchBGM = (MatchBGM)GetValidBGMID((String)sr_bgmList.SelectedItem);
-                }
+                //{
+                //    settings.matchBGM = MatchBGM.FireProWrestling;
+                //}
+                //else if (sr_bgmList.SelectedIndex == 1)
+                //{
+                //    settings.matchBGM = MatchBGM.SpinningPanther;
+                //}
+                //else if (sr_bgmList.SelectedIndex == 2)
+                //{
+                //    settings.matchBGM = MatchBGM.LonelyStage;
+                //}
+                //else
+                //{
+                //    settings.matchBGM = (MatchBGM)GetValidBGMID((String)sr_bgmList.SelectedItem);
+                //}
+
+                settings.matchBGM = MatchBGM.FireProWrestling;
             }
             catch (Exception e)
             {
