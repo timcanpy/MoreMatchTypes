@@ -639,7 +639,7 @@ namespace MoreMatchTypes
             {
                 case 0:
                     mref.SentenceLose(0);
-                    mref.SentenceLose(1);
+                    mref.SentenceLose(4);
                     mref.matchResult = MatchResultEnum.KODraw;
                     resultText = "Draw";
                     break;
