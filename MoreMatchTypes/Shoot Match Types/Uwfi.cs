@@ -638,6 +638,12 @@ namespace MoreMatchTypes
             switch (team)
             {
                 case 0:
+                    mref.SentenceLose(0);
+                    mref.SentenceLose(1);
+                    mref.matchResult = MatchResultEnum.KODraw;
+                    resultText = "Draw";
+                    break;
+                case 1:
                     for (int i = 0; i < 4; i++)
                     {
                         if (PlayerMan.inst.GetPlObj(i).hasRight)
@@ -646,24 +652,29 @@ namespace MoreMatchTypes
                             break;
                         }
                     }
-                    mref.SentenceLose(0);
-                    mref.SentenceLose(1);
-                    mref.matchResult = MatchResultEnum.KODraw;
-                    break;
-                case 1:
-                    mref.SentenceLose(0);
+                    mref.SentenceLose(loser);
+                    PlayerMan.inst.GetPlObj(loser).isLoseAndStop = true;
                     ptEndMatch = true;
+                    resultText = "T.K.O. By Point Loss";
                     break;
 
                 case 2:
-                    mref.SentenceLose(1);
+                    for (int i = 4; i < 7; i++)
+                    {
+                        if (PlayerMan.inst.GetPlObj(i).hasRight)
+                        {
+                            loser = i;
+                            break;
+                        }
+                    }
+                    mref.SentenceLose(loser);
+                    PlayerMan.inst.GetPlObj(loser).isLoseAndStop = true;
                     ptEndMatch = true;
+                    resultText = "T.K.O. By Point Loss";
                     break;
                 default:
                     break;
             }
-
-            resultText = "T.K.O. By Point Loss";
         }
         private static int CheckPoints(int points)
         {

@@ -527,6 +527,8 @@ namespace MoreMatchTypes
             redTeamMembers = new Queue<string>();
 
             PlayerMan p = PlayerMan.inst;
+            MatchSetting settings = GlobalWork.inst.MatchSetting;
+
             //Set the team members
             for (int i = 0; i < 8; i++)
             {
@@ -540,6 +542,9 @@ namespace MoreMatchTypes
                 {
                     continue;
                 }
+
+                //This match type cannot include Seconds, so we override the initial setting here.
+                settings.matchWrestlerInfo[i].isSecond = false;
 
                 if (i < 4)
                 {
