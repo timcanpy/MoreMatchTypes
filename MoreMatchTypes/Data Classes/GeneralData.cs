@@ -28,6 +28,6 @@ namespace MoreMatchTypes.Data_Classes
         private bool inProgress;
         public bool InProgress { get => inProgress; set => inProgress = value; }
 
-        protected String reportFolder = "./EGOData/Reports";
+        protected String reportFolder = "./EGOData/Reports/SurvivalRoad/";
     }
 }

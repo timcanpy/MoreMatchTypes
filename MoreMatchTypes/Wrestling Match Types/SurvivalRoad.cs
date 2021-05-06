@@ -204,7 +204,7 @@ namespace MoreMatchTypes.Wrestling_Match_Types
             UpdateProgress(result);
             if (endMatch)
             {
-                MoreMatchTypes_Form.SurvivalRoadData.SaveSurvivalData();
+                MoreMatchTypes_Form.SurvivalRoadData.SaveSurvivalData(gameDetails);
             }
         }
 
@@ -658,6 +658,7 @@ namespace MoreMatchTypes.Wrestling_Match_Types
                 if (SurvivalRoadForm.survivalForm != null)
                 {
                     SurvivalRoadForm.survivalForm.sr_progress.Text = info;
+                    SurvivalRoadForm.survivalForm.RefreshDetails();
                 }
             }
             catch (Exception ex)

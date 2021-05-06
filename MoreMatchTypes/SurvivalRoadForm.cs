@@ -498,6 +498,11 @@ namespace MoreMatchTypes
         }
         private void sr_progressRefresh_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
+            RefreshDetails();
+        }
+
+        public void RefreshDetails()
+        {
             if (MoreMatchTypes_Form.SurvivalRoadData.InProgress)
             {
                 PopulateProgressBox(MoreMatchTypes_Form.SurvivalRoadData.MatchProgress);

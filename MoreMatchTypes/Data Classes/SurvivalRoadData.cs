@@ -5,6 +5,9 @@ using System.Linq;
 using System.Text;
 using MatchConfig;
 using System.IO;
+using MoreMatchTypes.Data_Classes.Storage;
+using Newtonsoft.Json;
+using DG;
 
 namespace MoreMatchTypes.DataClasses
 {
@@ -58,7 +61,7 @@ namespace MoreMatchTypes.DataClasses
 
         private List<WresIDGroup> opponents;
         public List<WresIDGroup> Opponents { get => opponents; set => opponents = value; }
-        
+
         //Required for tracking purposes after the first match begins
         private WresIDGroup[] initialOpponents;
         public WresIDGroup[] InitialOpponents { get => initialOpponents; set => initialOpponents = value; }
@@ -84,26 +87,120 @@ namespace MoreMatchTypes.DataClasses
             }
         }
 
-        public bool SaveSurvivalData()
+        /*Array to store match details
+  [0] - Matches Remaining
+  [1] - Continues Remaining
+  [2] - Current Win Streak
+  [3] - Highest Win Streak
+  [4] - Total Losses
+  [5] - Continues Used
+  [6] - Higest Match Rating
+  [7] - Total Match Rating
+  [8] - Matches Played
+  */
+
+        public bool SaveSurvivalData(int[] gameDetails)
         {
             try
             {
-                //Create file name
+                L.D("Saving Survival Data");
+
+                SurvivalSaveData data = new SurvivalSaveData();
+                data = new SurvivalSaveData { OwnerID = "" + gameDetails[8] + gameDetails[4] + gameDetails[5] + gameDetails[7], Date = DateTime.Today.ToString("dd-MM-yyyy hh:mm tt"), Details = matchProgress };
+
+                if (Ring != null)
+                {
+                    data.Promotion = Ring.Name;
+                }
+
+                if (wrestler == null)
+                {
+                    data.Name = "";
+                }
+                else
+                {
+                    data.Name = wrestler.Name;
+                }
+
+                if (second != null)
+                {
+                    if (second.Name != null)
+                    {
+                        data.Name += " & " + second.Name;
+                    }
+                }
+
+                data.ID = data.Name + data.Date + data.OwnerID;
+                data.Record = gameDetails[8] + "\\" + gameDetails[4] + "\\" + gameDetails[5];
+                data.MaxWinStreak = gameDetails[3];
+                data.MaxRating = gameDetails[6];
+
+                #region Create json information
+                L.D("Writing file");
+                StringWriter stringWriter = new StringWriter();
+                JsonTextWriter writer = new JsonTextWriter(stringWriter);
+
+                writer.WriteStartObject();
+
+                writer.WritePropertyName("id");
+                writer.WriteValue(data.ID);
+
+                writer.WritePropertyName("name");
+                writer.WriteValue(data.Name);
+
+                writer.WritePropertyName("promotion");
+                writer.WriteValue(data.Promotion);
+
+                writer.WritePropertyName("ownerId");
+                writer.WriteValue(data.OwnerID);
+
+                writer.WritePropertyName("date");
+                writer.WriteValue(data.Date);
+
+                writer.WritePropertyName("record");
+                writer.WriteValue(data.Record);
+
+                writer.WritePropertyName("maxWinStreak");
+                writer.WriteValue(data.MaxWinStreak);
+
+                writer.WritePropertyName("maxRating");
+                writer.WriteValue(data.MaxRating);
+
+                writer.WritePropertyName("details");
+                writer.WriteStartArray();
+
+                foreach (string detail in data.Details)
+                {
+                    writer.WriteValue(detail);
+                }
+                writer.WriteEndArray();
+
+                writer.WriteEndObject();
+                #endregion
+
+                //Create Local File
                 string fileName = wrestler.Name;
                 if (second != null)
                 {
-                    fileName += "_" + second.Name;
+                    if (second.Name != null)
+                    {
+                        fileName += "_" + second.Name;
+                    }
                 }
 
-                fileName += "_" + DateTime.Today.ToString("dd-MM-yyyy") + ".txt";
+                fileName += "_" + DateTime.Now.ToString("dd-MM-yyyy_hh-mm-tt") + ".json";
 
-                Directory.CreateDirectory(reportFolder);
-                File.WriteAllLines(Path.Combine(reportFolder, fileName), matchProgress.ToArray());
+                if (!Directory.Exists(reportFolder))
+                {
+                    Directory.CreateDirectory(reportFolder);
+                }
+                File.WriteAllText(Path.Combine(reportFolder, fileName), stringWriter.ToString());
 
                 return true;
             }
             catch (Exception e)
             {
+                L.D("SaveSurvivalDataError: " + e);
                 return false;
             }
         }
