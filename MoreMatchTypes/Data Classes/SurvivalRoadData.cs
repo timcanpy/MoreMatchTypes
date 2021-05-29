@@ -106,7 +106,7 @@ namespace MoreMatchTypes.DataClasses
                 L.D("Saving Survival Data");
 
                 SurvivalSaveData data = new SurvivalSaveData();
-                data = new SurvivalSaveData { OwnerID = "" + gameDetails[8] + gameDetails[4] + gameDetails[5] + gameDetails[7], Date = DateTime.Today.ToString("dd-MM-yyyy hh:mm tt"), Details = matchProgress };
+                data = new SurvivalSaveData { OwnerID = "" + gameDetails[8] + gameDetails[4] + gameDetails[5] + gameDetails[7], Date = DateTime.Now.ToString("dd-MM-yyyy hh:mm tt"), Details = matchProgress };
 
                 if (Ring != null)
                 {
