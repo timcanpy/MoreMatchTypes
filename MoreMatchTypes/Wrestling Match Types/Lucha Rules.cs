@@ -123,66 +123,75 @@ namespace MoreMatchTypes.Wrestling_Match_Types
             }
         }
 
-        [Hook(TargetClass = "Referee", TargetMethod = "Process_FallCount", InjectionLocation = 42,
-            InjectFlags = HookInjectFlags.ModifyReturn | HookInjectFlags.PassInvokingInstance, Group = "MoreMatchTypes")]
-        public static bool ProcessPin(Referee r)
-        {
-            if (!isLuchaTag)
-            {
-                return false;
-            }
-            return CheckMatchEnd(r);
-        }
+        //[Hook(TargetClass = "Referee", TargetMethod = "Process_FallCount", InjectionLocation = 42,
+        //    InjectFlags = HookInjectFlags.ModifyReturn | HookInjectFlags.PassInvokingInstance, Group = "MoreMatchTypes")]
+        //public static bool ProcessPin(Referee r)
+        //{
+        //    if (!isLuchaTag)
+        //    {
+        //        return false;
+        //    }
+        //    return CheckMatchEnd(r);
+        //}
 
-        [Hook(TargetClass = "Referee", TargetMethod = "Process_SubmissionCheck", InjectionLocation = 25,
-            InjectFlags = HookInjectFlags.ModifyReturn | HookInjectFlags.PassInvokingInstance,
-            Group = "MoreMatchTypes")]
-        public static bool ProcessSubmission(Referee r)
-        {
-            int disturbingPlayer = global::PlayerMan.inst.GetDisturbingPlayer();
-            Player plObj = global::PlayerMan.inst.GetPlObj(r.TargetPlIdx);
-            if (disturbingPlayer < 0 && plObj.isWannaGiveUp)
-            {
-                return CheckMatchEnd(r);
-            }
+        //[Hook(TargetClass = "Referee", TargetMethod = "Process_SubmissionCheck", InjectionLocation = 10,
+        //    InjectFlags = HookInjectFlags.ModifyReturn | HookInjectFlags.PassInvokingInstance, InjectDirection = HookInjectDirection.Before,
+        //    Group = "MoreMatchTypes")]
+        //public static bool ProcessSubmission(Referee r)
+        //{
+        //    Player plObj = global::PlayerMan.inst.GetPlObj(r.TargetPlIdx);
+        //    if (!plObj)
+        //    {
+        //        return false ;
+        //    }
+        //    if (r.State != global::RefeStateEnum.CheckSubmission)
+        //    {
+        //        return false;
+        //    }
 
-            return false;
-        }
+        //    int disturbingPlayer = global::PlayerMan.inst.GetDisturbingPlayer();
+        //    if (disturbingPlayer < 0 && plObj.isWannaGiveUp)
+        //    {
+        //        return CheckMatchEnd(r);
+        //    }
 
-        [Hook(TargetClass = "MatchMain", TargetMethod = "ProcessMatchEnd_Draw", InjectionLocation = 0, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.None, Group = "MoreMatchTypes")]
-        public static void SetVictoryConditions()
-        {
-            if (!isLuchaTag)
-            {
-                return;
-            }
+        //    return false;
+        //}
 
-            MatchMain main = MatchMain.inst;
-            Referee matchRef = RefereeMan.inst.GetRefereeObj();
-            if (main.isTimeUp)
-            {
-                if (points[0] == points[1])
-                {
-                    return;
-                }
-                else
-                {
-                    PlayerMan p = PlayerMan.inst;
-                    Announcer.inst.PlayGong_MatchEnd();
+        //[Hook(TargetClass = "MatchMain", TargetMethod = "ProcessMatchEnd_Draw", InjectionLocation = 0, InjectDirection = HookInjectDirection.Before, InjectFlags = HookInjectFlags.None, Group = "MoreMatchTypes")]
+        //public static void SetVictoryConditions()
+        //{
+        //    if (!isLuchaTag)
+        //    {
+        //        return;
+        //    }
 
-                    if (points[0] > points[1])
-                    {
-                        matchRef.SentenceLose(p.GetPlObj(4).PlIdx);
-                        SetLosers(MatchConfiguration.GetLegalMan(CornerSide.Red), p);
-                    }
-                    else
-                    {
-                        matchRef.SentenceLose(p.GetPlObj(0).PlIdx);
-                        SetLosers(MatchConfiguration.GetLegalMan(CornerSide.Blue), p);
-                    }
-                }
-            }
-        }
+        //    MatchMain main = MatchMain.inst;
+        //    Referee matchRef = RefereeMan.inst.GetRefereeObj();
+        //    if (main.isTimeUp)
+        //    {
+        //        if (points[0] == points[1])
+        //        {
+        //            return;
+        //        }
+        //        else
+        //        {
+        //            PlayerMan p = PlayerMan.inst;
+        //            Announcer.inst.PlayGong_MatchEnd();
+
+        //            if (points[0] > points[1])
+        //            {
+        //                matchRef.SentenceLose(p.GetPlObj(4).PlIdx);
+        //                SetLosers(MatchConfiguration.GetLegalMan(CornerSide.Red), p);
+        //            }
+        //            else
+        //            {
+        //                matchRef.SentenceLose(p.GetPlObj(0).PlIdx);
+        //                SetLosers(MatchConfiguration.GetLegalMan(CornerSide.Blue), p);
+        //            }
+        //        }
+        //    }
+        //}
 
         [Hook(TargetClass = "Menu_Result", TargetMethod = "Set_FinishSkill", InjectionLocation = 0, InjectDirection = HookInjectDirection.After, InjectFlags = HookInjectFlags.PassParametersRef, Group = "MoreMatchTypes")]
         public static void SetResultScreenDisplay(ref string str)
