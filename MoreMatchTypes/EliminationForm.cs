@@ -473,7 +473,6 @@ namespace MoreMatchTypes
             }
             catch
             {
-                L.D("Error Setting Ring");
                 settings.ringID = RingID.SWA;
             }
 
@@ -498,7 +497,6 @@ namespace MoreMatchTypes
             }
             catch
             {
-                L.D("Error Setting Referee");
                 settings.RefereeID = RefereeID.MrJudgement;
             }
 
@@ -542,7 +540,6 @@ namespace MoreMatchTypes
             }
             catch
             {
-                L.D("Error setting venue");
                 settings.arena = VenueEnum.BigGardenArena;
             }
 
@@ -553,7 +550,6 @@ namespace MoreMatchTypes
             }
             catch
             {
-                L.D("Error setting game speed");
                 settings.GameSpeed = 100;
             }
 
@@ -832,7 +828,6 @@ namespace MoreMatchTypes
         }
         private int GetValidBGMID(String name)
         {
-            L.D("GetValidBGMID: " + name);
             for (int i = 0; i < MyMusic.FileList_Match.Count; i++)
             {
                 if (MyMusic.FileList_Match[i].name.Equals(name))

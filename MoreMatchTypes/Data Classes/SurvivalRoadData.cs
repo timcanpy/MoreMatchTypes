@@ -103,8 +103,6 @@ namespace MoreMatchTypes.DataClasses
         {
             try
             {
-                L.D("Saving Survival Data");
-
                 SurvivalSaveData data = new SurvivalSaveData();
                 data = new SurvivalSaveData { OwnerID = "" + gameDetails[8] + gameDetails[4] + gameDetails[5] + gameDetails[7], Date = DateTime.Now.ToString("dd-MM-yyyy hh:mm tt"), Details = matchProgress };
 
@@ -136,7 +134,6 @@ namespace MoreMatchTypes.DataClasses
                 data.MaxRating = gameDetails[6];
 
                 #region Create json information
-                L.D("Writing file");
                 StringWriter stringWriter = new StringWriter();
                 JsonTextWriter writer = new JsonTextWriter(stringWriter);
 

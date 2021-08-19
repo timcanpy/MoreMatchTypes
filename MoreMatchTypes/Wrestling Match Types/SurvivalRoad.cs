@@ -254,7 +254,6 @@ namespace MoreMatchTypes.Wrestling_Match_Types
         }
         private static void EndRound()
         {
-            L.D("Ending Round");
             //Force game transition to the post match screen in order to reload wrestlers 
             MatchMain main = MatchMain.inst;
             main.isMatchEnd = true;
@@ -291,7 +290,6 @@ namespace MoreMatchTypes.Wrestling_Match_Types
             //Ensure this isn't executed multiple times
             if (!endMatch)
             {
-                L.D("Ending Match");
                 MatchSetting settings = GlobalWork.GetInst().MatchSetting;
 
                 //Ensure that we reset the 3 Game Match settings
@@ -486,7 +484,6 @@ namespace MoreMatchTypes.Wrestling_Match_Types
         }
         private static void InitializeLists()
         {
-            L.D("Initializing lists");
             waitingOpponents.Clear();
             usedOpponents.Clear();
 
@@ -532,15 +529,6 @@ namespace MoreMatchTypes.Wrestling_Match_Types
                 currOpponents[1] = MoreMatchTypes_Form.SurvivalRoadData.InitialOpponents[1];
             }
 
-            try
-            {
-                L.D("First opponent: " + currOpponents[0].Name);
-            }
-            catch (Exception e)
-            {
-                L.D("First opponent is a null reference");
-            }
-
             endRound = false;
             endMatch = false;
             loserIndex = -1;
@@ -561,7 +549,6 @@ namespace MoreMatchTypes.Wrestling_Match_Types
         }
         private static void SetupRound()
         {
-            L.D("Setting up round");
             MatchSetting settings = GlobalWork.inst.MatchSetting;
             MatchMain main = MatchMain.inst;
             main.RoundCnt = 1;
@@ -627,7 +614,6 @@ namespace MoreMatchTypes.Wrestling_Match_Types
         {
             try
             {
-                L.D("Updating progress");
                 string info = "\nMatch #" + gameDetails[8] + "\n";
                 string playerTeam = teamNames[0];
                 String opponent = "";

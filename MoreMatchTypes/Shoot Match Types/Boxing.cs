@@ -43,7 +43,6 @@ namespace MoreMatchTypes.Shoot_Match_Types
                 String dqMoves = MoreMatchTypes_Form.moreMatchTypesForm.tb_dq.Text.TrimStart().TrimEnd();
                 if (dqMoves.Trim() != "")
                 {
-                    L.D("Create Boxing DQ Moves");
                     dqAttacks = CreateMoveList(dqMoves);
                 }
                 else
@@ -456,7 +455,6 @@ namespace MoreMatchTypes.Shoot_Match_Types
 
         private static void ExecuteTaunt(Player plObj)
         {
-            L.D("Execute taunt");
             int randomNum = UnityEngine.Random.Range(1, 4);
             if (randomNum == 1)
             {

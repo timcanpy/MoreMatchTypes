@@ -892,7 +892,7 @@ namespace MoreMatchTypes
                 foreach (var assembly in assemblies)
                 {
                     string name = assembly.GetName().Name;
-                    L.D("Assembly:" + name);
+                    //L.D("Assembly:" + name);
                     if (name.Equals(modPackName))
                     {
                         exists = true;

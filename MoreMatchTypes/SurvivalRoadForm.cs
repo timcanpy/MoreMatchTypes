@@ -560,7 +560,6 @@ namespace MoreMatchTypes
                             wrestlerNo = (WrestlerID)second.ID;
                             if (sr_tag.Checked)
                             {
-                                L.D("Setting tag options");
                                 isSecond = false;
                                 if (sr_controlBoth.Checked)
                                 {
@@ -645,14 +644,12 @@ namespace MoreMatchTypes
                         }
                         else if (sr_tag.Checked && i == 5)
                         {
-                            L.D("Creating tag opponents");
                             opponent = (MatchConfig.WresIDGroup)sr_teamList.Items[searchIndex];
                             wrestlerNo = MatchConfiguration.GetWrestlerNo(opponent);
 
                             //Ensure that we aren't fielding duplicate wrestlers
                             while (initialOpponents[0].ID == (int)wrestlerNo)
                             {
-                                L.D("Preventing duplicates");
                                 searchIndex = UnityEngine.Random.Range(0, opponentCount);
                                 opponent = (MatchConfig.WresIDGroup)sr_teamList.Items[searchIndex];
                                 wrestlerNo = MatchConfiguration.GetWrestlerNo(opponent);
@@ -843,7 +840,6 @@ namespace MoreMatchTypes
             }
             catch
             {
-                L.D("Error Setting Ring");
                 settings.ringID = RingID.SWA;
             }
 
@@ -868,7 +864,6 @@ namespace MoreMatchTypes
             }
             catch
             {
-                L.D("Error Setting Referee");
                 settings.RefereeID = RefereeID.MrJudgement;
             }
 
@@ -912,7 +907,6 @@ namespace MoreMatchTypes
             }
             catch
             {
-                L.D("Error setting venue");
                 settings.arena = VenueEnum.BigGardenArena;
             }
 
@@ -923,7 +917,6 @@ namespace MoreMatchTypes
             }
             catch
             {
-                L.D("Error setting game speed");
                 settings.GameSpeed = 100;
             }
 
@@ -1099,7 +1092,6 @@ namespace MoreMatchTypes
 
         private int GetValidBGMID(String name)
         {
-            L.D("GetValidBGMID: " + name);
             for (int i = 0; i < MyMusic.FileList_Match.Count; i++)
             {
                 if (MyMusic.FileList_Match[i].name.Equals(name))

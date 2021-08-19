@@ -457,7 +457,6 @@ namespace MoreMatchTypes.Wrestling_Match_Types
 
             Player plObj = PlayerMan.inst.GetPlObj(playerIndex);
 
-            L.D("Next member state is " + plObj.State);
             //Ensure that edits immediately enter a ready state.
             if (plObj.State != PlStateEnum.Stand && plObj.State != PlStateEnum.Performance && plObj.Zone == ZoneEnum.OutOfRing)
             {

@@ -263,7 +263,6 @@ namespace MoreMatchTypes
             else
             {
                 //There's an error if we reach this point.
-                L.D("EliminationError: Reached point where loser track is zero");
                 return false;
             }
         }
@@ -360,8 +359,7 @@ namespace MoreMatchTypes
         public static void ActivateMember(int playerIndex)
         {
             Player plObj = PlayerMan.inst.GetPlObj(playerIndex);
-            L.D("Next member state is " + plObj.State);
-
+         
             //Ensure that edits immediately enter a ready state.
             if (plObj.State != PlStateEnum.Stand && plObj.State != PlStateEnum.Performance && plObj.Zone == ZoneEnum.OutOfRing)
             {
@@ -609,7 +607,6 @@ namespace MoreMatchTypes
                 }
                 catch (Exception e)
                 {
-                    L.D("Error on index " + i);
                     L.D("SetPadControlError:" + e);
                     padControls[i] = MenuPadKind.COM;
                 }

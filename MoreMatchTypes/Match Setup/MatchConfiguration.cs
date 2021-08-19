@@ -80,7 +80,6 @@ namespace MatchConfig
             {
                 if (wrestler.ID == id)
                 {
-                    L.D("Returning wrestler " + wrestler.Name);
                     wrestlerData = wrestler;
                     break;
                 }

@@ -58,7 +58,6 @@ namespace MoreMatchTypes
             String illegalString = MoreMatchTypes_Form.moreMatchTypesForm.tb_illegal.Text.TrimStart().TrimEnd();
             if (illegalString != "")
             {
-                L.D("Create UWFI Illegal Moves");
                 illegalMoves = CreateMoveList(illegalString);
             }
             else
@@ -104,7 +103,6 @@ namespace MoreMatchTypes
             String dqMoves = MoreMatchTypes_Form.moreMatchTypesForm.tb_dq.Text.TrimStart().TrimEnd();
             if (dqMoves != "")
             {
-                L.D("Create UWFI DQ Moves");
                 instantDQ = CreateMoveList(dqMoves);
             }
             else
@@ -721,7 +719,6 @@ namespace MoreMatchTypes
                 //Force Submission Breaks
                 if (pl.isSubmissionAtk)
                 {
-                    L.D("Player releases submission");
                     pl.plCont_AI.padPush = PadBtnEnum.Atk_M;
                 };
 

@@ -59,7 +59,6 @@ namespace MoreMatchTypes
                 String basicMoves = MoreMatchTypes_Form.moreMatchTypesForm.tb_basic.Text.TrimStart().TrimEnd();
                 if (basicMoves != "")
                 {
-                    L.D("Create Sumo Basic Moves");
                     basicAttacks = CreateMoveList(basicMoves);
                 }
                 else
@@ -97,16 +96,9 @@ namespace MoreMatchTypes
             Referee mRef = RefereeMan.inst.GetRefereeObj();
             bool isDownMove = false;
 
-            //Determine if this skill knocks down
-            //L.D("Checking skill: " + sd.skillName[(int)SaveData.inst.optionSettings.language]);
-            //L.D("Form number for the defender = " + sd.anmData[1].formNum);
-            //L.D("Final defender form number = " + sd.anmData[1].formDispList[sd.anmData[1].formNum - 1].formIdx);
-
-            
             var anmData = sd.anmData[1];
             if (anmData.formDispList[anmData.formNum - 1].formIdx == 101 || anmData.formDispList[anmData.formNum - 1].formIdx == 100)
             {
-                L.D("Skill Knocks Down: " + sd.skillName[(int)SaveData.inst.optionSettings.language]);
                 isDownMove = true;
             }
 
@@ -115,20 +107,10 @@ namespace MoreMatchTypes
                 return;
             }
 
-            //float rngValue = UnityEngine.Random.Range(1, 3);
-            //L.D("rngvalue = " + rngValue);
-
             //Handle back grapples
             if (attacker.animator.SkillSlotID == SkillSlotEnum.Back_X || attacker.animator.SkillSlotID == SkillSlotEnum.Back_A || attacker.animator.SkillSlotID == SkillSlotEnum.Back_B || attacker.animator.SkillSlotID == SkillSlotEnum.Back_B_UD || attacker.animator.SkillSlotID == SkillSlotEnum.Back_B_LR || attacker.animator.SkillSlotID == SkillSlotEnum.Back_XA)
             {
-                //if (rngValue == 1)
-                //{
-                    attacker.animator.ReqBasicAnm(global::BasicSkillEnum.S1_Substitution_BackHold, true, defender.TargetPlIdx);
-                //}
-                //else
-                //{
-                //    defender.animator.ReqBasicAnm(global::BasicSkillEnum.S1_Substitution_BackRev, true, attacker.TargetPlIdx);
-                //}
+                attacker.animator.ReqBasicAnm(global::BasicSkillEnum.S1_Substitution_BackHold, true, defender.TargetPlIdx);
                 return;
             }
 
@@ -144,21 +126,11 @@ namespace MoreMatchTypes
             //Substitute animation on invalid move or if the defender isn't worn down enough
             if (isDownMove && (defender.HP > (.25 * 65535f) && defender.SP > (.25 * 65535f) && defender.BP > (.25 * 65535f)))
             {
-                L.D("Substituting " + sd.skillName[(int)SaveData.inst.optionSettings.language]);
-              
                 attacker.ChangeState(global::PlStateEnum.NormalAnm);
                 defender.ChangeState(global::PlStateEnum.NormalAnm);
 
-                //Get animation
-                //if (rngValue == 1)
-                //{
-                    attacker.animator.ReqBasicAnm(global::BasicSkillEnum.S1_Substitution_FrontHold, true, attacker.TargetPlIdx);
-                //}
-                //else
-                //{
-                //    defender.animator.ReqBasicAnm(global::BasicSkillEnum.S1_Substitution_FrontHold, true, defender.TargetPlIdx);
-                //}
-
+                attacker.animator.ReqBasicAnm(global::BasicSkillEnum.S1_Substitution_FrontHold, true, attacker.TargetPlIdx);
+             
                 attacker.SetGrappleResult(attacker.TargetPlIdx, true);
                 attacker.SetGrappleResult(plIDx, false);
             }
@@ -206,7 +178,6 @@ namespace MoreMatchTypes
 
             if (p.Zone == ZoneEnum.OutOfRing || p.Zone == ZoneEnum.SlopeRunway || p.Zone == ZoneEnum.Stage || p.Zone == ZoneEnum.StageEntrance || p.Zone == ZoneEnum.HorizontalRunway || p.Zone == ZoneEnum.OutsideCage)
             {
-                L.D("Player Zone: " + p.Zone);
                 mRef.PlDir = PlDirEnum.Left;
                 mRef.ReqRefereeAnm(BasicSkillEnum.Refe_Stand_MatchEnd_Front_Left);
                 mRef.State = RefeStateEnum.DeclareVictory;

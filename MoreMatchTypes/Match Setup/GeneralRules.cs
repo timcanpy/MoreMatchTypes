@@ -68,7 +68,6 @@ namespace MoreMatchTypes.Match_Rules
 
             foreach (UnityEngine.Component c in GameObject.FindObjectsOfType<UnityEngine.Component>())
             {
-                //L.D("Component: " + c.ToString());
                 if (unwantedComponents.Contains(c.name))
                 {
                     c.gameObject.SetActive(false);
